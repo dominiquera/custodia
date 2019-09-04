@@ -39,4 +39,11 @@ Route::middleware('can:accessAdminpanel')->group(function() {
     Route::get('/admin/maintenance_items/destroy/{maintenance_item_id}', 'Admin\MaintenanceItemController@deleteMaintenanceItem');
     Route::post('/admin/maintenance_items/update', 'Admin\MaintenanceItemController@updateMaintenanceItem');
     Route::post('/admin/maintenance_items/create', 'Admin\MaintenanceItemController@createMaintenanceItem');
+
+    Route::get('/admin/event_types', 'Admin\EventTypeController@eventTypes')->name('manage-event-types');
+    Route::get('/admin/event_types/new', 'Admin\EventTypeController@newEventType');
+    Route::get('/admin/event_types/edit/{maintenance_item_id}', 'Admin\EventTypeController@editEventType');
+    Route::get('/admin/event_types/destroy/{maintenance_item_id}', 'Admin\EventTypeController@deleteEventType');
+    Route::post('/admin/event_types/update', 'Admin\EventTypeController@updateEventType');
+    Route::post('/admin/event_types/create', 'Admin\EventTypeController@createEventType');
 });
