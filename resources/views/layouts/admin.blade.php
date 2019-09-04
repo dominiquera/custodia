@@ -24,6 +24,9 @@
                 <a href="{{ route('manage-users') }}" class="item">
                     Users
                 </a>
+                <a href="{{ route('manage-items') }}" class="item">
+                    Maintenance Items
+                </a>
                 <div class="right menu">
                     <a class="item" href="{{ url('/logout') }}"
                         onclick="event.preventDefault();
