@@ -1,0 +1,47 @@
+@extends('layouts.admin')
+
+@section('content')
+<div class="ui container" style="padding-top:50px;">
+    <h1>New User</h1>
+  @if (session('status'))
+      <div class="alert alert-success" role="alert">
+          {{ session('status') }}
+      </div>
+  @endif
+  @if ($errors->any())
+      <div class="alert alert-danger">
+          <ul>
+              @foreach ($errors->all() as $error)
+                  <li>{{ $error }}</li>
+              @endforeach
+          </ul>
+      </div>
+  @endif
+  <form action="/admin/users/create" method="POST" class="ui form">
+      @csrf
+      <div class="form-group">
+          <label for="name">Username</label>
+          <input type="text" class="form-control" name="name" id="name" placeholder="Username">
+      </div>
+      <div class="form-group">
+          <label for="email">E-Mail</label>
+          <input type="text" name="email" class="form-control" id="email" placeholder="E-Mail">
+      </div>
+      <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" name="password" class="form-control" id="password">
+      </div>
+      <div class="form-group">
+          <label for="role">Role</label>
+          <select class="form-control" name="role" id="role">
+              <option selected="selected" disabled="disabled">--Choose a Role--</option>
+              @foreach (App\Role::all() as $role)
+                  <option value="{{$role->id}}">{{ $role->name }}</option>
+              @endforeach
+          </select>
+      </div>
+
+      <button style="margin-top:30px;" type="submit" class="ui button primary">Save</button>
+  </form>
+</div>
+@endsection
