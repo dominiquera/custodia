@@ -101,4 +101,8 @@ class AdminController extends Controller
         $user->delete();
         return redirect('/admin/users');
     }
+
+    public function apiGetUserScore(User $user){
+        return response()->json(['score' => $user->userProfile->score], 200);
+    }
 }
