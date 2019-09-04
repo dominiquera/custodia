@@ -26,7 +26,7 @@ class StoreUserRequest extends FormRequest
         return [
             'id' => 'required',
             'name' => 'required',
-            'email' => 'required|email',
+            'email' => 'required|email|unique:users,email,'.$this->id,
             'role' => 'required'
         ];
     }
