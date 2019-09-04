@@ -40,6 +40,19 @@
               @endforeach
           </select>
       </div>
+      <div class="form-group">
+          <label for="home_type">Home Type</label>
+          <select class="form-control" name="home_type" id="home_type">
+              <option selected="selected" disabled="disabled">--Choose a Home Type--</option>
+              @foreach (App\HomeType::all() as $homeType)
+                  <option value="{{$homeType->id}}">{{ $homeType->name }}</option>
+              @endforeach
+          </select>
+      </div>
+      <div class="form-group">
+          <label for="score">Score</label>
+          <input type="number" name="score" class="form-control" id="score" placeholder="Score">
+      </div>
 
       <button style="margin-top:30px;" type="submit" class="ui button primary">Save</button>
   </form>

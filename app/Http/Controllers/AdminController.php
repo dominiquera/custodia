@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\User\CreateUserRequest;
 use App\Http\Requests\User\StoreUserRequest;
 use App\User;
+use App\UserProfile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -36,6 +37,13 @@ class AdminController extends Controller
         $user->role_id = $request->role;
 
         $user->save();
+
+        $userProfile = new UserProfile();
+        $userProfile->user_id = $user->id;
+        $userProfile->home_type_id = $request->home_type;
+        $userProfile->score = $request->score;
+        $userProfile->save();
+
         return redirect('/admin/users');
     }
 
@@ -47,6 +55,13 @@ class AdminController extends Controller
         $user->role_id = $request->role;
 
         $user->save();
+
+        $userProfile = $user->userProfile;
+        $userProfile->user_id = $user->id;
+        $userProfile->home_type_id = $request->home_type;
+        $userProfile->score = $request->score;
+        $userProfile->save();
+
         return redirect('/admin/users');
     }
 
