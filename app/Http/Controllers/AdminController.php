@@ -105,4 +105,28 @@ class AdminController extends Controller
     public function apiGetUserScore(User $user){
         return response()->json(['score' => $user->userProfile->score], 200);
     }
+
+    public function apiSetUserScore(User $user, Request $request){
+        $validation = Validator::make($request->all(),['score' => 'required|numeric']);
+        $errors = $validation->errors();
+
+        if (sizeof($errors) > 0){
+            return response()->json(["Errors" => $errors], 400);
+        } else {
+            try {
+                $profile = $user->userProfile;
+                $profile->score = $request->score;
+                $profile->save();
+                if ($profile->score == $request->score){
+                    return response()->json(['message' => "Success"], 200);
+                } else {
+                    return response()->json(['message' => "Unknown error"], 400);
+                }
+            } catch (\Exception $e){
+                return response()->json(['message' => $e], 400);
+            }
+        }
+
+        return response()->json(['score' => $user->userProfile->score], 200);
+    }
 }
