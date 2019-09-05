@@ -127,4 +127,12 @@ class UserController extends Controller
 
         return response()->json(['score' => $user->userProfile->score], 200);
     }
+
+    public function apiGetUserDoneMaintenanceItems(User $user){
+        return response()->json(['maintenance_items' => $user->doneMaintenanceItems], 200);
+    }
+
+    public function apiGetUserIgnoredMaintenanceItems(User $user){
+        return response()->json(['maintenance_items' => $user->ignoredMaintenanceItems], 200);
+    }
 }
