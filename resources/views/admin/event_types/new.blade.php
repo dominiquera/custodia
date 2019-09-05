@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="ui container" style="padding-top:50px;">
-    <h1>New Maintenance Item</h1>
+    <h1>New Event Type</h1>
   @if (session('status'))
       <div class="alert alert-success" role="alert">
           {{ session('status') }}
