@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Requests\MaintenanceItem\CreateMaintenanceItemRequest;
 use App\Http\Requests\MaintenanceItem\StoreMaintenanceItemRequest;
 use App\MaintenanceItem;
+use App\Section;
 use DemeterChain\Main;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -64,5 +65,9 @@ class MaintenanceItemController extends Controller
         $item = MaintenanceItem::findOrFail($id);
         $item->delete();
         return redirect('/admin/maintenance_items');
+    }
+
+    public function apiGetSectionMaintenanceItems(Section $section){
+        return response()->json(['maintenance_items' => MaintenanceItem::where('section_id', '=', $section->id)->get()], 200);
     }
 }

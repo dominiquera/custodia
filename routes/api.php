@@ -24,3 +24,5 @@ Route::get('/v1/users/{user}/score', 'Admin\UserController@apiGetUserScore');
 
 Route::get('/v1/users/{user}/done_maintenance_items', 'Admin\UserController@apiGetUserDoneMaintenanceItems');
 Route::get('/v1/users/{user}/ignored_maintenance_items', 'Admin\UserController@apiGetUserIgnoredMaintenanceItems');
+
+Route::get('/v1/sections/{section}/maintenance_items', 'Admin\MaintenanceItemController@apiGetSectionMaintenanceItems');
