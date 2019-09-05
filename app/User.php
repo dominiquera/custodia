@@ -48,4 +48,14 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Role::class);
     }
+
+    public function doneMaintenanceItems()
+    {
+        return $this->belongsToMany(MaintenanceItem::class, 'maintenance_item_done_user', 'user_id', 'maintenance_item_id');
+    }
+
+    public function ignoredMaintenanceItems()
+    {
+        return $this->belongsToMany(MaintenanceItem::class, 'maintenance_item_ignored_user', 'user_id', 'maintenance_item_id');
+    }
 }
