@@ -2,14 +2,8 @@
 
 @section('content')
 <div class="ui container" style="padding-top:50px;">
-    <div>
-        <div style="float:left;">
-            <h2>Users</h2>
-        </div>
-        <div style="float:right;">
-            <a href="/admin/users/new" class="ui button primary">New User</a><br><br>
-        </div>
-    </div>
+  <h1>Users</h1>
+  <a href="/admin/users/new" class="ui button primary">New User</a><br><br>
   @if (session('status'))
       <div class="alert alert-success" role="alert">
           {{ session('status') }}
@@ -31,7 +25,7 @@
               <td>{{$user->id}}</td>
               <td>{{$user->name}}</td>
               <td>{{$user->email}}</td>
-              <td>{{$user->role}}</td>
+              <td>{{$user->role->name}}</td>
               <td>
                   <a href="/admin/users/edit/{{$user->id}}">Edit</a> |
                   <a href="/admin/users/destroy/{{$user->id}}">Delete</a>
@@ -40,8 +34,7 @@
       @endforeach
       </tbody>
   </table>
-
-    <div class="admin-pagination">
+    <div class="motzi-admin-pagination">
         {{ $users->links() }}
     </div>
 </div>

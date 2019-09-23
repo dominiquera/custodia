@@ -37,21 +37,8 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-
-    public function userProfile()
+    public function role()
     {
-        return $this->hasOne(UserProfile::class);
+        return $this->belongsTo(Role::class);
     }
-
-
-    /**
-     * checks if the user belongs to a particular group
-     * @param string|array $role
-     * @return bool
-     */
-    public function role($role) {
-        $role = (array)$role;
-        return in_array($this->role, $role);
-    }
-
 }

@@ -6,14 +6,13 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ config('app.name', 'Laravel') }}</title>
+    <script src="{{ asset('js/app.js') }}" defer></script>
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <script src="{{ asset('js/semantic.min.js') }}"></script>
     <link href="{{ asset('css/semantic.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/dist/vue2-autocomplete.css') }}" rel="stylesheet">
-    <link href="https://cdn.rawgit.com/mdehoog/Semantic-UI-Calendar/76959c6f7d33a527b49be76789e984a0a407350b/dist/calendar.min.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
-    <div id="app">
-        <head>
+    <div id="vue" class="vue">
           <nav>
             <div class="ui container" style="padding-top:50px">
                 <div class="ui menu">
@@ -23,14 +22,15 @@
                   </a>
                 @endif
                 <a href="{{ route('manage-users') }}" class="item">
-                  Users
+                    Users
                 </a>
-
-                <a class="item" href="{{ url('/logout') }}"
-                    onclick="event.preventDefault();
-                             document.getElementById('logout-form').submit();">
-                    Logout
-                </a>
+                <div class="right menu">
+                    <a class="item" href="{{ url('/logout') }}"
+                        onclick="event.preventDefault();
+                                 document.getElementById('logout-form').submit();">
+                        Logout
+                    </a>
+                </div>
 
                 <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
                     {{ csrf_field() }}
@@ -39,16 +39,14 @@
             </div>
 
           </nav>
-        </head>
         <main>
             @yield('content')
         </main>
     </div>
-
-    <script src="{{ asset('js/app.js') }}"></script>
-    <script src="{{ asset('js/semantic.min.js') }}"></script>
-    <script src="{{ asset('js/calendar.js') }}"></script>
+    <script
+            src="https://code.jquery.com/jquery-3.4.1.min.js"
+            integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+            crossorigin="anonymous"></script>
     @yield('scripts');
-
 </body>
 </html>
