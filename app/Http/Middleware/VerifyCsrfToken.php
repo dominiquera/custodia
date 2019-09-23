@@ -19,7 +19,6 @@ class VerifyCsrfToken extends Middleware
      * @var array
      */
     protected $except = [
-        'https://laravel-barebone.dominiquera.com/user/*',
-        '/user/*'
+        'http://localhost:8000/api/*'
     ];
 }

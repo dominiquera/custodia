@@ -6,8 +6,10 @@ use App\Http\Requests\User\CreateUserRequest;
 use App\Http\Requests\User\StoreUserRequest;
 use App\User;
 use App\UserProfile;
+use http\Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class AdminController extends Controller
 {
@@ -28,8 +30,14 @@ class AdminController extends Controller
         return view('admin.users.edit', ['user' => $user]);
     }
 
-    public function createUser(CreateUserRequest $request)
+    public function createUser(CreateUserRequest $request, $api = false)
     {
+        $user = $this->saveUser($request);
+
+        return redirect('/admin/users');
+    }
+
+    private function saveUser($request){
         $user = new User();
         $user->name = $request->name;
         $user->password = Hash::make($request->password);
@@ -44,7 +52,7 @@ class AdminController extends Controller
         $userProfile->score = $request->score;
         $userProfile->save();
 
-        return redirect('/admin/users');
+        return $user;
     }
 
     public function updateUser(StoreUserRequest $request)
@@ -63,6 +71,29 @@ class AdminController extends Controller
         $userProfile->save();
 
         return redirect('/admin/users');
+    }
+
+    public function apiCreateUser(Request $request){
+
+        $validation = Validator::make($request->all(),CreateUserRequest::rules());
+        $errors = $validation->errors();
+
+        if (sizeof($errors) > 0){
+            return response()->json(["Errors" => $errors], 400);
+        } else {
+            try {
+                $user = $this->saveUser($request);
+                if ($user->id){
+                    return response()->json(['message' => "Success"], 200);
+                } else {
+                    return response()->json(['message' => "Unknown error"], 400);
+                }
+            } catch (\Exception $e){
+                return response()->json(['message' => $e], 400);
+            }
+
+        }
+
     }
 
     public function deleteUser(User $user)
