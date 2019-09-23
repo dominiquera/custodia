@@ -1,21 +1,19 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\User\CreateUserRequest;
 use App\Http\Requests\User\StoreUserRequest;
 use App\User;
 use App\UserProfile;
-use http\Exception;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
-class AdminController extends Controller
+class UserController extends Controller
 {
-    public function index() {
-        return view('admin.dashboard');
-    }
+
 
     public function users() {
         $users = User::orderBy('id', 'desc')->paginate(10);
@@ -30,7 +28,7 @@ class AdminController extends Controller
         return view('admin.users.edit', ['user' => $user]);
     }
 
-    public function createUser(CreateUserRequest $request, $api = false)
+    public function createUser(CreateUserRequest $request)
     {
         $user = $this->saveUser($request);
 

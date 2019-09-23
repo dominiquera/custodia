@@ -24,15 +24,19 @@ Route::get('/', 'Auth\LoginController@showLoginForm');
 //Route::get('/home', 'HomeController@index')->name('home');
 
 Route::middleware('can:accessAdminpanel')->group(function() {
-    Route::get('/admin/', 'Adminpanel\Dashboard@index')->name('admin');
-    // future adminpanel routes also should belong to the group
-});
+    Route::get('/admin/', 'Admin\AdminController@index')->name('admin');
 
-Route::middleware('can:accessAdminpanel')->group(function() {
-    Route::get('/admin/users', 'Adminpanel\UserController@users')->name('manage-users');
-    Route::get('/admin/users/new', 'Adminpanel\UserController@newUser');
-    Route::get('/admin/users/edit/{user}', 'Adminpanel\UserController@editUser');
-    Route::get('/admin/users/destroy/{user}', 'Adminpanel\UserController@deleteUser');
-    Route::post('/admin/users/update', 'Adminpanel\UserController@updateUser');
-    Route::post('/admin/users/create', 'Adminpanel\UserController@createUser');
+    Route::get('/admin/users', 'Admin\UserController@users')->name('manage-users');
+    Route::get('/admin/users/new', 'Admin\UserController@newUser');
+    Route::get('/admin/users/edit/{user}', 'Admin\UserController@editUser');
+    Route::get('/admin/users/destroy/{user}', 'Admin\UserController@deleteUser');
+    Route::post('/admin/users/update', 'Admin\UserController@updateUser');
+    Route::post('/admin/users/create', 'Admin\UserController@createUser');
+
+    Route::get('/admin/maintenance_items', 'Admin\MaintenanceItemController@maintenanceItems')->name('manage-items');
+    Route::get('/admin/maintenance_items/new', 'Admin\MaintenanceItemController@newMaintenanceItem');
+    Route::get('/admin/maintenance_items/edit/{maintenance_item_id}', 'Admin\MaintenanceItemController@editMaintenanceItem');
+    Route::get('/admin/maintenance_items/destroy/{maintenance_item_id}', 'Admin\MaintenanceItemController@deleteMaintenanceItem');
+    Route::post('/admin/maintenance_items/update', 'Admin\MaintenanceItemController@updateMaintenanceItem');
+    Route::post('/admin/maintenance_items/create', 'Admin\MaintenanceItemController@createMaintenanceItem');
 });
