@@ -1,6 +1,6 @@
 <?php
 
-namespace Barebone\Http\Requests;
+namespace Custodia\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 

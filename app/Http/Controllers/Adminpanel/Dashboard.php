@@ -1,12 +1,12 @@
 <?php
 
-namespace Barebone\Http\Controllers\Adminpanel;
+namespace Custodia\Http\Controllers\Adminpanel;
 
-use Barebone\Http\Requests\CreateUserRequest;
+use Custodia\Http\Requests\CreateUserRequest;
 use Illuminate\Http\Request;
-use Barebone\Http\Controllers\Controller;
-use Barebone\User;
-use Barebone\Http\Requests\StoreUserRequest;
+use Custodia\Http\Controllers\Controller;
+use Custodia\User;
+use Custodia\Http\Requests\StoreUserRequest;
 
 class Dashboard extends Controller
 {

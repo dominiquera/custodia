@@ -1,8 +1,8 @@
 <?php
 
-namespace Barebone\Http\Controllers\Auth;
+namespace Custodia\Http\Controllers\Auth;
 
-use Barebone\Http\Controllers\Controller;
+use Custodia\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\VerifiesEmails;
 
 class VerificationController extends Controller

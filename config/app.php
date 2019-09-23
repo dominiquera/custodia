@@ -169,11 +169,11 @@ return [
         /*
          * Application Service Providers...
          */
-        Barebone\Providers\AppServiceProvider::class,
-        Barebone\Providers\AuthServiceProvider::class,
-        // Barebone\Providers\BroadcastServiceProvider::class,
-        Barebone\Providers\EventServiceProvider::class,
-        Barebone\Providers\RouteServiceProvider::class,
+        Custodia\Providers\AppServiceProvider::class,
+        Custodia\Providers\AuthServiceProvider::class,
+        // Custodia\Providers\BroadcastServiceProvider::class,
+        Custodia\Providers\EventServiceProvider::class,
+        Custodia\Providers\RouteServiceProvider::class,
 
     ],
 

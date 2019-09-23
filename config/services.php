@@ -35,7 +35,7 @@ return [
     ],
 
     'stripe' => [
-        'model' => Barebone\User::class,
+        'model' => Custodia\User::class,
         'key' => env('STRIPE_KEY'),
         'secret' => env('STRIPE_SECRET'),
         'webhook' => [

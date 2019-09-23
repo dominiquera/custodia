@@ -1,6 +1,6 @@
 <?php
 
-namespace Barebone\Http\Middleware;
+namespace Custodia\Http\Middleware;
 
 use Closure;
 use Illuminate\Support\Facades\Auth;

@@ -1,9 +1,9 @@
 <?php
 
-namespace Barebone\Http\Controllers\Auth;
+namespace Custodia\Http\Controllers\Auth;
 
-use Barebone\User;
-use Barebone\Http\Controllers\Controller;
+use Custodia\User;
+use Custodia\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -59,7 +59,7 @@ class RegisterController extends Controller
      * Create a new user instance after a valid registration.
      *
      * @param  array  $data
-     * @return \Barebone\User
+     * @return \Custodia\User
      */
     protected function create(array $data)
     {

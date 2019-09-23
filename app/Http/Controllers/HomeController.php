@@ -1,6 +1,6 @@
 <?php
 
-namespace Barebone\Http\Controllers;
+namespace Custodia\Http\Controllers;
 
 use Illuminate\Http\Request;
 

@@ -1,11 +1,11 @@
 <?php
 
-namespace Barebone\Http\Controllers\Adminpanel;
+namespace Custodia\Http\Controllers\Adminpanel;
 
-use Barebone\Http\Controllers\Controller;
-use Barebone\Http\Requests\CreateUserRequest;
-use Barebone\Http\Requests\StoreUserRequest;
-use Barebone\User;
+use Custodia\Http\Controllers\Controller;
+use Custodia\Http\Requests\CreateUserRequest;
+use Custodia\Http\Requests\StoreUserRequest;
+use Custodia\User;
 
 class UserController extends Controller
 {

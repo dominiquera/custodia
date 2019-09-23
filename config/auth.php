@@ -68,7 +68,7 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => Barebone\User::class,
+            'model' => Custodia\User::class,
         ],
 
         // 'users' => [

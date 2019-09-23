@@ -34,7 +34,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Barebone\\": "app/"
+            "Custodia\\": "app/"
         },
         "classmap": [
             "database/seeds",

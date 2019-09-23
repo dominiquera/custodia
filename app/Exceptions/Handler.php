@@ -1,6 +1,6 @@
 <?php
 
-namespace Barebone\Exceptions;
+namespace Custodia\Exceptions;
 
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;

@@ -1,9 +1,9 @@
 <?php
 
-namespace Barebone\Http\Controllers\Member;
+namespace Custodia\Http\Controllers\Member;
 
 use Illuminate\Http\Request;
-use Barebone\Http\Controllers\Controller;
+use Custodia\Http\Controllers\Controller;
 
 class Dashboard extends Controller
 {

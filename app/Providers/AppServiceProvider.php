@@ -1,6 +1,6 @@
 <?php
 
-namespace Barebone\Providers;
+namespace Custodia\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
