@@ -1,0 +1,40 @@
+// Fonts
+//@import url('https://fonts.googleapis.com/css?family=Nunito');
+
+// Variables
+//@import 'variables';
+
+// Bootstrap
+//@import '~bootstrap/scss/bootstrap';
+
+.form-group{
+  padding: 10px;
+}
+
+.autocomplete-anchor-text{
+  display: none;
+}
+
+.autocomplete-anchor-label{
+  font-weight: bold;
+}
+
+.autocomplete-list{
+    z-index: 1;
+    position: relative;
+}
+
+.admin-pagination ul {
+  display: flex;
+  padding-left: 0px;
+}
+
+.admin-pagination ul li {
+  display: block;
+  margin: 10px;
+  font-size: 14px;
+  font-weight: bold;
+  border: 1px solid #cccccc;
+  border-radius: 3px;
+  padding: 10px;
+}
