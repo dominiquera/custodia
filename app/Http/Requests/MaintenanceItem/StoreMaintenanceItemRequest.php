@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\MaintenanceItem;
+namespace Custodia\Http\Requests\MaintenanceItem;
 
 use Illuminate\Foundation\Http\FormRequest;
 

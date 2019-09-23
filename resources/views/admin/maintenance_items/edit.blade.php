@@ -24,7 +24,7 @@
           <label for="role">Section</label>
           <select class="form-control" name="section" id="section">
               <option selected="selected" disabled="disabled">--Choose a Section--</option>
-              @foreach (App\Section::all() as $section)
+              @foreach (Custodia\Section::all() as $section)
                   <option
                           @if ($section->id == $item->section->id)
                           selected="selected"

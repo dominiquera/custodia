@@ -35,7 +35,7 @@
           <label for="role">Role</label>
           <select class="form-control" name="role" id="role">
               <option selected="selected" disabled="disabled">--Choose a Role--</option>
-              @foreach (App\Role::all() as $role)
+              @foreach (Custodia\Role::all() as $role)
                   <option value="{{$role->id}}">{{ $role->name }}</option>
               @endforeach
           </select>
@@ -44,7 +44,7 @@
           <label for="home_type">Home Type</label>
           <select class="form-control" name="home_type" id="home_type">
               <option selected="selected" disabled="disabled">--Choose a Home Type--</option>
-              @foreach (App\HomeType::all() as $homeType)
+              @foreach (Custodia\HomeType::all() as $homeType)
                   <option value="{{$homeType->id}}">{{ $homeType->name }}</option>
               @endforeach
           </select>
