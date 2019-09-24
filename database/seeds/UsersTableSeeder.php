@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use Barebone\User;
 
 class UsersTableSeeder extends Seeder
 {
@@ -12,43 +11,51 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        $this->create_static_data();
-        $this->createFakeUser1();
-        $this->createFakeUser2();
+        $this->create_admin_user();
+        $this->create_test_user();
     }
 
-    function create_static_data()
-    {
+    private function create_admin_user(){
         DB::table('users')->insert([
-            'name' => "dominique_rademacher",
-            'email' => "dorademacher" . '@gmail.com',
+            'name' => 'admin',
+            'email' => 'dorademacher@gmail.com',
+            'role_id' => 1,
             'password' => bcrypt('secret'),
-            'role' => 'admin'
+        ]);
+
+        DB::table('user_profiles')->insert([
+            'user_id' => 1,
+            'home_type_id' => 1,
         ]);
     }
 
-    function createFakeUser1()
+    private function create_test_user(): void
     {
-        $faker = Faker\Factory::create();
+        DB::table('users')->insert([
+            'name' => 'Test User',
+            'email' => 'custodiatest@mailinator.com',
+            'role_id' => 2,
+            'password' => bcrypt('secret'),
+        ]);
 
-        $id = User::create([
-            'name' => "Test Case User 1",
-            'email' => $faker->email,
-            'password' => $faker->password,
-            'role' => 'member',
-        ])->id;
-    }
+        DB::table('user_profiles')->insert([
+            'user_id' => 2,
+            'home_type_id' => 2,
+        ]);
 
+        DB::table('maintenance_item_done_user')->insert([
+            'user_id' => 2,
+            'maintenance_item_id' => 1,
+        ]);
 
-    function createFakeUser2()
-    {
-        $faker = Faker\Factory::create();
+        DB::table('maintenance_item_done_user')->insert([
+            'user_id' => 2,
+            'maintenance_item_id' => 2,
+        ]);
 
-        $id = User::create([
-            'name' => "Test Case User 2",
-            'email' => $faker->email,
-            'password' => $faker->password,
-            'role' => 'member',
-        ])->id;
+        DB::table('maintenance_item_ignored_user')->insert([
+            'user_id' => 2,
+            'maintenance_item_id' => 3,
+        ]);
     }
 }

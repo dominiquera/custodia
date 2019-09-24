@@ -21,7 +21,6 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->default(bcrypt('secret'));
             $table->rememberToken();
-            $table->string('role')->default('member');
             $table->timestamps();
 
             $table->foreign('role_id')->references('id')->on('roles');
