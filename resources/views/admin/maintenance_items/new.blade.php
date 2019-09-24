@@ -17,7 +17,7 @@
           </ul>
       </div>
   @endif
-  <form action="/admin/maintenance_items/create" method="POST" class="ui form">
+  <form action="/admin/maintenance_items/create" method="POST" class="ui form" enctype="multipart/form-data">
       @csrf
       <div class="form-group">
           <label for="section">Section</label>
@@ -62,6 +62,10 @@
       <div class="form-group">
           <label for="summary">Summary</label>
           <textarea name="summary" class="form-control" id="summary" placeholder="Summary" required></textarea>
+      </div>
+      <div class="form-group">
+          <label for="photo" >Featured Image</label>
+          <input id="photo" type="file" class="form-control" name="photo" style="border:none;">
       </div>
 
       <button style="margin-top:30px;" type="submit" class="ui button primary">Save</button>

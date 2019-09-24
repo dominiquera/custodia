@@ -17,7 +17,7 @@
           </ul>
       </div>
   @endif
-  <form action="/admin/maintenance_items/update" method="POST" class="ui form">
+  <form action="/admin/maintenance_items/update" method="POST" class="ui form" enctype="multipart/form-data">
       @csrf
       <input type="hidden" value="{{$item->id}}" name="id">
       <div class="form-group">
@@ -72,6 +72,13 @@
           <label for="summary">Summary</label>
           <textarea name="summary" class="form-control" id="summary" placeholder="Summary" required>{{$item->summary}}</textarea>
       </div>
+
+      <div class="form-group">
+          <label for="photo" >Photo</label>
+          <input id="photo" type="file" class="form-control" name="photo" style="border:none;">
+          <img style="max-width:300px;" src="{{asset($item->featuredImage->path)}}" />
+      </div>
+
       <button style="margin-top:30px;" type="submit" class="ui button primary">Save</button>
   </form>
 </div>

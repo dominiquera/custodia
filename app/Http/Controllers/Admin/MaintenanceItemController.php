@@ -4,6 +4,7 @@ namespace Custodia\Http\Controllers\Admin;
 
 use Custodia\Http\Requests\MaintenanceItem\CreateMaintenanceItemRequest;
 use Custodia\Http\Requests\MaintenanceItem\StoreMaintenanceItemRequest;
+use Custodia\Image;
 use Custodia\MaintenanceItem;
 use Custodia\Section;
 use DemeterChain\Main;
@@ -41,7 +42,10 @@ class MaintenanceItemController extends Controller
         $item->points = $request->points;
         $item->month = $request->month;
         $item->summary = $request->summary;
-
+        if ($request->has('photo')) {
+            $image = $request->file('photo');
+            $this->updatedFeaturedImage($item, $image);
+        }
         $item->save();
         return $item;
     }
@@ -54,7 +58,10 @@ class MaintenanceItemController extends Controller
         $item->points = $request->points;
         $item->month = $request->month;
         $item->summary = $request->summary;
-
+        if ($request->has('photo')) {
+            $image = $request->file('photo');
+            $this->updatedFeaturedImage($item, $image);
+        }
         $item->save();
 
         return redirect('/admin/maintenance_items');
@@ -67,7 +74,27 @@ class MaintenanceItemController extends Controller
         return redirect('/admin/maintenance_items');
     }
 
+    public function updatedFeaturedImage(MaintenanceItem $item, $image){
+        // Make a image name based on user name and current timestamp
+        $name = str_slug($item->id).'_'.time();
+        // Define folder path
+        $folder = '/uploads/images/';
+        // Make a file path where image will be stored [ folder path + file name + file extension]
+        $filePath = "/storage/" . $folder . $name. '.' . $image->getClientOriginalExtension();
+        // Upload image
+        $file = $image->storeAs($folder, $name.'.'.$image->getClientOriginalExtension(), 'public');
+
+        // Create image object and link to maintenace item
+        $image = new Image();
+        $image->path = $filePath;
+        $image->save();
+
+        $item->featured_image_id = $image->id;
+        $item->save();
+    }
+
     public function apiGetSectionMaintenanceItems(Section $section){
         return response()->json(['maintenance_items' => MaintenanceItem::where('section_id', '=', $section->id)->get()], 200);
     }
+
 }
