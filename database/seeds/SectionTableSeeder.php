@@ -12,7 +12,7 @@ class SectionTableSeeder extends Seeder
     public function run()
     {
         DB::table('sections')->insert([
-            'name' => 'Outside This month',
+            'name' => 'Outside This Month',
         ]);
         DB::table('sections')->insert([
             'name' => 'Inside This Month',
@@ -31,6 +31,9 @@ class SectionTableSeeder extends Seeder
         ]);
         DB::table('sections')->insert([
             'name' => 'Related Services',
+        ]);
+        DB::table('sections')->insert([
+            'name' => 'Prevent This Month',
         ]);
     }
 }
