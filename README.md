@@ -13,3 +13,5 @@ FIREBASE_CLIENT_x509_CERT_URL=
 ```
 
 This information is obtained from the Firebase Service Account JSON cred file.
+
+SDK Docs: https://firebase-php.readthedocs.io/en/latest/
