@@ -11,6 +11,11 @@ class MaintenanceItem extends Model
         return $this->belongsTo(Section::class);
     }
 
+    public function interval()
+    {
+        return $this->belongsTo(Interval::class);
+    }
+
     public function featuredImage()
     {
         return $this->belongsTo(Image::class);

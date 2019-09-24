@@ -4,7 +4,7 @@ namespace Custodia;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Section extends Model
+class Interval extends Model
 {
     public function maintenanceItems()
     {

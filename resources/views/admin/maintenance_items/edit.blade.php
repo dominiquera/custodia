@@ -57,7 +57,16 @@
       </div>
       <div class="form-group">
           <label for="interval">Interval</label>
-          <input type="text" name="interval" class="form-control" id="interval" value="{{$item->interval}}">
+          <select class="form-control" name="interval" id="interval">
+              <option selected="selected" disabled="disabled">--Choose an Interval--</option>
+              @foreach (Custodia\Interval::all() as $interval)
+                  <option
+                          @if ($interval->id == $item->interval->id)
+                          selected="selected"
+                          @endif
+                          value="{{$interval->id}}">{{ $interval->name }}</option>
+              @endforeach
+          </select>
       </div>
       <div class="form-group">
           <label for="summary">Summary</label>

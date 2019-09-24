@@ -37,9 +37,9 @@ class MaintenanceItemController extends Controller
     private function saveMaintenanceItem($request){
         $item = new MaintenanceItem();
         $item->section_id = $request->section;
+        $item->interval_id = $request->interval;
         $item->points = $request->points;
         $item->month = $request->month;
-        $item->interval = $request->interval;
         $item->summary = $request->summary;
 
         $item->save();
@@ -50,9 +50,9 @@ class MaintenanceItemController extends Controller
     {
         $item = MaintenanceItem::find($request->id);
         $item->section_id = $request->section;
+        $item->interval_id = $request->interval;
         $item->points = $request->points;
         $item->month = $request->month;
-        $item->interval = $request->interval;
         $item->summary = $request->summary;
 
         $item->save();

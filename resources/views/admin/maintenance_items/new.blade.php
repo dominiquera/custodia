@@ -20,7 +20,7 @@
   <form action="/admin/maintenance_items/create" method="POST" class="ui form">
       @csrf
       <div class="form-group">
-          <label for="role">Section</label>
+          <label for="section">Section</label>
           <select class="form-control" name="section" id="section">
               <option selected="selected" disabled="disabled">--Choose a Section--</option>
               @foreach (Custodia\Section::all() as $section)
@@ -52,7 +52,12 @@
       </div>
       <div class="form-group">
           <label for="interval">Interval</label>
-          <input type="text" name="interval" class="form-control" id="interval">
+          <select class="form-control" name="interval" id="interval">
+              <option selected="selected" disabled="disabled">--Choose an Interval--</option>
+              @foreach (Custodia\Interval::all() as $interval)
+                  <option value="{{$interval->id}}">{{ $interval->name }}</option>
+              @endforeach
+          </select>
       </div>
       <div class="form-group">
           <label for="summary">Summary</label>

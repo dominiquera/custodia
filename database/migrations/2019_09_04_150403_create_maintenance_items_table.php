@@ -17,14 +17,15 @@ class CreateMaintenanceItemsTable extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('section_id')->unsigned()->index();
             $table->bigInteger('featured_image_id')->nullable()->unsigned()->index();
+            $table->bigInteger('interval_id')->unsigned()->index();
             $table->double('points');
             $table->string('month');
-            $table->string('interval');
             $table->longText('summary');
             $table->timestamps();
 
             $table->foreign('section_id')->references('id')->on('sections');
             $table->foreign('featured_image_id')->references('id')->on('images');
+            $table->foreign('interval_id')->references('id')->on('intervals');
         });
     }
 

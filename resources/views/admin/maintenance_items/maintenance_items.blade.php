@@ -15,6 +15,7 @@
           <th scope="col">ID</th>
           <th scope="col">Section</th>
           <th scope="col">Points</th>
+          <th scope="col">Interval</th>
           <th scope="col">Month</th>
           <th scope="col">Action</th>
       </tr>
@@ -25,6 +26,7 @@
               <td>{{$item->id}}</td>
               <td>{{$item->section->name}}</td>
               <td>{{$item->points}}</td>
+              <td>{{$item->interval->name}}</td>
               <td>{{$item->month}}</td>
               <td>
                   <a href="/admin/maintenance_items/edit/{{$item->id}}">Edit</a> |
