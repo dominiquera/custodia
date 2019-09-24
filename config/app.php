@@ -174,6 +174,7 @@ return [
         // Custodia\Providers\BroadcastServiceProvider::class,
         Custodia\Providers\EventServiceProvider::class,
         Custodia\Providers\RouteServiceProvider::class,
+        Custodia\Providers\FirebaseServiceProvider::class,
 
     ],
 
