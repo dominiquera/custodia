@@ -12,13 +12,25 @@ class SectionTableSeeder extends Seeder
     public function run()
     {
         DB::table('sections')->insert([
-            'name' => 'Section One',
+            'name' => 'Outside This month',
         ]);
         DB::table('sections')->insert([
-            'name' => 'Section Two',
+            'name' => 'Inside This Month',
         ]);
         DB::table('sections')->insert([
-            'name' => 'Section Three',
+            'name' => 'Clean This Month',
+        ]);
+        DB::table('sections')->insert([
+            'name' => 'Focus On Stories',
+        ]);
+        DB::table('sections')->insert([
+            'name' => 'A Focus on Care',
+        ]);
+        DB::table('sections')->insert([
+            'name' => 'Meaningful Products',
+        ]);
+        DB::table('sections')->insert([
+            'name' => 'Related Services',
         ]);
     }
 }
