@@ -1,6 +1,6 @@
 # custodia
 
-##Firebase Laravel Integration
+## Firebase Laravel Integration
 The following must be set in .env:
 ```
 FIREBASE_DATABASE_URL=
