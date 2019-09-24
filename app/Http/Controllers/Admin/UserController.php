@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace Custodia\Http\Controllers\Admin;
 
-use App\Http\Requests\User\CreateUserRequest;
-use App\Http\Requests\User\StoreUserRequest;
-use App\User;
-use App\UserProfile;
+use Custodia\Http\Requests\User\CreateUserRequest;
+use Custodia\Http\Requests\User\StoreUserRequest;
+use Custodia\User;
+use Custodia\UserProfile;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use Custodia\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 

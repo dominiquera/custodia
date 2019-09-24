@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace Custodia\Http\Controllers\Admin;
 
-use App\EventType;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\EventType\CreateEventTypeRequest;
-use App\Http\Requests\EventType\StoreEventTypeRequest;
+use Custodia\EventType;
+use Custodia\Http\Controllers\Controller;
+use Custodia\Http\Requests\EventType\CreateEventTypeRequest;
+use Custodia\Http\Requests\EventType\StoreEventTypeRequest;
 use Illuminate\Http\Request;
 
 class EventTypeController extends Controller

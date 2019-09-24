@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Providers;
+namespace Custodia\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Schema;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,6 +24,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+      Schema::defaultStringLength(191);
+      if(env('APP_ENV') !== 'local') {
+          \URL::forceScheme('https');
+          $this->app['request']->server->set('HTTPS', true);
+      }
+
     }
 }

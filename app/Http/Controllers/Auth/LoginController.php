@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace Custodia\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
+use Custodia\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
-
+use Illuminate\Support\Facades\Auth;
+use Log;
+use Illuminate\Http\Request;
 class LoginController extends Controller
 {
     /*
@@ -25,7 +27,14 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+
+    protected function authenticated(Request $request, $user)
+    {
+      if ( $user->role == 'admin' ) {// do your margic here
+          return redirect()->route('admin');
+      }
+      return redirect('/');
+    }
 
     /**
      * Create a new controller instance.

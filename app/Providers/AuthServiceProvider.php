@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Providers;
+namespace Custodia\Providers;
 
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -14,7 +14,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        // 'App\Model' => 'App\Policies\ModelPolicy',
+        // 'Custodia\Model' => 'Custodia\Policies\ModelPolicy',
     ];
 
     /**
@@ -34,5 +34,9 @@ class AuthServiceProvider extends ServiceProvider
         });
 
         //
+        // the gate checks if the user is a member
+        Gate::define('accessProfile', function($user) {
+            return $user->role->name == 'Member';
+        });
     }
 }

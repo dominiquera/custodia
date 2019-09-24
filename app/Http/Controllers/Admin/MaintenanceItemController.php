@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace Custodia\Http\Controllers\Admin;
 
-use App\Http\Requests\MaintenanceItem\CreateMaintenanceItemRequest;
-use App\Http\Requests\MaintenanceItem\StoreMaintenanceItemRequest;
-use App\MaintenanceItem;
-use App\Section;
+use Custodia\Http\Requests\MaintenanceItem\CreateMaintenanceItemRequest;
+use Custodia\Http\Requests\MaintenanceItem\StoreMaintenanceItemRequest;
+use Custodia\MaintenanceItem;
+use Custodia\Section;
 use DemeterChain\Main;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use Custodia\Http\Controllers\Controller;
 
 class MaintenanceItemController extends Controller
 {
