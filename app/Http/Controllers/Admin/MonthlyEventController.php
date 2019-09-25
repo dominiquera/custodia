@@ -20,8 +20,8 @@ class MonthlyEventController extends Controller
     }
 
     public function editMonthlyEvent($id) {
-        $item = MonthlyEvent::findOrFail($id);
-        return view('admin.monthly_events.edit', ['item' => $item]);
+        $event = MonthlyEvent::findOrFail($id);
+        return view('admin.monthly_events.edit', ['event' => $event]);
     }
 
 

@@ -24,7 +24,7 @@ class StoreMonthlyEventRequest extends FormRequest
     public static function rules()
     {
         return [
-            'name' => 'required',
+            'title' => 'required',
             'month' => 'required',
         ];
     }
