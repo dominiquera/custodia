@@ -30,8 +30,8 @@
                 <a href="{{ route('manage-event-types') }}" class="item">
                     Event Types
                 </a>
-                <a href="{{ route('manage-event-types') }}" class="item">
-                    Event Types
+                <a href="{{ route('manage-monthly-events') }}" class="item">
+                    Monthly Events
                 </a>
                 <div class="right menu">
                     <a class="item" href="{{ url('/logout') }}"

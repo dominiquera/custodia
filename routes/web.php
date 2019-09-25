@@ -46,4 +46,11 @@ Route::middleware('can:accessAdminpanel')->group(function() {
     Route::get('/admin/event_types/destroy/{maintenance_item_id}', 'Admin\EventTypeController@deleteEventType');
     Route::post('/admin/event_types/update', 'Admin\EventTypeController@updateEventType');
     Route::post('/admin/event_types/create', 'Admin\EventTypeController@createEventType');
+
+    Route::get('/admin/monthly_events', 'Admin\MonthlyEventController@monthlyEvents')->name('manage-monthly-events');
+    Route::get('/admin/monthly_events/new', 'Admin\MonthlyEventController@newMonthlyEvent');
+    Route::get('/admin/monthly_events/edit/{monthly_event_id}', 'Admin\MonthlyEventController@editMonthlyEvent');
+    Route::get('/admin/monthly_events/destroy/{monthly_event_id}', 'Admin\MonthlyEventController@deleteMonthlyEvent');
+    Route::post('/admin/monthly_events/update', 'Admin\MonthlyEventController@updateMonthlyEvent');
+    Route::post('/admin/monthly_events/create', 'Admin\MonthlyEventController@createMonthlyEvent');
 });
