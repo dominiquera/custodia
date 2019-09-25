@@ -33,6 +33,9 @@
                 <a href="{{ route('manage-monthly-events') }}" class="item">
                     Monthly Events
                 </a>
+                <a href="{{ route('manage-weather-triggers') }}" class="item">
+                    Weather Triggers
+                </a>
                 <div class="right menu">
                     <a class="item" href="{{ url('/logout') }}"
                         onclick="event.preventDefault();

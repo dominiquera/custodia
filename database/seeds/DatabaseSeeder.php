@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
         $this->call(IntervalsTableSeeder::class);
         $this->call(HomeTypeSeeder::class);
         $this->call(OutdoorSpaceTypesTableSeeder::class);
+        $this->call(WeatherTriggerTypesTableSeeder::class);
         $this->call(MonthlyEventsTableSeeder::class);
         $this->call(EventTypeSeeder::class);
         $this->call(SectionTableSeeder::class);

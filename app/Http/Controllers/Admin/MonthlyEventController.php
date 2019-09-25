@@ -3,8 +3,8 @@
 namespace Custodia\Http\Controllers\Admin;
 
 use Custodia\Http\Controllers\Controller;
-use Custodia\Http\Requests\MonthlyEvent\CreateMonthlyEventRequest;
-use Custodia\Http\Requests\MonthlyEvent\StoreMonthlyEventRequest;
+use Custodia\Http\Requests\MonthlyEvent\CreateWeatherTriggerRequest;
+use Custodia\Http\Requests\MonthlyEvent\StoreWeatherTriggerRequest;
 use Custodia\MaintenanceItem;
 use Custodia\MonthlyEvent;
 use Illuminate\Http\Request;
@@ -26,7 +26,7 @@ class MonthlyEventController extends Controller
     }
 
 
-    public function createMonthlyEvent(CreateMonthlyEventRequest $request)
+    public function createMonthlyEvent(CreateWeatherTriggerRequest $request)
     {
         $item = $this->saveMonthlyEvent($request);
 
@@ -52,7 +52,7 @@ class MonthlyEventController extends Controller
         return $event;
     }
 
-    public function updateMonthlyEvent(StoreMonthlyEventRequest $request)
+    public function updateMonthlyEvent(StoreWeatherTriggerRequest $request)
     {
         $event = MonthlyEvent::find($request->id);
         $event->title = $request->title;

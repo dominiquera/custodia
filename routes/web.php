@@ -53,4 +53,11 @@ Route::middleware('can:accessAdminpanel')->group(function() {
     Route::get('/admin/monthly_events/destroy/{monthly_event_id}', 'Admin\MonthlyEventController@deleteMonthlyEvent');
     Route::post('/admin/monthly_events/update', 'Admin\MonthlyEventController@updateMonthlyEvent');
     Route::post('/admin/monthly_events/create', 'Admin\MonthlyEventController@createMonthlyEvent');
+
+    Route::get('/admin/weather_triggers', 'Admin\WeatherTriggerController@weatherTriggers')->name('manage-weather-triggers');
+    Route::get('/admin/weather_triggers/new', 'Admin\WeatherTriggerController@newWeatherTrigger');
+    Route::get('/admin/weather_triggers/edit/{weather_trigger_id}', 'Admin\WeatherTriggerController@editWeatherTrigger');
+    Route::get('/admin/weather_triggers/destroy/{weather_trigger_id}', 'Admin\WeatherTriggerController@deleteWeatherTrigger');
+    Route::post('/admin/weather_triggers/update', 'Admin\WeatherTriggerController@updateWeatherTrigger');
+    Route::post('/admin/weather_triggers/create', 'Admin\WeatherTriggerController@createWeatherTrigger');
 });
