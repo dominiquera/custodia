@@ -30,6 +30,9 @@
                 <a href="{{ route('manage-event-types') }}" class="item">
                     Event Types
                 </a>
+                <a href="{{ route('manage-event-types') }}" class="item">
+                    Event Types
+                </a>
                 <div class="right menu">
                     <a class="item" href="{{ url('/logout') }}"
                         onclick="event.preventDefault();
