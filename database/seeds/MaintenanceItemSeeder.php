@@ -11,13 +11,19 @@ class MaintenanceItemSeeder extends Seeder
      */
     public function run()
     {
+        DB::table('images')->insert([
+            'path' => '/storage/images/default_profile.png'
+        ]);
+
         DB::table('maintenance_items')->insert([
             'section_id' => 1,
             'interval_id' => 1,
             'points' => 10,
             'month' => "July",
+            'featured_image_id' => 1,
             'summary' => "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
         ]);
+
 
         DB::table('maintenance_items')->insert([
             'section_id' => 2,

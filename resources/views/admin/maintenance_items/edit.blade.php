@@ -76,7 +76,9 @@
       <div class="form-group">
           <label for="photo" >Photo</label>
           <input id="photo" type="file" class="form-control" name="photo" style="border:none;">
-          <img style="max-width:300px;" src="{{asset($item->featuredImage->path)}}" />
+          @if (isset($item->featuredImage->path))
+            <img style="max-width:300px;" src="{{asset($item->featuredImage->path)}}" />
+          @endif
       </div>
 
       <button style="margin-top:30px;" type="submit" class="ui button primary">Save</button>
