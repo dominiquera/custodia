@@ -21,7 +21,11 @@
       @csrf
       <input type="hidden" value="{{$item->id}}" name="id">
       <div class="form-group">
-          <label for="role">Section</label>
+          <label for="title">Title</label>
+          <input type="text" name="title" class="form-control" id="title" value="{{$item->title}}">
+      </div>
+      <div class="form-group">
+          <label for="role">Newsfeed Section</label>
           <select class="form-control" name="section" id="section">
               <option selected="selected" disabled="disabled">--Choose a Section--</option>
               @foreach (Custodia\Section::all() as $section)
@@ -36,24 +40,6 @@
       <div class="form-group">
           <label for="points">Points</label>
           <input type="number" name="points" class="form-control" id="points" value="{{$item->points}}">
-      </div>
-      <div class="form-group">
-          <label for="month">Month</label>
-          <select class="form-control" name="month" id="month">
-              <option selected="selected" disabled="disabled">--Choose a Month--</option>
-              <option @if ($item->month == "January") selected="selected" @endif>January</option>
-              <option @if ($item->month == "February") selected="selected" @endif>February</option>
-              <option @if ($item->month == "March") selected="selected" @endif>March</option>
-              <option @if ($item->month == "April") selected="selected" @endif>April</option>
-              <option @if ($item->month == "May") selected="selected" @endif>May</option>
-              <option @if ($item->month == "June") selected="selected" @endif>June</option>
-              <option @if ($item->month == "July") selected="selected" @endif>July</option>
-              <option @if ($item->month == "August") selected="selected" @endif>August</option>
-              <option @if ($item->month == "September") selected="selected" @endif>September</option>
-              <option @if ($item->month == "October") selected="selected" @endif>October</option>
-              <option @if ($item->month == "November") selected="selected" @endif>November</option>
-              <option @if ($item->month == "December") selected="selected" @endif>December</option>
-          </select>
       </div>
       <div class="form-group">
           <label for="interval">Interval</label>
@@ -71,6 +57,10 @@
       <div class="form-group">
           <label for="summary">Summary</label>
           <textarea name="summary" class="form-control" id="summary" placeholder="Summary" required>{{$item->summary}}</textarea>
+      </div>
+      <div class="form-group">
+          <label for="cautions">Cautions</label>
+          <textarea name="cautions" class="form-control" id="cautions" placeholder="Cautions" required>{{$item->cautions}}</textarea>
       </div>
 
       <div class="form-group">

@@ -13,10 +13,10 @@
       <thead>
       <tr>
           <th scope="col">ID</th>
-          <th scope="col">Section</th>
+          <th scope="col">Maintenance Item</th>
           <th scope="col">Points</th>
+          <th scope="col">Newsfeed Section</th>
           <th scope="col">Interval</th>
-          <th scope="col">Month</th>
           <th scope="col">Action</th>
       </tr>
       </thead>
@@ -24,10 +24,10 @@
       @foreach($items as $item)
           <tr>
               <td>{{$item->id}}</td>
-              <td>{{$item->section->name}}</td>
+              <td>{{$item->title}}</td>
               <td>{{$item->points}}</td>
+              <td>{{$item->section->name}}</td>
               <td>{{$item->interval->name}}</td>
-              <td>{{$item->month}}</td>
               <td>
                   <a href="/admin/maintenance_items/edit/{{$item->id}}">Edit</a> |
                   <a href="/admin/maintenance_items/destroy/{{$item->id}}">Delete</a>

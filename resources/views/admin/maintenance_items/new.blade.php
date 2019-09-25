@@ -20,7 +20,11 @@
   <form action="/admin/maintenance_items/create" method="POST" class="ui form" enctype="multipart/form-data">
       @csrf
       <div class="form-group">
-          <label for="section">Section</label>
+          <label for="title">Title</label>
+          <input type="text" name="title" class="form-control" id="title">
+      </div>
+      <div class="form-group">
+          <label for="section">Newsfeed Section</label>
           <select class="form-control" name="section" id="section">
               <option selected="selected" disabled="disabled">--Choose a Section--</option>
               @foreach (Custodia\Section::all() as $section)
@@ -31,24 +35,6 @@
       <div class="form-group">
           <label for="points">Points</label>
           <input type="number" name="points" class="form-control" id="points">
-      </div>
-      <div class="form-group">
-          <label for="month">Month</label>
-          <select class="form-control" name="month" id="month">
-              <option selected="selected" disabled="disabled">--Choose a Month--</option>
-              <option>January</option>
-              <option>February</option>
-              <option>March</option>
-              <option>April</option>
-              <option>May</option>
-              <option>June</option>
-              <option>July</option>
-              <option>August</option>
-              <option>September</option>
-              <option>October</option>
-              <option>November</option>
-              <option>December</option>
-          </select>
       </div>
       <div class="form-group">
           <label for="interval">Interval</label>
@@ -62,6 +48,10 @@
       <div class="form-group">
           <label for="summary">Summary</label>
           <textarea name="summary" class="form-control" id="summary" placeholder="Summary" required></textarea>
+      </div>
+      <div class="form-group">
+          <label for="cautions">Cautions</label>
+          <textarea name="cautions" class="form-control" id="cautions" placeholder="Cautions" required></textarea>
       </div>
       <div class="form-group">
           <label for="photo" >Featured Image</label>

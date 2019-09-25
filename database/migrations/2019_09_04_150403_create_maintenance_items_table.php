@@ -18,9 +18,10 @@ class CreateMaintenanceItemsTable extends Migration
             $table->bigInteger('section_id')->unsigned()->index();
             $table->bigInteger('featured_image_id')->nullable()->unsigned()->index();
             $table->bigInteger('interval_id')->unsigned()->index();
+            $table->string('title');
             $table->double('points');
-            $table->string('month');
             $table->longText('summary');
+            $table->longText('cautions')->nullable();
             $table->timestamps();
 
             $table->foreign('section_id')->references('id')->on('sections');

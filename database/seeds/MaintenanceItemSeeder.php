@@ -16,45 +16,63 @@ class MaintenanceItemSeeder extends Seeder
         ]);
 
         DB::table('maintenance_items')->insert([
-            'section_id' => 1,
-            'interval_id' => 1,
-            'points' => 10,
-            'month' => "July",
-            'featured_image_id' => 1,
-            'summary' => "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-        ]);
-
-
-        DB::table('maintenance_items')->insert([
-            'section_id' => 2,
-            'interval_id' => 2,
-            'points' => 20,
-            'month' => "August",
-            'summary' => "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-        ]);
-
-        DB::table('maintenance_items')->insert([
+            'title' => "Add Freshener To Dishwasher",
             'section_id' => 3,
-            'interval_id' => 3,
-            'points' => 30,
-            'month' => "September",
-            'summary' => "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+            'interval_id' => 9,
+            'points' => 8,
+            'featured_image_id' => 1,
+            'summary' => "We have the magic touch when it comes to leaving things fresh.  Custodia will add dishwasher freshener whenever we need to.",
+            'cautions' => "On request only"
         ]);
 
         DB::table('maintenance_items')->insert([
-            'section_id' => 1,
-            'interval_id' => 4,
-            'points' => 40,
-            'month' => "April",
-            'summary' => "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+            'title' => "Add Freshener To Refrigerator",
+            'section_id' => 3,
+            'interval_id' => 9,
+            'points' => 10,
+            'featured_image_id' => 1,
+            'summary' => "Tried and true, a box of baking soda will really freshen things up.  We will use one every 6 months or so to keep your fridge fresh.",
+            'cautions' => "On request only"
         ]);
 
         DB::table('maintenance_items')->insert([
+            'title' => "Assisted Mobility Tool Maintenance",
+            'section_id' => 2,
+            'interval_id' => 6,
+            'points' => 10,
+            'featured_image_id' => 1,
+            'summary' => "Your Home Service hero is there to help you live a better life in your home and will do their best to help you maintain your mobility devices like walkers and wheelchairs.  We can't fix everything, but we do our best.",
+            'cautions' => "Find the stud - you need to find the stud first - if not you need to use a drill and anchors to mount."
+        ]);
+
+        DB::table('maintenance_items')->insert([
+            'title' => "Careful of the Ice today!",
             'section_id' => 1,
-            'interval_id' => 5,
-            'points' => 40,
-            'month' => "May",
-            'summary' => "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+            'interval_id' => 10,
+            'points' => 10,
+            'featured_image_id' => 1,
+            'summary' => "Your Home Service Hero is there to help in many ways and will never leave your home without sweeping the front walk and steps.  Enjoy this little perk.",
+            'cautions' => ""
+        ]);
+
+        DB::table('maintenance_items')->insert([
+            'title' => "Check driveway/pavement for cracks and fix if possible",
+            'section_id' => 1,
+            'interval_id' => 7,
+            'points' => 10,
+            'featured_image_id' => 1,
+            'summary' => "Custodia may be able to help maintain your driveway and help it to last longer.  A lot of times, you can catch a crack in the early stages and fill it to keep the moisture out.  That way, it won't expand.",
+            'cautions' => ""
+        ]);
+
+        DB::table('maintenance_items')->insert([
+            'title' => "Check to see your internet as fast as it can be. Restart DSL Modems",
+            'section_id' => 2,
+            'interval_id' => 8,
+            'points' => 4,
+            'featured_image_id' => 1,
+            'summary' => "Once or twice a year Custodia will restart your internet modem so that it gets a new IP address reboots all of it's firmware.  It will work a little faster for you.",
+            'cautions' => ""
         ]);
     }
 }

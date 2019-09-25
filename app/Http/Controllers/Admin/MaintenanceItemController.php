@@ -39,8 +39,9 @@ class MaintenanceItemController extends Controller
         $item = new MaintenanceItem();
         $item->section_id = $request->section;
         $item->interval_id = $request->interval;
+        $item->title = $request->title;
         $item->points = $request->points;
-        $item->month = $request->month;
+        $item->cautions = $request->cautions;
         $item->summary = $request->summary;
         if ($request->has('photo')) {
             $image = $request->file('photo');
@@ -55,8 +56,9 @@ class MaintenanceItemController extends Controller
         $item = MaintenanceItem::find($request->id);
         $item->section_id = $request->section;
         $item->interval_id = $request->interval;
+        $item->title = $request->title;
         $item->points = $request->points;
-        $item->month = $request->month;
+        $item->cautions = $request->cautions;
         $item->summary = $request->summary;
         if ($request->has('photo')) {
             $image = $request->file('photo');
