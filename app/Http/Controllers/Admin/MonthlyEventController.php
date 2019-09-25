@@ -5,6 +5,7 @@ namespace Custodia\Http\Controllers\Admin;
 use Custodia\Http\Controllers\Controller;
 use Custodia\Http\Requests\MonthlyEvent\CreateMonthlyEventRequest;
 use Custodia\Http\Requests\MonthlyEvent\StoreMonthlyEventRequest;
+use Custodia\MaintenanceItem;
 use Custodia\MonthlyEvent;
 use Illuminate\Http\Request;
 
@@ -33,20 +34,41 @@ class MonthlyEventController extends Controller
     }
 
     private function saveMonthlyEvent($request){
-        $item = new MonthlyEvent();
-        $item->title = $request->title;
-        $item->month = $request->month;
-        $item->save();
-        return $item;
+        $event = new MonthlyEvent();
+        $event->title = $request->title;
+        $event->month = $request->month;
+        $event->save();
+
+        if ($request->has('maintenance_items')){
+            foreach($request->maintenance_items as $item_id){
+                $item = MaintenanceItem::find($item_id);
+                if ($item){
+                    $event->maintenanceItems()->attach($item->id);
+                }
+            }
+        }
+
+        $event->save();
+        return $event;
     }
 
     public function updateMonthlyEvent(StoreMonthlyEventRequest $request)
     {
-        $item = MonthlyEvent::find($request->id);
-        $item->title = $request->title;
-        $item->month = $request->month;
-        $item->save();
+        $event = MonthlyEvent::find($request->id);
+        $event->title = $request->title;
+        $event->month = $request->month;
 
+        $event->maintenanceItems()->detach();
+        if ($request->has('maintenance_items')){
+            foreach($request->maintenance_items as $item_id){
+                $item = MaintenanceItem::find($item_id);
+                if ($item){
+                    $event->maintenanceItems()->attach($item->id);
+                }
+            }
+        }
+
+        $event->save();
         return redirect('/admin/monthly_events');
     }
 
