@@ -12,11 +12,35 @@ class HomeTypeSeeder extends Seeder
     public function run()
     {
         DB::table('home_types')->insert([
-            'name' => 'Type 1',
+            'name' => 'Small Bungalow',
         ]);
 
         DB::table('home_types')->insert([
-            'name' => 'Type 2',
+            'name' => 'Large Bungalow',
+        ]);
+
+        DB::table('home_types')->insert([
+            'name' => 'Small Condo',
+        ]);
+
+        DB::table('home_types')->insert([
+            'name' => 'Large Condo',
+        ]);
+
+        DB::table('home_types')->insert([
+            'name' => 'Small 2-Story',
+        ]);
+
+        DB::table('home_types')->insert([
+            'name' => 'Large 2-Story',
+        ]);
+
+        DB::table('home_types')->insert([
+            'name' => 'Back or Side Split',
+        ]);
+
+        DB::table('home_types')->insert([
+            'name' => 'Larger Home',
         ]);
     }
 }
