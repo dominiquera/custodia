@@ -40,6 +40,7 @@ class MaintenanceItemSeeder extends Seeder
             'section_id' => 2,
             'interval_id' => 6,
             'points' => 10,
+            'mobility_priority' => true,
             'featured_image_id' => 1,
             'summary' => "Your Home Service hero is there to help you live a better life in your home and will do their best to help you maintain your mobility devices like walkers and wheelchairs.  We can't fix everything, but we do our best.",
             'cautions' => "Find the stud - you need to find the stud first - if not you need to use a drill and anchors to mount."
@@ -50,6 +51,7 @@ class MaintenanceItemSeeder extends Seeder
             'section_id' => 1,
             'interval_id' => 10,
             'points' => 10,
+            'mobility_priority' => true,
             'featured_image_id' => 1,
             'summary' => "Your Home Service Hero is there to help in many ways and will never leave your home without sweeping the front walk and steps.  Enjoy this little perk.",
             'cautions' => ""

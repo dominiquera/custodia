@@ -46,6 +46,13 @@
           </select>
       </div>
       <div class="form-group">
+          <label for="mobility_priority">Mobility Priority</label>
+          <select class="form-control" name="mobility_priority" id="mobility_priority">
+              <option value="0" selected="selected">No</option>
+              <option value="1">Yes</option>
+          </select>
+      </div>
+      <div class="form-group">
           <label for="summary">Summary</label>
           <textarea name="summary" class="form-control" id="summary" placeholder="Summary" required></textarea>
       </div>

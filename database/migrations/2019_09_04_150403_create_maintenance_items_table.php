@@ -20,6 +20,7 @@ class CreateMaintenanceItemsTable extends Migration
             $table->bigInteger('interval_id')->unsigned()->index();
             $table->string('title');
             $table->double('points');
+            $table->boolean('mobility_priority')->default(false);
             $table->longText('summary');
             $table->longText('cautions')->nullable();
             $table->timestamps();

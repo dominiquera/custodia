@@ -41,6 +41,7 @@ class MaintenanceItemController extends Controller
         $item->interval_id = $request->interval;
         $item->title = $request->title;
         $item->points = $request->points;
+        $item->mobility_priority = $request->mobility_priority;
         $item->cautions = $request->cautions;
         $item->summary = $request->summary;
         if ($request->has('photo')) {
@@ -58,6 +59,7 @@ class MaintenanceItemController extends Controller
         $item->interval_id = $request->interval;
         $item->title = $request->title;
         $item->points = $request->points;
+        $item->mobility_priority = $request->mobility_priority;
         $item->cautions = $request->cautions;
         $item->summary = $request->summary;
         if ($request->has('photo')) {
