@@ -54,6 +54,14 @@
               @endforeach
           </select>
       </div>
+      <div class="form-group" id="weather-trigger-form-group">
+          <select class="form-control" name="trigger" id="trigger">
+              <option selected="selected" disabled="disabled">--Choose a Weather Trigger--</option>
+              @foreach (Custodia\WeatherTriggerType::all() as $trigger)
+                  <option @if ($item->weather_trigger_type_id == $trigger->id) selected="selected" @endif value="{{$trigger->id}}">{{ $trigger->name }}</option>
+              @endforeach
+          </select>
+      </div>
       <div class="form-group">
           <label for="mobility_priority">Mobility Priority</label>
           <select class="form-control" name="mobility_priority" id="mobility_priority">
@@ -81,4 +89,25 @@
       <button style="margin-top:30px;" type="submit" class="ui button primary">Save</button>
   </form>
 </div>
+@endsection
+
+
+@section('scripts')
+    <script>
+        $( document ).ready(function() {
+            if ($('#interval').children("option:selected").val() == "10"){
+                $("#weather-trigger-form-group").show();
+            } else {
+                $("#weather-trigger-form-group").hide();
+            }
+        });
+
+        $('#interval').on('change', function() {
+            if (this.value == "10"){
+                $("#weather-trigger-form-group").show();
+            } else {
+                $("#weather-trigger-form-group").hide();
+            }
+        });
+    </script>
 @endsection

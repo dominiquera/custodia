@@ -21,6 +21,11 @@ class MaintenanceItem extends Model
         return $this->belongsTo(Image::class);
     }
 
+    public function weatherTriggerType()
+    {
+        return $this->belongsTo(WeatherTriggerType::class);
+    }
+
     public function monthlyEvents(){
         return $this->belongsToMany(MonthlyEvent::class);
     }

@@ -79,7 +79,6 @@
 @endsection
 
 @section('scripts')
-
     <script>
         $( document ).ready(function() {
             $("#weather-trigger-form-group").hide();

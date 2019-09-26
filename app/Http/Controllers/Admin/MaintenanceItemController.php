@@ -5,6 +5,7 @@ namespace Custodia\Http\Controllers\Admin;
 use Custodia\Http\Requests\MaintenanceItem\CreateMaintenanceItemRequest;
 use Custodia\Http\Requests\MaintenanceItem\StoreMaintenanceItemRequest;
 use Custodia\Image;
+use Custodia\Interval;
 use Custodia\MaintenanceItem;
 use Custodia\Section;
 use DemeterChain\Main;
@@ -48,6 +49,13 @@ class MaintenanceItemController extends Controller
             $image = $request->file('photo');
             $this->updatedFeaturedImage($item, $image);
         }
+
+        $interval = Interval::find($request->interval);
+        if ($interval->name == "Weather Trigger"){
+            if ($request->has('trigger')){
+                $item->weather_trigger_type_id = $request->trigger;
+            }
+        }
         $item->save();
         return $item;
     }
@@ -65,6 +73,13 @@ class MaintenanceItemController extends Controller
         if ($request->has('photo')) {
             $image = $request->file('photo');
             $this->updatedFeaturedImage($item, $image);
+        }
+
+        $interval = Interval::find($request->interval);
+        if ($interval->name == "Weather Trigger"){
+            if ($request->has('trigger')){
+                $item->weather_trigger_type_id = $request->trigger;
+            }
         }
         $item->save();
 

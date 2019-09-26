@@ -1,6 +1,7 @@
 {
     "/js/app.js": "/js/app.js",
     "/css/app.css": "/css/app.css",
+    "/js/jquery.repeatable.js": "/js/jquery.repeatable.js",
     "/css/semantic.min.css": "/css/semantic.min.css",
     "/js/semantic.min.js": "/js/semantic.min.js"
 }
