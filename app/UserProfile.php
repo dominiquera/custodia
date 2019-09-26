@@ -16,4 +16,8 @@ class UserProfile extends Model
     {
         return $this->belongsTo(HomeType::class);
     }
+
+    public function outdoorSpaces(){
+        return $this->belongsToMany(OutdoorSpaceType::class);
+    }
 }

@@ -8,7 +8,7 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
     <script src="{{ asset('js/app.js') }}" defer></script>
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <script src="{{ asset('js/semantic.min.js') }}"></script>
+    <script src="{{ asset('js/semantic.min.js') }}" defer></script>
     <link href="{{ asset('css/semantic.min.css') }}" rel="stylesheet">
 </head>
 <body>

@@ -55,6 +55,22 @@
           </select>
       </div>
       <div class="form-group">
+          <label for="home_type">Outdoor Spaces</label>
+          <div style="display: block;">
+              @foreach (\Custodia\OutdoorSpaceType::all() as $spaceType)
+                  <div class="ui checkbox" style="display: block;">
+                      <input
+                              type="checkbox"
+                              name="outdoor_spaces[]"
+                              value="{{$spaceType->id}}"
+                              @if ($user->userProfile->outdoorSpaces->contains($spaceType)) checked="checked" @endif
+                      >
+                      <label>{{$spaceType->name}}</label>
+                  </div>
+              @endforeach
+          </div>
+      </div>
+      <div class="form-group">
           <label for="score">Score</label>
           <input type="number" name="score" class="form-control" id="score" placeholder="Score" value="{{$user->userProfile->score}}">
       </div>

@@ -50,6 +50,13 @@ class UserController extends Controller
         $userProfile->score = $request->score;
         $userProfile->save();
 
+        if ($request->has('outdoor_spaces')){
+            foreach ($request->outdoor_spaces as $outdoor_space){
+                $userProfile->outdoorSpaces()->attach($outdoor_space);
+            }
+        }
+
+        $userProfile->save();
         return $user;
     }
 
@@ -68,6 +75,14 @@ class UserController extends Controller
         $userProfile->score = $request->score;
         $userProfile->save();
 
+        $userProfile->outdoorSpaces()->detach();
+        if ($request->has('outdoor_spaces')){
+            foreach ($request->outdoor_spaces as $outdoor_space){
+                $userProfile->outdoorSpaces()->attach($outdoor_space);
+            }
+        }
+
+        $userProfile->save();
         return redirect('/admin/users');
     }
 
