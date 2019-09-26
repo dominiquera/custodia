@@ -50,7 +50,8 @@
                           @if ($interval->id == $item->interval->id)
                           selected="selected"
                           @endif
-                          value="{{$interval->id}}">{{ $interval->name }}</option>
+                          value="{{$interval->id}}"
+                          name="{{$interval->name}}">{{ $interval->name }}</option>
               @endforeach
           </select>
       </div>
@@ -95,7 +96,7 @@
 @section('scripts')
     <script>
         $( document ).ready(function() {
-            if ($('#interval').children("option:selected").val() == "10"){
+            if ($('#interval').children("option:selected").attr('name') == "Weather Trigger"){
                 $("#weather-trigger-form-group").show();
             } else {
                 $("#weather-trigger-form-group").hide();
@@ -103,7 +104,7 @@
         });
 
         $('#interval').on('change', function() {
-            if (this.value == "10"){
+            if ($(this).children("option:selected").attr('name') == "Weather Trigger"){
                 $("#weather-trigger-form-group").show();
             } else {
                 $("#weather-trigger-form-group").hide();
