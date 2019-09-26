@@ -41,7 +41,7 @@
           <select class="form-control" name="interval" id="interval">
               <option selected="selected" disabled="disabled">--Choose an Interval--</option>
               @foreach (Custodia\Interval::all() as $interval)
-                  <option value="{{$interval->id}}">{{ $interval->name }}</option>
+                  <option value="{{$interval->id}}" name="{{$interval->name}}">{{ $interval->name }}</option>
               @endforeach
           </select>
       </div>
@@ -85,7 +85,7 @@
         });
 
         $('#interval').on('change', function() {
-            if (this.value == "10"){
+            if ($(this).children("option:selected").attr('name') == "Weather Trigger"){
                 $("#weather-trigger-form-group").show();
             } else {
                 $("#weather-trigger-form-group").hide();
