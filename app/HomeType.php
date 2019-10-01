@@ -10,4 +10,8 @@ class HomeType extends Model
     {
         return $this->hasMany(UserProfile::class);
     }
+
+    public function maintenanceItems(){
+        return $this->belongsToMany(MaintenanceItem::class);
+    }
 }

@@ -61,6 +61,17 @@
           </select>
       </div>
       <div class="form-group">
+          <label for="home_type">Home Types Applicable</label>
+          <div style="display: block;">
+              @foreach (\Custodia\HomeType::all() as $homeType)
+                  <div class="ui checkbox" style="display: block;">
+                      <input type="checkbox" name="home_types[]" value="{{$homeType->id}}">
+                      <label>{{$homeType->name}}</label>
+                  </div>
+              @endforeach
+          </div>
+      </div>
+      <div class="form-group">
           <label for="summary">Summary</label>
           <textarea name="summary" class="form-control" id="summary" placeholder="Summary" required></textarea>
       </div>

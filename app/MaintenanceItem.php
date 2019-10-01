@@ -29,4 +29,8 @@ class MaintenanceItem extends Model
     public function monthlyEvents(){
         return $this->belongsToMany(MonthlyEvent::class);
     }
+
+    public function homeTypes(){
+        return $this->belongsToMany(HomeType::class);
+    }
 }

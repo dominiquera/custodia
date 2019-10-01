@@ -8,6 +8,7 @@ use Custodia\Image;
 use Custodia\Interval;
 use Custodia\MaintenanceItem;
 use Custodia\Section;
+use Custodia\User;
 use DemeterChain\Main;
 use Illuminate\Http\Request;
 use Custodia\Http\Controllers\Controller;
@@ -45,6 +46,8 @@ class MaintenanceItemController extends Controller
         $item->mobility_priority = $request->mobility_priority;
         $item->cautions = $request->cautions;
         $item->summary = $request->summary;
+        $item->save();
+
         if ($request->has('photo')) {
             $image = $request->file('photo');
             $this->updatedFeaturedImage($item, $image);
@@ -56,6 +59,13 @@ class MaintenanceItemController extends Controller
                 $item->weather_trigger_type_id = $request->trigger;
             }
         }
+
+        if ($request->has('home_types')){
+            foreach ($request->home_types as $home_type){
+                $item->homeTypes()->attach($home_type);
+            }
+        }
+
         $item->save();
         return $item;
     }
@@ -81,6 +91,14 @@ class MaintenanceItemController extends Controller
                 $item->weather_trigger_type_id = $request->trigger;
             }
         }
+
+        $item->homeTypes()->detach();
+        if ($request->has('home_types')){
+            foreach ($request->home_types as $home_type){
+                $item->homeTypes()->attach($home_type);
+            }
+        }
+
         $item->save();
 
         return redirect('/admin/maintenance_items');
