@@ -12,6 +12,7 @@ use Custodia\User;
 use DemeterChain\Main;
 use Illuminate\Http\Request;
 use Custodia\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 
 class MaintenanceItemController extends Controller
 {
@@ -186,5 +187,4 @@ class MaintenanceItemController extends Controller
     public function apiGetSectionMaintenanceItems(Section $section){
         return response()->json(['maintenance_items' => MaintenanceItem::where('section_id', '=', $section->id)->get()], 200);
     }
-
 }

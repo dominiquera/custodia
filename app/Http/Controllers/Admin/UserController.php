@@ -4,10 +4,12 @@ namespace Custodia\Http\Controllers\Admin;
 
 use Custodia\Http\Requests\User\CreateUserRequest;
 use Custodia\Http\Requests\User\StoreUserRequest;
+use Custodia\MaintenanceItem;
 use Custodia\User;
 use Custodia\UserProfile;
 use Illuminate\Http\Request;
 use Custodia\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -188,5 +190,43 @@ class UserController extends Controller
 
     public function apiGetUserIgnoredMaintenanceItems(User $user){
         return response()->json(['maintenance_items' => $user->ignoredMaintenanceItems], 200);
+    }
+
+
+    public function apiGetTop3MaintenanceItemsTodayByUser(User $user){
+        $month = date('F');
+        $query = "
+            select ITEMS.id from maintenance_items ITEMS
+            join home_type_maintenance_item ITEM_HOME_TYPE on ITEMS.id = ITEM_HOME_TYPE.maintenance_item_id
+            join maintenance_item_monthly_event ITEM_MONTHLY_EVENT on ITEMS.id = ITEM_MONTHLY_EVENT.maintenance_item_id
+            join monthly_events MONTHLY_EVENT on ITEM_MONTHLY_EVENT.monthly_event_id = MONTHLY_EVENT.id
+            join user_profiles PROFILE on PROFILE.home_type_id = ITEM_HOME_TYPE.home_type_id
+            join outdoor_space_type_user_profile USER_OUTDOOR_SPACE on PROFILE.id = USER_OUTDOOR_SPACE.user_profile_id
+            join maintenance_item_outdoor_space_type ITEM_OUTDOOR_SPACE on ITEMS.id = ITEM_OUTDOOR_SPACE.maintenance_item_id and ITEM_OUTDOOR_SPACE.outdoor_space_type_id = USER_OUTDOOR_SPACE.outdoor_space_type_id
+            join driveway_type_user_profile USER_DRIVEWAY_TYPE on PROFILE.id = USER_DRIVEWAY_TYPE.user_profile_id
+            join driveway_type_maintenance_item ITEM_DRIVEWAY_TYPE on ITEMS.id = ITEM_DRIVEWAY_TYPE.maintenance_item_id and ITEM_DRIVEWAY_TYPE.driveway_type_id = USER_DRIVEWAY_TYPE.driveway_type_id
+            join mobility_issue_type_user_profile USER_MOBILITY_ISSUE_TYPE on PROFILE.id = USER_MOBILITY_ISSUE_TYPE.user_profile_id
+            join maintenance_item_mobility_issue_type ITEM_MOBILITY_ISSUE_TYPE on ITEMS.id = ITEM_MOBILITY_ISSUE_TYPE.maintenance_item_id and ITEM_MOBILITY_ISSUE_TYPE.mobility_issue_type_id = USER_MOBILITY_ISSUE_TYPE.mobility_issue_type_id
+            join home_feature_user_profile USER_HOME_FEATURE on PROFILE.id = USER_HOME_FEATURE.user_profile_id
+            join home_feature_maintenance_item ITEM_HOME_FEATURE on ITEMS.id = ITEM_HOME_FEATURE.maintenance_item_id and ITEM_HOME_FEATURE.home_feature_id = USER_HOME_FEATURE.home_feature_id
+            left outer join maintenance_item_done_user ITEMS_DONE_USER on ITEMS_DONE_USER.maintenance_item_id = ITEMS.id and ITEMS_DONE_USER.user_id = PROFILE.user_id
+            left outer join maintenance_item_ignored_user ITEMS_IGNORED_USER on ITEMS_IGNORED_USER.maintenance_item_id = ITEMS.id and ITEMS_IGNORED_USER.user_id = PROFILE.user_id
+            where PROFILE.id = {$user->userProfile->id}
+            and ITEMS_DONE_USER.id IS NULL
+            and ITEMS_IGNORED_USER.id IS NULL
+            and MONTHLY_EVENT.month = \"{$month}\"
+            ORDER BY ITEMS.points DESC
+            LIMIT 5;
+        ";
+
+        $results = DB::select($query);
+
+        $ret = collect();
+
+        foreach ($results as $result){
+            $ret->push(MaintenanceItem::find($result->id));
+        }
+
+        return response()->json(['maintenance_items' => $ret], 200);
     }
 }
