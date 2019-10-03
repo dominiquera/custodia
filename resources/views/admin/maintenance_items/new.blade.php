@@ -72,6 +72,50 @@
           </div>
       </div>
       <div class="form-group">
+          <label for="outdoor_spaces">Outdoor Spaces Applicable</label>
+          <div style="display: block;">
+              @foreach (\Custodia\OutdoorSpaceType::all() as $spaceType)
+                  <div class="ui checkbox" style="display: block;">
+                      <input type="checkbox" name="outdoor_spaces[]" value="{{$spaceType->id}}">
+                      <label>{{$spaceType->name}}</label>
+                  </div>
+              @endforeach
+          </div>
+      </div>
+      <div class="form-group">
+          <label for="driveways">Driveways Applicable</label>
+          <div style="display: block;">
+              @foreach (\Custodia\DrivewayType::all() as $drivewayType)
+                  <div class="ui checkbox" style="display: block;">
+                      <input type="checkbox" name="driveways[]" value="{{$drivewayType->id}}">
+                      <label>{{$drivewayType->name}}</label>
+                  </div>
+              @endforeach
+          </div>
+      </div>
+      <div class="form-group">
+          <label for="features">Home Features Applicable</label>
+          <div style="display: block;">
+              @foreach (\Custodia\HomeFeature::all() as $featureType)
+                  <div class="ui checkbox" style="display: block;">
+                      <input type="checkbox" name="features[]" value="{{$featureType->id}}">
+                      <label>{{$featureType->name}}</label>
+                  </div>
+              @endforeach
+          </div>
+      </div>
+      <div class="form-group">
+          <label for="mobility_issues">Mobility Issues Applicable</label>
+          <div style="display: block;">
+              @foreach (\Custodia\MobilityIssueType::all() as $mobilityIssue)
+                  <div class="ui checkbox" style="display: block;">
+                      <input type="checkbox" name="mobility_issues[]" value="{{$mobilityIssue->id}}">
+                      <label>{{$mobilityIssue->name}}</label>
+                  </div>
+              @endforeach
+          </div>
+      </div>
+      <div class="form-group">
           <label for="summary">Summary</label>
           <textarea name="summary" class="form-control" id="summary" placeholder="Summary" required></textarea>
       </div>

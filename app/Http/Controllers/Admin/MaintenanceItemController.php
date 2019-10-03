@@ -66,6 +66,30 @@ class MaintenanceItemController extends Controller
             }
         }
 
+        if ($request->has('outdoor_spaces')){
+            foreach ($request->outdoor_spaces as $outdoor_space){
+                $item->outdoorSpaces()->attach($outdoor_space);
+            }
+        }
+
+        if ($request->has('driveways')){
+            foreach ($request->driveways as $driveway){
+                $item->drivewayTypes()->attach($driveway);
+            }
+        }
+
+        if ($request->has('mobility_issues')){
+            foreach ($request->mobility_issues as $issue){
+                $item->mobilityIssues()->attach($issue);
+            }
+        }
+
+        if ($request->has('features')){
+            foreach ($request->features as $feature){
+                $item->homeFeatures()->attach($feature);
+            }
+        }
+
         $item->save();
         return $item;
     }
@@ -98,6 +122,35 @@ class MaintenanceItemController extends Controller
                 $item->homeTypes()->attach($home_type);
             }
         }
+
+        $item->outdoorSpaces()->detach();
+        if ($request->has('outdoor_spaces')){
+            foreach ($request->outdoor_spaces as $outdoor_space){
+                $item->outdoorSpaces()->attach($outdoor_space);
+            }
+        }
+
+        $item->drivewayTypes()->detach();
+        if ($request->has('driveways')){
+            foreach ($request->driveways as $driveway){
+                $item->drivewayTypes()->attach($driveway);
+            }
+        }
+
+        $item->mobilityIssues()->detach();
+        if ($request->has('mobility_issues')){
+            foreach ($request->mobility_issues as $issue){
+                $item->mobilityIssues()->attach($issue);
+            }
+        }
+
+        $item->homeFeatures()->detach();
+        if ($request->has('features')){
+            foreach ($request->features as $feature){
+                $item->homeFeatures()->attach($feature);
+            }
+        }
+
 
         $item->save();
 

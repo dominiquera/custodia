@@ -71,6 +71,54 @@
           </div>
       </div>
       <div class="form-group">
+          <label for="driveways">Driveways</label>
+          <div style="display: block;">
+              @foreach (\Custodia\DrivewayType::all() as $drivewayType)
+                  <div class="ui checkbox" style="display: block;">
+                      <input
+                              type="checkbox"
+                              name="driveways[]"
+                              value="{{$drivewayType->id}}"
+                              @if ($user->userProfile->drivewayTypes->contains($drivewayType)) checked="checked" @endif
+                      >
+                      <label>{{$drivewayType->name}}</label>
+                  </div>
+              @endforeach
+          </div>
+      </div>
+      <div class="form-group">
+          <label for="features">Home Features</label>
+          <div style="display: block;">
+              @foreach (\Custodia\HomeFeature::all() as $featureType)
+                  <div class="ui checkbox" style="display: block;">
+                      <input
+                              type="checkbox"
+                              name="features[]"
+                              value="{{$featureType->id}}"
+                              @if ($user->userProfile->homeFeatures->contains($featureType)) checked="checked" @endif
+                      >
+                      <label>{{$featureType->name}}</label>
+                  </div>
+              @endforeach
+          </div>
+      </div>
+      <div class="form-group">
+          <label for="mobility_issues">Mobility Issues</label>
+          <div style="display: block;">
+              @foreach (\Custodia\MobilityIssueType::all() as $mobilityIssueType)
+                  <div class="ui checkbox" style="display: block;">
+                      <input
+                              type="checkbox"
+                              name="mobility_issues[]"
+                              value="{{$mobilityIssueType->id}}"
+                              @if ($user->userProfile->mobilityIssues->contains($mobilityIssueType)) checked="checked" @endif
+                      >
+                      <label>{{$mobilityIssueType->name}}</label>
+                  </div>
+              @endforeach
+          </div>
+      </div>
+      <div class="form-group">
           <label for="score">Score</label>
           <input type="number" name="score" class="form-control" id="score" placeholder="Score" value="{{$user->userProfile->score}}">
       </div>

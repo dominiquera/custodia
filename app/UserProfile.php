@@ -20,4 +20,16 @@ class UserProfile extends Model
     public function outdoorSpaces(){
         return $this->belongsToMany(OutdoorSpaceType::class);
     }
+
+    public function mobilityIssues(){
+        return $this->belongsToMany(MobilityIssueType::class);
+    }
+
+    public function homeFeatures(){
+        return $this->belongsToMany(HomeFeature::class);
+    }
+
+    public function drivewayTypes(){
+        return $this->belongsToMany(DrivewayType::class);
+    }
 }

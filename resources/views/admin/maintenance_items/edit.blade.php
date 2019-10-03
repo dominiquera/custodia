@@ -87,6 +87,70 @@
           </div>
       </div>
       <div class="form-group">
+          <label for="home_type">Outdoor Spaces Applicable</label>
+          <div style="display: block;">
+              @foreach (\Custodia\OutdoorSpaceType::all() as $spaceType)
+                  <div class="ui checkbox" style="display: block;">
+                      <input
+                              type="checkbox"
+                              name="outdoor_spaces[]"
+                              value="{{$spaceType->id}}"
+                              @if ($item->outdoorSpaces->contains($spaceType)) checked="checked" @endif
+                      >
+                      <label>{{$spaceType->name}}</label>
+                  </div>
+              @endforeach
+          </div>
+      </div>
+      <div class="form-group">
+          <label for="driveways">Driveways Applicable</label>
+          <div style="display: block;">
+              @foreach (\Custodia\DrivewayType::all() as $drivewayType)
+                  <div class="ui checkbox" style="display: block;">
+                      <input
+                              type="checkbox"
+                              name="driveways[]"
+                              value="{{$drivewayType->id}}"
+                              @if ($item->drivewayTypes->contains($drivewayType)) checked="checked" @endif
+                      >
+                      <label>{{$drivewayType->name}}</label>
+                  </div>
+              @endforeach
+          </div>
+      </div>
+      <div class="form-group">
+          <label for="features">Home Features Applicable</label>
+          <div style="display: block;">
+              @foreach (\Custodia\HomeFeature::all() as $featureType)
+                  <div class="ui checkbox" style="display: block;">
+                      <input
+                              type="checkbox"
+                              name="features[]"
+                              value="{{$featureType->id}}"
+                              @if ($item->homeFeatures->contains($featureType)) checked="checked" @endif
+                      >
+                      <label>{{$featureType->name}}</label>
+                  </div>
+              @endforeach
+          </div>
+      </div>
+      <div class="form-group">
+          <label for="mobility_issues">Mobility Issues Applicable</label>
+          <div style="display: block;">
+              @foreach (\Custodia\MobilityIssueType::all() as $mobilityIssueType)
+                  <div class="ui checkbox" style="display: block;">
+                      <input
+                              type="checkbox"
+                              name="mobility_issues[]"
+                              value="{{$mobilityIssueType->id}}"
+                              @if ($item->mobilityIssues->contains($mobilityIssueType)) checked="checked" @endif
+                      >
+                      <label>{{$mobilityIssueType->name}}</label>
+                  </div>
+              @endforeach
+          </div>
+      </div>
+      <div class="form-group">
           <label for="summary">Summary</label>
           <textarea name="summary" class="form-control" id="summary" placeholder="Summary" required>{{$item->summary}}</textarea>
       </div>

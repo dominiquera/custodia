@@ -14,6 +14,9 @@ class DatabaseSeeder extends Seeder
         $this->call(RoleTableSeeder::class);
         $this->call(IntervalsTableSeeder::class);
         $this->call(HomeTypeSeeder::class);
+        $this->call(DrivewayTypeTableSeeder::class);
+        $this->call(HomeFeatureTableSeeder::class);
+        $this->call(MobilityIssueTypeTableSeeder::class);
         $this->call(OutdoorSpaceTypesTableSeeder::class);
         $this->call(WeatherTriggerTypesTableSeeder::class);
         $this->call(MonthlyEventsTableSeeder::class);

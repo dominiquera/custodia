@@ -4,7 +4,7 @@ namespace Custodia;
 
 use Illuminate\Database\Eloquent\Model;
 
-class OutdoorSpaceType extends Model
+class HomeFeature extends Model
 {
     public function maintenanceItems(){
         return $this->belongsToMany(MaintenanceItem::class);

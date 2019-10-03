@@ -21,34 +21,16 @@ class OutdoorSpaceTypesTableSeeder extends Seeder
             'name' => 'Large Yard',
         ]);
         DB::table('outdoor_space_types')->insert([
-            'name' => 'No Yard',
-        ]);
-        DB::table('outdoor_space_types')->insert([
-            'name' => 'Small Deck',
-        ]);
-        DB::table('outdoor_space_types')->insert([
-            'name' => 'Large Deck',
-        ]);
-        DB::table('outdoor_space_types')->insert([
-            'name' => 'No Deck',
-        ]);
-        DB::table('outdoor_space_types')->insert([
             'name' => 'Gardens',
         ]);
         DB::table('outdoor_space_types')->insert([
             'name' => 'Hedges',
         ]);
         DB::table('outdoor_space_types')->insert([
-            'name' => 'Pool',
-        ]);
-        DB::table('outdoor_space_types')->insert([
-            'name' => 'No trees',
-        ]);
-        DB::table('outdoor_space_types')->insert([
             'name' => 'A few trees',
         ]);
         DB::table('outdoor_space_types')->insert([
-            'name' => 'Many trees',
+            'name' => 'Lots of trees',
         ]);
     }
 }

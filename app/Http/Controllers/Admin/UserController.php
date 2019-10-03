@@ -56,6 +56,24 @@ class UserController extends Controller
             }
         }
 
+        if ($request->has('driveways')){
+            foreach ($request->driveways as $driveway){
+                $userProfile->drivewayTypes()->attach($driveway);
+            }
+        }
+
+        if ($request->has('mobility_issues')){
+            foreach ($request->mobility_issues as $issue){
+                $userProfile->mobilityIssues()->attach($issue);
+            }
+        }
+
+        if ($request->has('features')){
+            foreach ($request->features as $feature){
+                $userProfile->homeFeatures()->attach($feature);
+            }
+        }
+
         $userProfile->save();
         return $user;
     }
@@ -79,6 +97,27 @@ class UserController extends Controller
         if ($request->has('outdoor_spaces')){
             foreach ($request->outdoor_spaces as $outdoor_space){
                 $userProfile->outdoorSpaces()->attach($outdoor_space);
+            }
+        }
+
+        $userProfile->drivewayTypes()->detach();
+        if ($request->has('driveways')){
+            foreach ($request->driveways as $driveway){
+                $userProfile->drivewayTypes()->attach($driveway);
+            }
+        }
+
+        $userProfile->mobilityIssues()->detach();
+        if ($request->has('mobility_issues')){
+            foreach ($request->mobility_issues as $issue){
+                $userProfile->mobilityIssues()->attach($issue);
+            }
+        }
+
+        $userProfile->homeFeatures()->detach();
+        if ($request->has('features')){
+            foreach ($request->features as $feature){
+                $userProfile->homeFeatures()->attach($feature);
             }
         }
 

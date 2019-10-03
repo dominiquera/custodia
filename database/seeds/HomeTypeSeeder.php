@@ -36,10 +36,6 @@ class HomeTypeSeeder extends Seeder
         ]);
 
         DB::table('home_types')->insert([
-            'name' => 'Back or Side Split',
-        ]);
-
-        DB::table('home_types')->insert([
             'name' => 'Larger Home',
         ]);
     }

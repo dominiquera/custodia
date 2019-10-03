@@ -61,6 +61,39 @@
           </div>
       </div>
       <div class="form-group">
+          <label for="driveways">Driveways</label>
+          <div style="display: block;">
+              @foreach (\Custodia\DrivewayType::all() as $drivewayType)
+                  <div class="ui checkbox" style="display: block;">
+                      <input type="checkbox" name="driveways[]" value="{{$drivewayType->id}}">
+                      <label>{{$drivewayType->name}}</label>
+                  </div>
+              @endforeach
+          </div>
+      </div>
+      <div class="form-group">
+          <label for="features">Home Features</label>
+          <div style="display: block;">
+              @foreach (\Custodia\HomeFeature::all() as $featureType)
+                  <div class="ui checkbox" style="display: block;">
+                      <input type="checkbox" name="features[]" value="{{$featureType->id}}">
+                      <label>{{$featureType->name}}</label>
+                  </div>
+              @endforeach
+          </div>
+      </div>
+      <div class="form-group">
+          <label for="mobility_issues">Mobility Issues</label>
+          <div style="display: block;">
+              @foreach (\Custodia\MobilityIssueType::all() as $mobilityIssue)
+                  <div class="ui checkbox" style="display: block;">
+                      <input type="checkbox" name="mobility_issues[]" value="{{$mobilityIssue->id}}">
+                      <label>{{$mobilityIssue->name}}</label>
+                  </div>
+              @endforeach
+          </div>
+      </div>
+      <div class="form-group">
           <label for="score">Score</label>
           <input type="number" name="score" class="form-control" id="score" placeholder="Score">
       </div>
