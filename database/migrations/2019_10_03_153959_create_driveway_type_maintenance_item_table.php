@@ -14,8 +14,8 @@ class CreateDrivewayTypeMaintenanceItemTable extends Migration
     public function up()
     {
         Schema::create('driveway_type_maintenance_item', function (Blueprint $table) {
-            $table->bigInteger('driveway_type_id')->unsigned()->nullable();
-            $table->bigInteger('maintenance_item_id')->unsigned()->nullable();
+            $table->bigInteger('driveway_type_id')->unsigned()->nullable()->index();
+            $table->bigInteger('maintenance_item_id')->unsigned()->nullable()->index();
             $table->timestamps();
 
             $table->foreign('driveway_type_id')->references('id')->on('driveway_types');

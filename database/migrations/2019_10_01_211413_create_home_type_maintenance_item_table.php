@@ -14,8 +14,8 @@ class CreateHomeTypeMaintenanceItemTable extends Migration
     public function up()
     {
         Schema::create('home_type_maintenance_item', function (Blueprint $table) {
-            $table->bigInteger('home_type_id')->unsigned()->nullable();
-            $table->bigInteger('maintenance_item_id')->unsigned()->nullable();
+            $table->bigInteger('home_type_id')->unsigned()->nullable()->index();
+            $table->bigInteger('maintenance_item_id')->unsigned()->nullable()->index();
             $table->timestamps();
 
             $table->foreign('home_type_id')->references('id')->on('home_types');

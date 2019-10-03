@@ -14,8 +14,8 @@ class CreateMobilityIssueTypeUserProfileTable extends Migration
     public function up()
     {
         Schema::create('mobility_issue_type_user_profile', function (Blueprint $table) {
-            $table->bigInteger('mobility_issue_type_id')->unsigned()->nullable();
-            $table->bigInteger('user_profile_id')->unsigned()->nullable();
+            $table->bigInteger('mobility_issue_type_id')->unsigned()->nullable()->index();
+            $table->bigInteger('user_profile_id')->unsigned()->nullable()->index();
             $table->timestamps();
 
             $table->foreign('mobility_issue_type_id')->references('id')->on('mobility_issue_types');

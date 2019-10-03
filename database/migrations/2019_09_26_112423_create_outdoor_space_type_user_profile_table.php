@@ -15,8 +15,8 @@ class CreateOutdoorSpaceTypeUserProfileTable extends Migration
     {
         Schema::create('outdoor_space_type_user_profile', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('outdoor_space_type_id')->unsigned()->nullable();
-            $table->bigInteger('user_profile_id')->unsigned()->nullable();
+            $table->bigInteger('outdoor_space_type_id')->unsigned()->nullable()->index();
+            $table->bigInteger('user_profile_id')->unsigned()->nullable()->index();
             $table->timestamps();
 
             $table->foreign('outdoor_space_type_id')->references('id')->on('outdoor_space_types');

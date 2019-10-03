@@ -15,8 +15,8 @@ class CreateMaintenanceItemDoneUserTable extends Migration
     {
         Schema::create('maintenance_item_done_user', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('maintenance_item_id')->unsigned();
-            $table->bigInteger('user_id')->unsigned();
+            $table->bigInteger('maintenance_item_id')->unsigned()->index();
+            $table->bigInteger('user_id')->unsigned()->index();
             $table->timestamps();
         });
     }

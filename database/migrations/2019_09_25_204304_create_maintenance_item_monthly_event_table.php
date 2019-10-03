@@ -15,8 +15,8 @@ class CreateMaintenanceItemMonthlyEventTable extends Migration
     {
         Schema::create('maintenance_item_monthly_event', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('maintenance_item_id')->unsigned()->nullable();
-            $table->bigInteger('monthly_event_id')->unsigned()->nullable();
+            $table->bigInteger('maintenance_item_id')->unsigned()->nullable()->index();
+            $table->bigInteger('monthly_event_id')->unsigned()->nullable()->index();
             $table->timestamps();
 
             $table->foreign('maintenance_item_id')->references('id')->on('maintenance_items');

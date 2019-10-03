@@ -14,8 +14,8 @@ class CreateHomeFeatureUserProfileTable extends Migration
     public function up()
     {
         Schema::create('home_feature_user_profile', function (Blueprint $table) {
-            $table->bigInteger('home_feature_id')->unsigned()->nullable();
-            $table->bigInteger('user_profile_id')->unsigned()->nullable();
+            $table->bigInteger('home_feature_id')->unsigned()->nullable()->index();
+            $table->bigInteger('user_profile_id')->unsigned()->nullable()->index();
             $table->timestamps();
 
             $table->foreign('home_feature_id')->references('id')->on('home_features');
