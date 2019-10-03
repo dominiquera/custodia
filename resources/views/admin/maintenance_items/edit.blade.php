@@ -30,8 +30,10 @@
               <option selected="selected" disabled="disabled">--Choose a Section--</option>
               @foreach (Custodia\Section::all() as $section)
                   <option
-                          @if ($section->id == $item->section->id)
-                          selected="selected"
+                          @if (isset($item->section))
+                            @if ($section->id == $item->section->id)
+                              selected="selected"
+                            @endif
                           @endif
                           value="{{$section->id}}">{{ $section->name }}</option>
               @endforeach

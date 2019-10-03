@@ -26,7 +26,7 @@
               <td>{{$item->id}}</td>
               <td>{{$item->title}}</td>
               <td>{{$item->points}}</td>
-              <td>{{$item->section->name}}</td>
+              <td>@if (isset($item->section)){{$item->section->name}}@endif</td>
               <td>{{$item->interval->name}}</td>
               <td>
                   <a href="/admin/maintenance_items/edit/{{$item->id}}">Edit</a> |

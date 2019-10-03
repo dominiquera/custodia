@@ -15,7 +15,7 @@ class CreateMaintenanceItemsTable extends Migration
     {
         Schema::create('maintenance_items', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('section_id')->unsigned()->index();
+            $table->bigInteger('section_id')->unsigned()->nullable()->index();
             $table->bigInteger('featured_image_id')->nullable()->unsigned();
             $table->bigInteger('interval_id')->unsigned();
             $table->bigInteger('weather_trigger_type_id')->nullable()->unsigned();
