@@ -5,6 +5,7 @@ namespace Custodia\Http\Controllers\Admin;
 use Custodia\Http\Requests\User\CreateUserRequest;
 use Custodia\Http\Requests\User\StoreUserRequest;
 use Custodia\MaintenanceItem;
+use Custodia\Section;
 use Custodia\User;
 use Custodia\UserProfile;
 use Illuminate\Http\Request;
@@ -195,6 +196,43 @@ class UserController extends Controller
 
     public function apiGetTop3MaintenanceItemsTodayByUser(User $user){
         $month = date('F');
+        $query = $this->getUserItemsJoinQuery($user) . "
+            ORDER BY ITEMS.points DESC
+            LIMIT 3;
+        ";
+
+        $results = DB::select($query);
+
+        $ret = collect();
+
+        foreach ($results as $result){
+            $ret->push(MaintenanceItem::find($result->id));
+        }
+
+        return response()->json(['maintenance_items' => $ret], 200);
+    }
+
+
+    public function apiGetTop3MaintenanceItemsTodayByUserAndSection(User $user, Section $section){
+        $query = $this->getUserItemsJoinQuery($user) . "
+            and ITEMS.section_id = {$section->id}
+            ORDER BY ITEMS.points DESC
+            LIMIT 3;
+        ";
+
+        $results = DB::select($query);
+
+        $ret = collect();
+
+        foreach ($results as $result){
+            $ret->push(MaintenanceItem::find($result->id));
+        }
+
+        return response()->json(['maintenance_items' => $ret], 200);
+    }
+
+    private function getUserItemsJoinQuery(User $user){
+        $month = date('F');
         $query = "
             select distinct(ITEMS.id) from maintenance_items ITEMS
             join home_type_maintenance_item ITEM_HOME_TYPE on ITEMS.id = ITEM_HOME_TYPE.maintenance_item_id
@@ -215,18 +253,8 @@ class UserController extends Controller
             and ITEMS_DONE_USER.id IS NULL
             and ITEMS_IGNORED_USER.id IS NULL
             and MONTHLY_EVENT.month = \"{$month}\"
-            ORDER BY ITEMS.points DESC
-            LIMIT 3;
         ";
 
-        $results = DB::select($query);
-
-        $ret = collect();
-
-        foreach ($results as $result){
-            $ret->push(MaintenanceItem::find($result->id));
-        }
-
-        return response()->json(['maintenance_items' => $ret], 200);
+        return $query;
     }
 }
