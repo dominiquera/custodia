@@ -56,37 +56,42 @@ class MaintenanceItemSeeder extends Seeder
                     $csv_home_type_small_two_story = $data[29];
                     $csv_home_type_large_two_story = $data[30];
                     $csv_home_type_larger_home = $data[31];
+                    $csv_home_type_all = $data[32];
 
-                    $csv_outdoor_space_small_yard = $data[32];
-                    $csv_outdoor_space_medium_yard = $data[33];
-                    $csv_outdoor_space_large_yard = $data[34];
-                    $csv_outdoor_space_gardens = $data[35];
-                    $csv_outdoor_space_hedges = $data[36];
-                    $csv_outdoor_space_a_few_trees = $data[37];
-                    $csv_outdoor_space_lots_of_trees = $data[38];
+                    $csv_outdoor_space_small_yard = $data[33];
+                    $csv_outdoor_space_medium_yard = $data[34];
+                    $csv_outdoor_space_large_yard = $data[35];
+                    $csv_outdoor_space_gardens = $data[36];
+                    $csv_outdoor_space_hedges = $data[37];
+                    $csv_outdoor_space_a_few_trees = $data[38];
+                    $csv_outdoor_space_lots_of_trees = $data[39];
+                    $csv_outdoor_space_all = $data[40];
 
-                    $csv_driveway_none = $data[39];
-                    $csv_two_car_driveway = $data[40];
-                    $csv_four_car_driveway = $data[41];
-                    $csv_six_car_driveway = $data[42];
-                    $csv_eight_car_driveway = $data[43];
-                    $csv_ten_car_driveway = $data[44];
+                    $csv_driveway_none = $data[41];
+                    $csv_two_car_driveway = $data[42];
+                    $csv_four_car_driveway = $data[43];
+                    $csv_six_car_driveway = $data[44];
+                    $csv_eight_car_driveway = $data[45];
+                    $csv_ten_car_driveway = $data[46];
+                    $csv_driveway_all = $data[47];
 
-                    $csv_home_feature_deck = $data[45];
-                    $csv_home_feature_porch = $data[46];
-                    $csv_home_feature_balcony = $data[47];
-                    $csv_home_feature_walkway = $data[48];
-                    $csv_home_feature_fireplace = $data[49];
-                    $csv_home_feature_pool = $data[50];
+                    $csv_home_feature_deck = $data[48];
+                    $csv_home_feature_porch = $data[49];
+                    $csv_home_feature_balcony = $data[50];
+                    $csv_home_feature_walkway = $data[51];
+                    $csv_home_feature_fireplace = $data[52];
+                    $csv_home_feature_pool = $data[53];
+                    $csv_home_feature_all = $data[54];
 
-                    $csv_mob_issues_none = $data[51];
-                    $csv_mob_issues_mild = $data[52];
-                    $csv_mob_issues_some = $data[53];
-                    $csv_mob_issues_sever = $data[54];
-                    $csv_mob_issues_wheelchair = $data[55];
+                    $csv_mob_issues_none = $data[55];
+                    $csv_mob_issues_mild = $data[56];
+                    $csv_mob_issues_some = $data[57];
+                    $csv_mob_issues_sever = $data[58];
+                    $csv_mob_issues_wheelchair = $data[59];
+                    $csv_mob_issues_all = $data[60];
 
-                    $csv_summary = $data[67];
-                    $csv_cautions = $data[74];
+                    $csv_summary = $data[71];
+                    $csv_cautions = $data[78];
 
 
                     $interval = \Custodia\Interval::where('name', '=', $csv_interval)->firstOrFail();
@@ -174,146 +179,182 @@ class MaintenanceItemSeeder extends Seeder
                         }
                     }
 
-                    if ($csv_home_type_small_bungalow == "x"){
-                        $home_type = \Custodia\HomeType::where('name', '=', 'Small Bungalow')->firstOrFail();
-                        $item->homeTypes()->attach($home_type);
-                    }
+                    if ($csv_home_type_all == "x"){
+                        foreach (\Custodia\HomeType::all() as $home_type){
+                            $item->homeTypes()->attach($home_type);
+                        }
+                    } else {
+                        if ($csv_home_type_small_bungalow == "x"){
+                            $home_type = \Custodia\HomeType::where('name', '=', 'Small Bungalow')->firstOrFail();
+                            $item->homeTypes()->attach($home_type);
+                        }
 
-                    if ($csv_home_type_large_bungalow == "x"){
-                        $home_type = \Custodia\HomeType::where('name', '=', 'Large Bungalow')->firstOrFail();
-                        $item->homeTypes()->attach($home_type);
-                    }
+                        if ($csv_home_type_large_bungalow == "x"){
+                            $home_type = \Custodia\HomeType::where('name', '=', 'Large Bungalow')->firstOrFail();
+                            $item->homeTypes()->attach($home_type);
+                        }
 
-                    if ($csv_home_type_small_condo == "x"){
-                        $home_type = \Custodia\HomeType::where('name', '=', 'Small Condo')->firstOrFail();
-                        $item->homeTypes()->attach($home_type);
-                    }
+                        if ($csv_home_type_small_condo == "x"){
+                            $home_type = \Custodia\HomeType::where('name', '=', 'Small Condo')->firstOrFail();
+                            $item->homeTypes()->attach($home_type);
+                        }
 
-                    if ($csv_home_type_large_condo == "x"){
-                        $home_type = \Custodia\HomeType::where('name', '=', 'Large Condo')->firstOrFail();
-                        $item->homeTypes()->attach($home_type);
-                    }
+                        if ($csv_home_type_large_condo == "x"){
+                            $home_type = \Custodia\HomeType::where('name', '=', 'Large Condo')->firstOrFail();
+                            $item->homeTypes()->attach($home_type);
+                        }
 
-                    if ($csv_home_type_small_two_story == "x"){
-                        $home_type = \Custodia\HomeType::where('name', '=', 'Small 2-Story')->firstOrFail();
-                        $item->homeTypes()->attach($home_type);
-                    }
+                        if ($csv_home_type_small_two_story == "x"){
+                            $home_type = \Custodia\HomeType::where('name', '=', 'Small 2-Story')->firstOrFail();
+                            $item->homeTypes()->attach($home_type);
+                        }
 
-                    if ($csv_home_type_large_two_story == "x"){
-                        $home_type = \Custodia\HomeType::where('name', '=', 'Large 2-Story')->firstOrFail();
-                        $item->homeTypes()->attach($home_type);
-                    }
+                        if ($csv_home_type_large_two_story == "x"){
+                            $home_type = \Custodia\HomeType::where('name', '=', 'Large 2-Story')->firstOrFail();
+                            $item->homeTypes()->attach($home_type);
+                        }
 
-                    if ($csv_home_type_larger_home == "x"){
-                        $home_type = \Custodia\HomeType::where('name', '=', 'Larger Home')->firstOrFail();
-                        $item->homeTypes()->attach($home_type);
-                    }
-
-
-
-                    if ($csv_outdoor_space_small_yard == "x"){
-                        $outdoor_space_type = \Custodia\OutdoorSpaceType::where('name', '=', 'Small Yard')->firstOrFail();
-                        $item->outdoorSpaces()->attach($outdoor_space_type);
-                    }
-                    if ($csv_outdoor_space_medium_yard == "x"){
-                        $outdoor_space_type = \Custodia\OutdoorSpaceType::where('name', '=', 'Medium Yard')->firstOrFail();
-                        $item->outdoorSpaces()->attach($outdoor_space_type);
-                    }
-                    if ($csv_outdoor_space_large_yard == "x"){
-                        $outdoor_space_type = \Custodia\OutdoorSpaceType::where('name', '=', 'Large Yard')->firstOrFail();
-                        $item->outdoorSpaces()->attach($outdoor_space_type);
-                    }
-                    if ($csv_outdoor_space_gardens == "x"){
-                        $outdoor_space_type = \Custodia\OutdoorSpaceType::where('name', '=', 'Gardens')->firstOrFail();
-                        $item->outdoorSpaces()->attach($outdoor_space_type);
-                    }
-                    if ($csv_outdoor_space_hedges == "x"){
-                        $outdoor_space_type = \Custodia\OutdoorSpaceType::where('name', '=', 'Hedges')->firstOrFail();
-                        $item->outdoorSpaces()->attach($outdoor_space_type);
-                    }
-                    if ($csv_outdoor_space_a_few_trees == "x"){
-                        $outdoor_space_type = \Custodia\OutdoorSpaceType::where('name', '=', 'A few trees')->firstOrFail();
-                        $item->outdoorSpaces()->attach($outdoor_space_type);
-                    }
-                    if ($csv_outdoor_space_lots_of_trees == "x"){
-                        $outdoor_space_type = \Custodia\OutdoorSpaceType::where('name', '=', 'Lots of trees')->firstOrFail();
-                        $item->outdoorSpaces()->attach($outdoor_space_type);
+                        if ($csv_home_type_larger_home == "x"){
+                            $home_type = \Custodia\HomeType::where('name', '=', 'Larger Home')->firstOrFail();
+                            $item->homeTypes()->attach($home_type);
+                        }
                     }
 
 
 
-                    if ($csv_driveway_none == "x"){
-                        $driveway_type = \Custodia\DrivewayType::where('name', '=', 'No Driveway')->firstOrFail();
-                        $item->drivewayTypes()->attach($driveway_type);
-                    }
-                    if ($csv_two_car_driveway == "x"){
-                        $driveway_type = \Custodia\DrivewayType::where('name', '=', '2-Car Driveway')->firstOrFail();
-                        $item->drivewayTypes()->attach($driveway_type);
-                    }
-                    if ($csv_four_car_driveway == "x"){
-                        $driveway_type = \Custodia\DrivewayType::where('name', '=', '4-Car Driveway')->firstOrFail();
-                        $item->drivewayTypes()->attach($driveway_type);
-                    }
-                    if ($csv_six_car_driveway == "x"){
-                        $driveway_type = \Custodia\DrivewayType::where('name', '=', '6-Car Driveway')->firstOrFail();
-                        $item->drivewayTypes()->attach($driveway_type);
-                    }
-                    if ($csv_eight_car_driveway == "x"){
-                        $driveway_type = \Custodia\DrivewayType::where('name', '=', '8-Car Driveway')->firstOrFail();
-                        $item->drivewayTypes()->attach($driveway_type);
-                    }
-                    if ($csv_ten_car_driveway == "x"){
-                        $driveway_type = \Custodia\DrivewayType::where('name', '=', '10-Car Driveway')->firstOrFail();
-                        $item->drivewayTypes()->attach($driveway_type);
+
+
+                    if ($csv_outdoor_space_all == "x"){
+                        foreach (\Custodia\OutdoorSpaceType::all() as $outdoor_space_type){
+                            $item->outdoorSpaces()->attach($outdoor_space_type);
+                        }
+                    } else {
+                        if ($csv_outdoor_space_small_yard == "x"){
+                            $outdoor_space_type = \Custodia\OutdoorSpaceType::where('name', '=', 'Small Yard')->firstOrFail();
+                            $item->outdoorSpaces()->attach($outdoor_space_type);
+                        }
+                        if ($csv_outdoor_space_medium_yard == "x"){
+                            $outdoor_space_type = \Custodia\OutdoorSpaceType::where('name', '=', 'Medium Yard')->firstOrFail();
+                            $item->outdoorSpaces()->attach($outdoor_space_type);
+                        }
+                        if ($csv_outdoor_space_large_yard == "x"){
+                            $outdoor_space_type = \Custodia\OutdoorSpaceType::where('name', '=', 'Large Yard')->firstOrFail();
+                            $item->outdoorSpaces()->attach($outdoor_space_type);
+                        }
+                        if ($csv_outdoor_space_gardens == "x"){
+                            $outdoor_space_type = \Custodia\OutdoorSpaceType::where('name', '=', 'Gardens')->firstOrFail();
+                            $item->outdoorSpaces()->attach($outdoor_space_type);
+                        }
+                        if ($csv_outdoor_space_hedges == "x"){
+                            $outdoor_space_type = \Custodia\OutdoorSpaceType::where('name', '=', 'Hedges')->firstOrFail();
+                            $item->outdoorSpaces()->attach($outdoor_space_type);
+                        }
+                        if ($csv_outdoor_space_a_few_trees == "x"){
+                            $outdoor_space_type = \Custodia\OutdoorSpaceType::where('name', '=', 'A few trees')->firstOrFail();
+                            $item->outdoorSpaces()->attach($outdoor_space_type);
+                        }
+                        if ($csv_outdoor_space_lots_of_trees == "x"){
+                            $outdoor_space_type = \Custodia\OutdoorSpaceType::where('name', '=', 'Lots of trees')->firstOrFail();
+                            $item->outdoorSpaces()->attach($outdoor_space_type);
+                        }
                     }
 
 
-                    if ($csv_home_feature_deck == "x"){
-                        $feature = \Custodia\HomeFeature::where('name', '=', 'Deck')->firstOrFail();
-                        $item->homeFeatures()->attach($feature);
-                    }
-                    if ($csv_home_feature_porch == "x"){
-                        $feature = \Custodia\HomeFeature::where('name', '=', 'Porch')->firstOrFail();
-                        $item->homeFeatures()->attach($feature);
-                    }
-                    if ($csv_home_feature_balcony == "x"){
-                        $feature = \Custodia\HomeFeature::where('name', '=', 'Balcony')->firstOrFail();
-                        $item->homeFeatures()->attach($feature);
-                    }
-                    if ($csv_home_feature_walkway == "x"){
-                        $feature = \Custodia\HomeFeature::where('name', '=', 'Walkway')->firstOrFail();
-                        $item->homeFeatures()->attach($feature);
-                    }
-                    if ($csv_home_feature_fireplace == "x"){
-                        $feature = \Custodia\HomeFeature::where('name', '=', 'Fireplace')->firstOrFail();
-                        $item->homeFeatures()->attach($feature);
-                    }
-                    if ($csv_home_feature_pool == "x"){
-                        $feature = \Custodia\HomeFeature::where('name', '=', 'Pool')->firstOrFail();
-                        $item->homeFeatures()->attach($feature);
+
+
+                    if ($csv_driveway_all == "x"){
+                        foreach (\Custodia\DrivewayType::all() as $driveway_type){
+                            $item->drivewayTypes()->attach($driveway_type);
+                        }
+                    } else {
+                        if ($csv_driveway_none == "x"){
+                            $driveway_type = \Custodia\DrivewayType::where('name', '=', 'No Driveway')->firstOrFail();
+                            $item->drivewayTypes()->attach($driveway_type);
+                        }
+                        if ($csv_two_car_driveway == "x"){
+                            $driveway_type = \Custodia\DrivewayType::where('name', '=', '2-Car Driveway')->firstOrFail();
+                            $item->drivewayTypes()->attach($driveway_type);
+                        }
+                        if ($csv_four_car_driveway == "x"){
+                            $driveway_type = \Custodia\DrivewayType::where('name', '=', '4-Car Driveway')->firstOrFail();
+                            $item->drivewayTypes()->attach($driveway_type);
+                        }
+                        if ($csv_six_car_driveway == "x"){
+                            $driveway_type = \Custodia\DrivewayType::where('name', '=', '6-Car Driveway')->firstOrFail();
+                            $item->drivewayTypes()->attach($driveway_type);
+                        }
+                        if ($csv_eight_car_driveway == "x"){
+                            $driveway_type = \Custodia\DrivewayType::where('name', '=', '8-Car Driveway')->firstOrFail();
+                            $item->drivewayTypes()->attach($driveway_type);
+                        }
+                        if ($csv_ten_car_driveway == "x"){
+                            $driveway_type = \Custodia\DrivewayType::where('name', '=', '10-Car Driveway')->firstOrFail();
+                            $item->drivewayTypes()->attach($driveway_type);
+                        }
                     }
 
 
-                    if ($csv_mob_issues_none == "x"){
-                        $issue = \Custodia\MobilityIssueType::where('name', '=', 'No Mobility Issues')->firstOrFail();
-                        $item->mobilityIssues()->attach($issue);
+
+                    if ($csv_home_feature_all == "x"){
+                        foreach (\Custodia\HomeFeature::all() as $feature){
+                            $item->homeFeatures()->attach($feature);
+                        }
+                    } else {
+                        if ($csv_home_feature_deck == "x"){
+                            $feature = \Custodia\HomeFeature::where('name', '=', 'Deck')->firstOrFail();
+                            $item->homeFeatures()->attach($feature);
+                        }
+                        if ($csv_home_feature_porch == "x"){
+                            $feature = \Custodia\HomeFeature::where('name', '=', 'Porch')->firstOrFail();
+                            $item->homeFeatures()->attach($feature);
+                        }
+                        if ($csv_home_feature_balcony == "x"){
+                            $feature = \Custodia\HomeFeature::where('name', '=', 'Balcony')->firstOrFail();
+                            $item->homeFeatures()->attach($feature);
+                        }
+                        if ($csv_home_feature_walkway == "x"){
+                            $feature = \Custodia\HomeFeature::where('name', '=', 'Walkway')->firstOrFail();
+                            $item->homeFeatures()->attach($feature);
+                        }
+                        if ($csv_home_feature_fireplace == "x"){
+                            $feature = \Custodia\HomeFeature::where('name', '=', 'Fireplace')->firstOrFail();
+                            $item->homeFeatures()->attach($feature);
+                        }
+                        if ($csv_home_feature_pool == "x"){
+                            $feature = \Custodia\HomeFeature::where('name', '=', 'Pool')->firstOrFail();
+                            $item->homeFeatures()->attach($feature);
+                        }
                     }
-                    if ($csv_mob_issues_mild == "x"){
-                        $issue = \Custodia\MobilityIssueType::where('name', '=', 'Mild Issues')->firstOrFail();
-                        $item->mobilityIssues()->attach($issue);
+
+
+
+                    if ($csv_mob_issues_all == "x"){
+                        foreach (\Custodia\MobilityIssueType::all() as $issue){
+                            $item->mobilityIssues()->attach($issue);
+                        }
+                    } else {
+                        if ($csv_mob_issues_none == "x"){
+                            $issue = \Custodia\MobilityIssueType::where('name', '=', 'No Mobility Issues')->firstOrFail();
+                            $item->mobilityIssues()->attach($issue);
+                        }
+                        if ($csv_mob_issues_mild == "x"){
+                            $issue = \Custodia\MobilityIssueType::where('name', '=', 'Mild Issues')->firstOrFail();
+                            $item->mobilityIssues()->attach($issue);
+                        }
+                        if ($csv_mob_issues_some == "x"){
+                            $issue = \Custodia\MobilityIssueType::where('name', '=', 'Some difficulty')->firstOrFail();
+                            $item->mobilityIssues()->attach($issue);
+                        }
+                        if ($csv_mob_issues_sever == "x"){
+                            $issue = \Custodia\MobilityIssueType::where('name', '=', 'Severe difficulty')->firstOrFail();
+                            $item->mobilityIssues()->attach($issue);
+                        }
+                        if ($csv_mob_issues_wheelchair == "x"){
+                            $issue = \Custodia\MobilityIssueType::where('name', '=', 'Wheel chair')->firstOrFail();
+                            $item->mobilityIssues()->attach($issue);
+                        }
                     }
-                    if ($csv_mob_issues_some == "x"){
-                        $issue = \Custodia\MobilityIssueType::where('name', '=', 'Some difficulty')->firstOrFail();
-                        $item->mobilityIssues()->attach($issue);
-                    }
-                    if ($csv_mob_issues_sever == "x"){
-                        $issue = \Custodia\MobilityIssueType::where('name', '=', 'Severe difficulty')->firstOrFail();
-                        $item->mobilityIssues()->attach($issue);
-                    }
-                    if ($csv_mob_issues_wheelchair == "x"){
-                        $issue = \Custodia\MobilityIssueType::where('name', '=', 'Wheel chair')->firstOrFail();
-                        $item->mobilityIssues()->attach($issue);
-                    }
+
 
                     $item->save();
                 }
