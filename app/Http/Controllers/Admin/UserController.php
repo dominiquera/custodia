@@ -196,7 +196,7 @@ class UserController extends Controller
     public function apiGetTop3MaintenanceItemsTodayByUser(User $user){
         $month = date('F');
         $query = "
-            select ITEMS.id from maintenance_items ITEMS
+            select distinct(ITEMS.id) from maintenance_items ITEMS
             join home_type_maintenance_item ITEM_HOME_TYPE on ITEMS.id = ITEM_HOME_TYPE.maintenance_item_id
             join maintenance_item_monthly_event ITEM_MONTHLY_EVENT on ITEMS.id = ITEM_MONTHLY_EVENT.maintenance_item_id
             join monthly_events MONTHLY_EVENT on ITEM_MONTHLY_EVENT.monthly_event_id = MONTHLY_EVENT.id
@@ -216,7 +216,7 @@ class UserController extends Controller
             and ITEMS_IGNORED_USER.id IS NULL
             and MONTHLY_EVENT.month = \"{$month}\"
             ORDER BY ITEMS.points DESC
-            LIMIT 5;
+            LIMIT 3;
         ";
 
         $results = DB::select($query);
