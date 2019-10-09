@@ -32,6 +32,15 @@ class MaintenanceItemSeeder extends Seeder
                     $csv_points = $data[2];
                     $csv_interval = $data[3];
 
+                    if ($csv_interval == "Bimonthly"
+                        or $csv_interval == "Quarterly"
+                        or $csv_interval == "Annually"
+                        or $csv_interval == "Biannually"
+                        or $csv_interval == "Triannually"
+                        or $csv_interval == "One Time" ){
+                        $csv_interval = "Monthly";
+                    }
+
                     $csv_jan = $data[4];
                     $csv_feb = $data[5];
                     $csv_mar = $data[6];
