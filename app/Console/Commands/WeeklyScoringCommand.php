@@ -67,6 +67,8 @@ class WeeklyScoringCommand extends Command
                     if ($maintenanceItem->homeTypes->contains($user->userProfile->homeType)){
                         if (!$user->ignoredMaintenanceItems->contains($maintenanceItem)){
                             //@todo keep drilling
+                            //@todo: Check outdoor spaces, features etc. Make sure its relevant
+                            //@todo: If its relevant, check if its been done (Add points) or missed (subtract points)
                         } else {
                             echo "Ignoring because: Maintenance Item ignored by User";
                         }
