@@ -61,7 +61,7 @@ class WeeklyScoringCommand extends Command
                 echo "Processing Monthly Event: " . $monthlyEvent->title . "\n";
                 foreach ($monthlyEvent->maintenanceItems as $maintenanceItem){
                     echo "Processing Maintenance Item: " . $maintenanceItem->title . "\n";
-                    //@todo check if maintenance item is relative, if its done, ignored, etc here
+                    //@todo check if maintenance item is relevant, if its done, ignored, etc here
                 }
                 echo "\n";
             }
