@@ -17,6 +17,8 @@ class CreateMaintenanceItemDoneUserTable extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('maintenance_item_id')->unsigned()->index();
             $table->bigInteger('user_id')->unsigned()->index();
+            $table->string('month');
+            $table->integer('year');
             $table->timestamps();
         });
     }
