@@ -43,27 +43,29 @@ class WeeklyScoringCommand extends Command
         $month = date('F');
         $monthlyEvents = MonthlyEvent::where('month', '=', $month)->get();
 
-        echo "Running Weekly Scoring command...\n\n";
-        echo "Month: " . $month . "\n\n";
+        echo "Running Weekly Scoring command..." . PHP_EOL . PHP_EOL;
+        echo "Month: " . $month . PHP_EOL . PHP_EOL;
 
-        echo "Monthly Events: \n";
+        echo "Monthly Events: " . PHP_EOL;
         foreach ($monthlyEvents as $monthlyEvent){
-            echo $monthlyEvent->title . "\n";
+            echo $monthlyEvent->title . PHP_EOL;
         }
-        echo "\n";
+        echo PHP_EOL;
 
 
         $users = User::where('role_id', '=', Role::where('name', '=', 'User')->firstOrFail()->id)->get();
         foreach ($users as $user){
-            echo "Processing User: " . $user->id . "\n";
+            echo "Processing User: " . $user->id . PHP_EOL;
 
             foreach ($monthlyEvents as $monthlyEvent){
-                echo "Processing Monthly Event: " . $monthlyEvent->title . "\n";
+                echo "Processing Monthly Event: " . $monthlyEvent->title . PHP_EOL;
+
                 foreach ($monthlyEvent->maintenanceItems as $maintenanceItem){
-                    echo "Processing Maintenance Item: " . $maintenanceItem->title . "\n";
+                    echo "Processing Maintenance Item: " . $maintenanceItem->title . PHP_EOL;
                     //@todo check if maintenance item is relevant, if its done, ignored, etc here
                 }
-                echo "\n";
+
+                echo PHP_EOL;
             }
 
         }
