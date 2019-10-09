@@ -20,6 +20,7 @@
 </head>
 <body>
     <div id="app">
+        @auth
         <nav>
             <div class="ui container" style="padding-top:50px">
                 <div class="ui menu">
@@ -29,18 +30,7 @@
                     </a>
 
                     <div class="right menu">
-                        @guest
-                            <a class="item" href="{{ route('login') }}">{{ __('Login') }}</a>
-                            @if (Route::has('register'))
-                                <a class="item" href="{{ route('register') }}">{{ __('Register') }}</a>
-                            @endif
-                        @else
-                            <a class="item" href="{{ url('/logout') }}"
-                               onclick="event.preventDefault();
-                             document.getElementById('logout-form').submit();">
-                                Logout
-                            </a>
-                        @endguest
+
                     </div>
 
                     <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
@@ -50,6 +40,7 @@
             </div>
 
         </nav>
+        @endauth
 
         <main class="py-4">
             @yield('content')
