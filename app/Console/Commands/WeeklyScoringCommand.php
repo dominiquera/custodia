@@ -62,7 +62,18 @@ class WeeklyScoringCommand extends Command
 
                 foreach ($monthlyEvent->maintenanceItems as $maintenanceItem){
                     echo "Processing Maintenance Item: " . $maintenanceItem->title . PHP_EOL;
+
                     //@todo check if maintenance item is relevant, if its done, ignored, etc here
+                    if ($maintenanceItem->homeTypes->contains($user->userProfile->homeType)){
+                        if (!$user->ignoredMaintenanceItems->contains($maintenanceItem)){
+                            //@todo keep drilling
+                        } else {
+                            echo "Ignoring because: Maintenance Item ignored by User";
+                        }
+                    } else {
+                        echo "Ignoring because: Home Type incompatible" . PHP_EOL;
+                    }
+                    echo PHP_EOL;
                 }
 
                 echo PHP_EOL;
