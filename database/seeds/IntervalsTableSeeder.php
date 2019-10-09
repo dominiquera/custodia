@@ -16,13 +16,7 @@ class IntervalsTableSeeder extends Seeder
             "Weekly",
             "Biweekly",
             "Monthly",
-            "Bimonthly",
-            "Quarterly",
-            "Annually",
-            "Biannually",
-            "Triannually",
-            "Weather Trigger",
-            "One Time"
+            "Weather Trigger"
         ];
 
         foreach ($intervals as $interval){
