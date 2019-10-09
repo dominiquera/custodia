@@ -11,14 +11,14 @@ class WeeklyScoringCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'command:name';
+    protected $signature = 'command:weekly_scoring';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Calculate user scores. Scheduled for weekly run.';
 
     /**
      * Create a new command instance.
@@ -37,6 +37,6 @@ class WeeklyScoringCommand extends Command
      */
     public function handle()
     {
-        //
+        echo "Running...";
     }
 }
