@@ -12,6 +12,9 @@ class HomeFeatureTableSeeder extends Seeder
     public function run()
     {
         DB::table('home_features')->insert([
+            'name' => 'No Features',
+        ]);
+        DB::table('home_features')->insert([
             'name' => 'Deck',
         ]);
         DB::table('home_features')->insert([

@@ -12,6 +12,9 @@ class OutdoorSpaceTypesTableSeeder extends Seeder
     public function run()
     {
         DB::table('outdoor_space_types')->insert([
+            'name' => 'No Yard',
+        ]);
+        DB::table('outdoor_space_types')->insert([
             'name' => 'Small Yard',
         ]);
         DB::table('outdoor_space_types')->insert([
