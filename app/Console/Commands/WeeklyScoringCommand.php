@@ -72,6 +72,7 @@ class WeeklyScoringCommand extends Command
                                 if ($this->hasMatchingDrivewayType($user, $maintenanceItem)){
                                     if ($this->hasMatchingHomeFeature($user, $maintenanceItem)){
                                         if ($this->hasMatchingMobilityIssue($user, $maintenanceItem)){
+
                                             //@todo check if its done or missed
                                             //@todo add or subtract points etc here
                                         } else {
@@ -135,5 +136,15 @@ class WeeklyScoringCommand extends Command
             }
         }
         return false;
+    }
+
+    private function isMaintenanceItemFinished(){
+        //calculate if the item is finished (been done as many times as interval requires)
+    }
+
+    private function calcNumTimesMissed($maintenanceItem){
+        //calculate how many times the item has been missed this week.
+        //ie if daily, we should have had 7 this week.
+        //if only done 5 times this week, missed twice.
     }
 }
