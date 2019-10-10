@@ -26,7 +26,13 @@ class CreateUserRequest extends FormRequest
         return [
             'name' => 'required',
             'email' => 'required|email|unique:users',
-            'role' => 'required'
+            'role' => 'required',
+            'password' => 'required',
+            'home_type' => 'required',
+            'outdoor_spaces' => 'required',
+            'features' => 'required',
+            'driveways' => 'required',
+            'mobility_issues' => 'required'
         ];
     }
 }

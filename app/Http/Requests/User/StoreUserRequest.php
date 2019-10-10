@@ -27,7 +27,12 @@ class StoreUserRequest extends FormRequest
             'id' => 'required',
             'name' => 'required',
             'email' => 'required|email|unique:users,email,'.$this->id,
-            'role' => 'required'
+            'role' => 'required',
+            'home_type' => 'required',
+            'outdoor_spaces' => 'required',
+            'features' => 'required',
+            'driveways' => 'required',
+            'mobility_issues' => 'required'
         ];
     }
 }

@@ -21,19 +21,19 @@
       @csrf
       <div class="form-group">
           <label for="name">Username</label>
-          <input type="text" class="form-control" name="name" id="name" placeholder="Username">
+          <input type="text" class="form-control" name="name" id="name" placeholder="Username" required>
       </div>
       <div class="form-group">
           <label for="email">E-Mail</label>
-          <input type="text" name="email" class="form-control" id="email" placeholder="E-Mail">
+          <input type="text" name="email" class="form-control" id="email" placeholder="E-Mail" required>
       </div>
       <div class="form-group">
           <label for="password">Password</label>
-          <input type="password" name="password" class="form-control" id="password">
+          <input type="password" name="password" class="form-control" id="password" required>
       </div>
       <div class="form-group">
           <label for="role">Role</label>
-          <select class="form-control" name="role" id="role">
+          <select class="form-control" name="role" id="role" required>
               <option selected="selected" disabled="disabled">--Choose a Role--</option>
               @foreach (Custodia\Role::all() as $role)
                   <option value="{{$role->id}}">{{ $role->name }}</option>
@@ -42,7 +42,7 @@
       </div>
       <div class="form-group">
           <label for="home_type">Home Type</label>
-          <select class="form-control" name="home_type" id="home_type">
+          <select class="form-control" name="home_type" id="home_type" required>
               <option selected="selected" disabled="disabled">--Choose a Home Type--</option>
               @foreach (Custodia\HomeType::all() as $homeType)
                   <option value="{{$homeType->id}}">{{ $homeType->name }}</option>
@@ -92,10 +92,6 @@
                   </div>
               @endforeach
           </div>
-      </div>
-      <div class="form-group">
-          <label for="score">Score</label>
-          <input type="number" name="score" class="form-control" id="score" placeholder="Score">
       </div>
 
       <button style="margin-top:30px;" type="submit" class="ui button primary">Save</button>
