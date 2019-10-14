@@ -34,6 +34,18 @@ SDK Docs: https://firebase-php.readthedocs.io/en/latest/
 ### /v1/users/{user}/top_three_maintenance_items_today
     Returns the top 3 maintenance items due today for given user
     
+### /v1/users/{user}/outdoor_spaces
+    Returns the list of outdoor_spaces for a given user id
+    
+### /v1/users/{user}/driveways
+    Returns the list of driveways for a given user id
+    
+### /v1/users/{user}/home_features
+    Returns the list of home_features for a given user id
+    
+### /v1/users/{user}/mobility_issues
+    Returns the list of mobility_issues for a given user id
+    
 ### /v1/users/{user}/section/{section}/top_three_maintenance_items_today
     Returns the top 3 maintenance items due today for given user and section
     
@@ -50,3 +62,19 @@ SDK Docs: https://firebase-php.readthedocs.io/en/latest/
 ### /v1/users/{user}/score
 	Update user's current score
     * Expected input: score
+    
+### /v1/users/{user}/outdoor_spaces
+    	Set the list of outdoor_spaces for a given user id
+    * Expected input: outdoor_spaces (a list of outdoor space IDs outdoor_spaces[])
+    
+### /v1/users/{user}/driveways
+    	Set the list of driveways for a given user id
+    * Expected input: driveways (a list of driveways IDs driveways[])
+    
+### /v1/users/{user}/home_features
+    	Set the list of home_features for a given user id
+    * Expected input: home_features (a list of home feature IDs home_features[])
+    
+### /v1/users/{user}/mobility_issues
+    	Set the list of mobility_issues for a given user id
+    * Expected input: mobility_issues (a list of mobility issue IDs mobility_issues[])
