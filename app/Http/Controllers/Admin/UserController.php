@@ -2,9 +2,13 @@
 
 namespace Custodia\Http\Controllers\Admin;
 
+use Custodia\DrivewayType;
+use Custodia\HomeFeature;
 use Custodia\Http\Requests\User\CreateUserRequest;
 use Custodia\Http\Requests\User\StoreUserRequest;
 use Custodia\MaintenanceItem;
+use Custodia\MobilityIssueType;
+use Custodia\OutdoorSpaceType;
 use Custodia\Section;
 use Custodia\User;
 use Custodia\UserProfile;
@@ -256,5 +260,129 @@ class UserController extends Controller
         ";
 
         return $query;
+    }
+
+    public function apiGetOutdoorSpaces(User $user){
+        return response()->json(['outdoor_spaces' => $user->userProfile->outdoorSpaces], 200);
+    }
+
+    public function apiSetOutdoorSpaces(User $user, Request $request){
+        $validation = Validator::make($request->all(),['outdoor_spaces' => 'required|array']);
+        $errors = $validation->errors();
+
+        if (sizeof($errors) > 0){
+            return response()->json(["Errors" => $errors], 400);
+        } else {
+            try {
+                if ($request->has('outdoor_spaces')){
+                    $profile = $user->userProfile;
+                    $profile->outdoorSpaces()->detach();
+                    foreach ($request->outdoor_spaces as $outdoorSpaceId){
+                        $outdoorSpace = OutdoorSpaceType::findOrFail($outdoorSpaceId);
+                        $profile->outdoorSpaces()->attach($outdoorSpace);
+                    }
+                    $profile->save();
+
+                    return response()->json(['message' => "Success"], 200);
+                } else {
+                    return response()->json(['message' => "Unknown error."], 400);
+                }
+            } catch (\Exception $e){
+                return response()->json(['message' => $e], 400);
+            }
+        }
+    }
+
+    public function apiGetDriveways(User $user){
+        return response()->json(['driveways' => $user->userProfile->drivewayTypes], 200);
+    }
+
+    public function apiSetDriveways(User $user, Request $request){
+        $validation = Validator::make($request->all(),['driveways' => 'required|array']);
+        $errors = $validation->errors();
+
+        if (sizeof($errors) > 0){
+            return response()->json(["Errors" => $errors], 400);
+        } else {
+            try {
+                if ($request->has('driveways')){
+                    $profile = $user->userProfile;
+                    $profile->drivewayTypes()->detach();
+                    foreach ($request->driveways as $drivewayId){
+                        $driveway = DrivewayType::findOrFail($drivewayId);
+                        $profile->drivewayTypes()->attach($driveway);
+                    }
+                    $profile->save();
+
+                    return response()->json(['message' => "Success"], 200);
+                } else {
+                    return response()->json(['message' => "Unknown error."], 400);
+                }
+            } catch (\Exception $e){
+                return response()->json(['message' => $e], 400);
+            }
+        }
+    }
+
+    public function apiGetHomeFeatures(User $user){
+        return response()->json(['home_features' => $user->userProfile->homeFeatures], 200);
+    }
+
+    public function apiSetHomeFeatures(User $user, Request $request){
+        $validation = Validator::make($request->all(),['home_features' => 'required|array']);
+        $errors = $validation->errors();
+
+        if (sizeof($errors) > 0){
+            return response()->json(["Errors" => $errors], 400);
+        } else {
+            try {
+                if ($request->has('home_features')){
+                    $profile = $user->userProfile;
+                    $profile->homeFeatures()->detach();
+                    foreach ($request->home_features as $featureId){
+                        $feature = HomeFeature::findOrFail($featureId);
+                        $profile->homeFeatures()->attach($feature);
+                    }
+                    $profile->save();
+
+                    return response()->json(['message' => "Success"], 200);
+                } else {
+                    return response()->json(['message' => "Unknown error."], 400);
+                }
+            } catch (\Exception $e){
+                return response()->json(['message' => $e], 400);
+            }
+        }
+    }
+
+    public function apiGetMobilityIssues(User $user){
+        return response()->json(['mobility_issues' => $user->userProfile->mobilityIssues], 200);
+    }
+
+    public function apiSetMobilityIssues(User $user, Request $request){
+        $validation = Validator::make($request->all(),['mobility_issues' => 'required|array']);
+        $errors = $validation->errors();
+
+        if (sizeof($errors) > 0){
+            return response()->json(["Errors" => $errors], 400);
+        } else {
+            try {
+                if ($request->has('mobility_issues')){
+                    $profile = $user->userProfile;
+                    $profile->mobilityIssues()->detach();
+                    foreach ($request->mobility_issues as $issueId){
+                        $issue = MobilityIssueType::findOrFail($issueId);
+                        $profile->mobilityIssues()->attach($issue);
+                    }
+                    $profile->save();
+
+                    return response()->json(['message' => "Success"], 200);
+                } else {
+                    return response()->json(['message' => "Unknown error."], 400);
+                }
+            } catch (\Exception $e){
+                return response()->json(['Error' => $e], 400);
+            }
+        }
     }
 }
