@@ -19,6 +19,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::post('/v1/users', 'Admin\UserController@apiCreateUser');
 
+
+Route::post('/v1/auth', 'Admin\UserController@apiAuthenticateUser');
+
 Route::post('/v1/users/{user}/score', 'Admin\UserController@apiSetUserScore');
 Route::get('/v1/users/{user}/score', 'Admin\UserController@apiGetUserScore');
 

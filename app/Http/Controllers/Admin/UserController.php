@@ -136,10 +136,14 @@ class UserController extends Controller
     }
 
     public function apiAuthenticateUser(Request $request){
-        if ($request->has('phone')){
+        if ($request->has('phone') && strlen($request->phone) > 0){
             $phone = $request->phone;
-        } else if ($request->has('gauth')){
+            $user = User::where('phone', '=', $phone)->firstOrFail();
+            return response()->json(['id' => $user->id], 200);
+        } else if ($request->has('gauth') && strlen($request->gauth) > 0){
             $gauth = $request->gauth;
+            $user = User::where('google_auth_id', '=', $gauth)->firstOrFail();
+            return response()->json(['id' => $user->id], 200);
         } else {
             return response()->json(['error' => 'Invalid parameters.'], 400);
         }
