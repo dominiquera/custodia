@@ -51,11 +51,11 @@ class User extends Authenticatable
 
     public function doneMaintenanceItems()
     {
-        return $this->belongsToMany(MaintenanceItem::class, 'maintenance_item_done_user', 'user_id', 'maintenance_item_id');
+        return $this->belongsToMany(MaintenanceItem::class, 'maintenance_item_done_user', 'user_id', 'maintenance_item_id')->withTimestamps();
     }
 
     public function ignoredMaintenanceItems()
     {
-        return $this->belongsToMany(MaintenanceItem::class, 'maintenance_item_ignored_user', 'user_id', 'maintenance_item_id');
+        return $this->belongsToMany(MaintenanceItem::class, 'maintenance_item_ignored_user', 'user_id', 'maintenance_item_id')->withTimestamps();
     }
 }
