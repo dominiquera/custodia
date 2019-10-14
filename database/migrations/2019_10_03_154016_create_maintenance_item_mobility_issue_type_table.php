@@ -18,8 +18,10 @@ class CreateMaintenanceItemMobilityIssueTypeTable extends Migration
             $table->bigInteger('maintenance_item_id')->unsigned()->nullable()->index('maint_item_id');
             $table->timestamps();
 
-            $table->foreign('mobility_issue_type_id', 'mob_type_maint_item')->references('id')->on('mobility_issue_types');
-            $table->foreign('maintenance_item_id')->references('id')->on('maintenance_items');
+            $table->foreign('mobility_issue_type_id', 'mob_type_maint_item')
+                ->references('id')->on('mobility_issue_types')->onDelete('cascade');
+            $table->foreign('maintenance_item_id')
+                ->references('id')->on('maintenance_items')->onDelete('cascade');
         });
     }
 

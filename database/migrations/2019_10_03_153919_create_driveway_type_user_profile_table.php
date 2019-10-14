@@ -18,8 +18,8 @@ class CreateDrivewayTypeUserProfileTable extends Migration
             $table->bigInteger('user_profile_id')->unsigned()->nullable()->index();
             $table->timestamps();
 
-            $table->foreign('driveway_type_id')->references('id')->on('driveway_types');
-            $table->foreign('user_profile_id')->references('id')->on('user_profiles');
+            $table->foreign('driveway_type_id')->references('id')->on('driveway_types')->onDelete('cascade');
+            $table->foreign('user_profile_id')->references('id')->on('user_profiles')->onDelete('cascade');
         });
     }
 

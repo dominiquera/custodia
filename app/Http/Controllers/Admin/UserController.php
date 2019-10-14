@@ -135,6 +135,12 @@ class UserController extends Controller
         return redirect('/admin/users');
     }
 
+    public function deleteUser(User $user)
+    {
+        $user->delete();
+        return redirect('/admin/users');
+    }
+
     public function apiAuthenticateUser(Request $request){
         if ($request->has('phone') && strlen($request->phone) > 0){
             $phone = $request->phone;
@@ -172,12 +178,6 @@ class UserController extends Controller
 
         }
 
-    }
-
-    public function deleteUser(User $user)
-    {
-        $user->delete();
-        return redirect('/admin/users');
     }
 
     public function apiGetUserScore(User $user){

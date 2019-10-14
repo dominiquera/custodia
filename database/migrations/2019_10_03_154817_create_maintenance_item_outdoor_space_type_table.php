@@ -18,8 +18,10 @@ class CreateMaintenanceItemOutdoorSpaceTypeTable extends Migration
             $table->bigInteger('maintenance_item_id')->unsigned()->nullable()->index('maint_item_id');
             $table->timestamps();
 
-            $table->foreign('outdoor_space_type_id', 'outdoor_space_type_maint_item')->references('id')->on('outdoor_space_types');
-            $table->foreign('maintenance_item_id')->references('id')->on('maintenance_items');
+            $table->foreign('outdoor_space_type_id', 'outdoor_space_type_maint_item')
+                ->references('id')->on('outdoor_space_types')->onDelete('cascade');
+            $table->foreign('maintenance_item_id')
+                ->references('id')->on('maintenance_items')->onDelete('cascade');
         });
     }
 

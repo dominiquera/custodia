@@ -18,8 +18,8 @@ class CreateMobilityIssueTypeUserProfileTable extends Migration
             $table->bigInteger('user_profile_id')->unsigned()->nullable()->index();
             $table->timestamps();
 
-            $table->foreign('mobility_issue_type_id')->references('id')->on('mobility_issue_types');
-            $table->foreign('user_profile_id')->references('id')->on('user_profiles');
+            $table->foreign('mobility_issue_type_id')->references('id')->on('mobility_issue_types')->onDelete('cascade');
+            $table->foreign('user_profile_id')->references('id')->on('user_profiles')->onDelete('cascade');
         });
     }
 

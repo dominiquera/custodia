@@ -19,8 +19,8 @@ class CreateOutdoorSpaceTypeUserProfileTable extends Migration
             $table->bigInteger('user_profile_id')->unsigned()->nullable()->index();
             $table->timestamps();
 
-            $table->foreign('outdoor_space_type_id')->references('id')->on('outdoor_space_types');
-            $table->foreign('user_profile_id')->references('id')->on('user_profiles');
+            $table->foreign('outdoor_space_type_id')->references('id')->on('outdoor_space_types')->onDelete('cascade');;
+            $table->foreign('user_profile_id')->references('id')->on('user_profiles')->onDelete('cascade');;
         });
     }
 

@@ -19,8 +19,8 @@ class CreateMaintenanceItemMonthlyEventTable extends Migration
             $table->bigInteger('monthly_event_id')->unsigned()->nullable()->index();
             $table->timestamps();
 
-            $table->foreign('maintenance_item_id')->references('id')->on('maintenance_items');
-            $table->foreign('monthly_event_id')->references('id')->on('monthly_events');
+            $table->foreign('maintenance_item_id')->references('id')->on('maintenance_items')->onDelete('cascade');
+            $table->foreign('monthly_event_id')->references('id')->on('monthly_events')->onDelete('cascade');
         });
     }
 

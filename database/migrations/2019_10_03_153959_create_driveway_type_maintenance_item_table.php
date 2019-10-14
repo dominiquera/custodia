@@ -18,8 +18,8 @@ class CreateDrivewayTypeMaintenanceItemTable extends Migration
             $table->bigInteger('maintenance_item_id')->unsigned()->nullable()->index();
             $table->timestamps();
 
-            $table->foreign('driveway_type_id')->references('id')->on('driveway_types');
-            $table->foreign('maintenance_item_id')->references('id')->on('maintenance_items');
+            $table->foreign('driveway_type_id')->references('id')->on('driveway_types')->onDelete('cascade');
+            $table->foreign('maintenance_item_id')->references('id')->on('maintenance_items')->onDelete('cascade');
         });
     }
 

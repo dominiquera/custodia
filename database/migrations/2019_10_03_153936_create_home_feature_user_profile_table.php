@@ -18,8 +18,8 @@ class CreateHomeFeatureUserProfileTable extends Migration
             $table->bigInteger('user_profile_id')->unsigned()->nullable()->index();
             $table->timestamps();
 
-            $table->foreign('home_feature_id')->references('id')->on('home_features');
-            $table->foreign('user_profile_id')->references('id')->on('user_profiles');
+            $table->foreign('home_feature_id')->references('id')->on('home_features')->onDelete('cascade');
+            $table->foreign('user_profile_id')->references('id')->on('user_profiles')->onDelete('cascade');
         });
     }
 
