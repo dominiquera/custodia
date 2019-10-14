@@ -63,8 +63,7 @@ SDK Docs: https://firebase-php.readthedocs.io/en/latest/
 
 ### /v1/auth
 	Authenticate user via phone or google auth. Return user ID.
-    * Expected input: phone (phone number)
-    		      gauth (user gauth id)
+    * Expected input: phone (phone number) or gauth (user gauth id)
 
 ### /v1/users
 	Create new User.
