@@ -17,7 +17,7 @@ class CreateUserProfilesTable extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('user_id')->unsigned()->index();
             $table->bigInteger('home_type_id')->unsigned()->nullable();
-            $table->double('score')->nullable();
+            $table->double('score')->default(0);
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

@@ -29,6 +29,10 @@
           <input type="text" name="email" class="form-control" id="email" placeholder="E-Mail" value="{{$user->email}}">
       </div>
       <div class="form-group">
+          <label for="phone">Phone Number</label>
+          <input type="text" name="phone" class="form-control" id="phone" placeholder="Phone Number" value="{{$user->phone}}">
+      </div>
+      <div class="form-group">
           <label for="role">Role</label>
           <select class="form-control" name="role" id="role">
               <option selected="selected" disabled="disabled">--Choose a Role--</option>

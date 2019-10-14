@@ -47,6 +47,7 @@ class UserController extends Controller
         $user->name = $request->name;
         $user->password = Hash::make($request->password);
         $user->email = $request->email;
+        $user->phone = $request->phone;
         $user->role_id = $request->role;
 
         $user->save();
@@ -54,7 +55,6 @@ class UserController extends Controller
         $userProfile = new UserProfile();
         $userProfile->user_id = $user->id;
         $userProfile->home_type_id = $request->home_type;
-        $userProfile->score = $request->score;
         $userProfile->save();
 
         if ($request->has('outdoor_spaces')){
@@ -90,6 +90,7 @@ class UserController extends Controller
         $user = User::find($request->id);
         $user->name = $request->name;
         $user->email = $request->email;
+        $user->phone = $request->phone;
         $user->role_id = $request->role;
 
         $user->save();
@@ -130,6 +131,18 @@ class UserController extends Controller
 
         $userProfile->save();
         return redirect('/admin/users');
+    }
+
+    public function apiAuthenticateUser(Request $request){
+        if ($request->has('phone')){
+            $phone = $request->phone;
+        } else if ($request->has('gauth')){
+            $gauth = $request->gauth;
+        } else {
+            return response()->json(['error' => 'Invalid parameters.'], 400);
+        }
+
+
     }
 
     public function apiCreateUser(Request $request){

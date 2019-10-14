@@ -43,6 +43,7 @@ class UsersTableSeeder extends Seeder
         DB::table('users')->insert([
             'name' => 'Test User',
             'email' => 'custodiatest@mailinator.com',
+            'phone' => '07987654321',
             'role_id' => 2,
             'password' => bcrypt('secret'),
         ]);
@@ -84,6 +85,7 @@ class UsersTableSeeder extends Seeder
         $user = new User();
         $user->name = "Test Case User One";
         $user->email = 'custodia_test_one@mailinator.com';
+        $user->phone = '07123456789';
         $role = Role::where('name', '=', 'User')->firstOrFail();
         $user->role_id = $role->id;
         $user->password = bcrypt('test_user_one');

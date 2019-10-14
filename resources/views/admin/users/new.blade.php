@@ -32,6 +32,10 @@
           <input type="password" name="password" class="form-control" id="password" required>
       </div>
       <div class="form-group">
+          <label for="phone">Phone Number</label>
+          <input type="text" name="phone" class="form-control" id="phone" placeholder="Phone Number">
+      </div>
+      <div class="form-group">
           <label for="role">Role</label>
           <select class="form-control" name="role" id="role" required>
               <option selected="selected" disabled="disabled">--Choose a Role--</option>
