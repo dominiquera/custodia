@@ -32,6 +32,10 @@
           <input type="password" name="password" class="form-control" id="password" required>
       </div>
       <div class="form-group">
+          <label for="google_auth_id">Google Auth ID</label>
+          <input type="text" class="form-control" name="google_auth_id" id="google_auth_id" placeholder="Google Auth ID">
+      </div>
+      <div class="form-group">
           <label for="phone">Phone Number</label>
           <input type="text" name="phone" class="form-control" id="phone" placeholder="Phone Number">
       </div>

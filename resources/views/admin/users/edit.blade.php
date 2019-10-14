@@ -29,6 +29,10 @@
           <input type="text" name="email" class="form-control" id="email" placeholder="E-Mail" value="{{$user->email}}">
       </div>
       <div class="form-group">
+          <label for="google_auth_id">Google Auth ID</label>
+          <input type="text" class="form-control" name="google_auth_id" id="google_auth_id" placeholder="Google Auth ID" value="{{$user->google_auth_id}}">
+      </div>
+      <div class="form-group">
           <label for="phone">Phone Number</label>
           <input type="text" name="phone" class="form-control" id="phone" placeholder="Phone Number" value="{{$user->phone}}">
       </div>

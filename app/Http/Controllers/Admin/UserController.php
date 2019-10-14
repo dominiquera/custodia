@@ -48,6 +48,7 @@ class UserController extends Controller
         $user->password = Hash::make($request->password);
         $user->email = $request->email;
         $user->phone = $request->phone;
+        $user->google_auth_id = $request->google_auth_id;
         $user->role_id = $request->role;
 
         $user->save();
@@ -91,6 +92,7 @@ class UserController extends Controller
         $user->name = $request->name;
         $user->email = $request->email;
         $user->phone = $request->phone;
+        $user->google_auth_id = $request->google_auth_id;
         $user->role_id = $request->role;
 
         $user->save();
