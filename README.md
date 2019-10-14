@@ -31,6 +31,12 @@ SDK Docs: https://firebase-php.readthedocs.io/en/latest/
 ### /v1/users/{user}/ignored_maintenance_items
     Returns the list of ignored maintenance items for a given user id
     
+### /v1/users/{user}/maintenance_item/{maintenance_item}/done
+    Returns if a given maintenance item is done by a given user
+    
+### /v1/users/{user}/maintenance_item/{maintenance_item}/ignored
+    Returns if a given maintenance item is ignored by a given user
+    
 ### /v1/users/{user}/top_three_maintenance_items_today
     Returns the top 3 maintenance items due today for given user
     
@@ -78,3 +84,11 @@ SDK Docs: https://firebase-php.readthedocs.io/en/latest/
 ### /v1/users/{user}/mobility_issues
     	Set the list of mobility_issues for a given user id
     * Expected input: mobility_issues (a list of mobility issue IDs mobility_issues[])
+    
+### /v1/users/{user}/maintenance_item/{maintenance_item}/done
+    	Set the a given maintenance item to be done for a given user id
+    * Expected input: none
+    
+### /v1/users/{user}/maintenance_item/{maintenance_item}/ignored
+    	Set the a given maintenance item to be ignored for a given user id
+    * Expected input: none
