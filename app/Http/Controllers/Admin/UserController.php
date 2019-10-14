@@ -385,4 +385,30 @@ class UserController extends Controller
             }
         }
     }
+
+    public function apiGetIsMaintenanceItemDone(User $user, MaintenanceItem $maintenanceItem){
+        return response()->json($user->doneMaintenanceItems->contains($maintenanceItem), 200);
+    }
+
+    public function apiGetIsMaintenanceItemIgnored(User $user, MaintenanceItem $maintenanceItem){
+        return response()->json($user->ignoredMaintenanceItems->contains($maintenanceItem), 200);
+    }
+
+    public function apiSetMaintenanceItemDone(User $user, MaintenanceItem $maintenanceItem, Request $request){
+            if ($maintenanceItem) {
+                $user->doneMaintenanceItems()->attach($maintenanceItem);
+                return response()->json(['message' => "Success"], 200);
+            } else {
+                return response()->json('Error',  400);
+            }
+    }
+
+    public function apiSetMaintenanceItemIgnored(User $user, MaintenanceItem $maintenanceItem, Request $request){
+        if ($maintenanceItem) {
+            $user->ignoredMaintenanceItems()->attach($maintenanceItem);
+            return response()->json(['message' => "Success"], 200);
+        } else {
+            return response()->json('Error',  400);
+        }
+    }
 }
