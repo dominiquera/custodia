@@ -49,14 +49,11 @@ class WeeklyScoringCommand extends Command
         $job->save();
 
         $month = date('F');
-        $dayOfMonth = date('j');
-        $weekOfMonth = $this->roundUp($dayOfMonth / 7, 0);
 
         $monthlyEvents = MonthlyEvent::where('month', '=', $month)->get();
 
         echo "Running Weekly Scoring command..." . PHP_EOL . PHP_EOL;
-        echo "Last executed: " . $last_execution_date . PHP_EOL;
-        echo $this->calcDaysSinceDate($last_execution_date) . " days since last execution." . PHP_EOL . PHP_EOL;
+        echo $this->calcDaysSinceDate($last_execution_date) . " days since last execution. (" . $last_execution_date . ")" . PHP_EOL . PHP_EOL;
         echo "Month: " . $month . PHP_EOL . PHP_EOL;
 
         echo "Monthly Events: " . PHP_EOL;
@@ -156,21 +153,9 @@ class WeeklyScoringCommand extends Command
 
     private function calcNumTimesMaintenanceItemMissedSinceLastRun(User $user, MaintenanceItem $maintenanceItem, $lastExecutionDate){
         //calculate how many times the item has been missed since last run
-        //ie if daily, we should have had 7 this week.
-        //if only done 5 times this week, missed twice.
+        //ie if daily, we should have had 7 this week. Calculate how many are expected minus how many are done.
 
         //@TODO WE NEED TO CONSIDER WHEN THE USER REGISTERED. CANT GIVE THEM -1000 ON FIRST WEEK.
-
-
-        $year= date('Y');
-        $month = date('F');
-        $dayOfMonth = date('j');
-        $weekOfMonth = $this->roundUp($dayOfMonth / 7, 0);
-
-        $daysSinceLastExecution = $this->calcDaysSinceDate($lastExecutionDate);
-
-        //what happens if we cross over a month?
-        //but then what about ones we've done 2 weeks ago, and only need doing once per month?
 
         $interval = $maintenanceItem->interval;
 
@@ -178,18 +163,20 @@ class WeeklyScoringCommand extends Command
             //item should have been done once for each day since last execution
             $itemsDone = $user->doneMaintenanceItems()
                 ->where('maintenance_item_id', '=', $maintenanceItem->id)
-                ->where('created_at', '>', $lastExecutionDate)->get();
+                ->where('maintenance_item_done_user.created_at', '>', $lastExecutionDate)->get();
 
-            $numMissed = $daysSinceLastExecution - sizeof($itemsDone);
+            $daysSinceLastExecution = $this->calcDaysSinceDate($lastExecutionDate);
+
+            $numMissed = max($daysSinceLastExecution - sizeof($itemsDone), 0);
             return $numMissed;
         }
         if ($interval->name == "Weekly"){
             //item should be done once in the last week
             $itemsDone = $user->doneMaintenanceItems()
                 ->where('maintenance_item_id', '=', $maintenanceItem->id)
-                ->where('created_at', '>', date('Y-m-d H:i:s', strtotime("-7 day")))->get();
+                ->where('maintenance_item_done_user.created_at', '>', date('Y-m-d H:i:s', strtotime("-7 day")))->get();
 
-            $numMissed = max(sizeof($itemsDone), 0);
+            $numMissed = max(1 - sizeof($itemsDone), 0);
             return $numMissed;
         }
         if ($interval->name == "Biweekly"){
@@ -198,14 +185,28 @@ class WeeklyScoringCommand extends Command
             //get items done in last 14 days
             $itemsDone = $user->doneMaintenanceItems()
                 ->where('maintenance_item_id', '=', $maintenanceItem->id)
-                ->where('created_at', '>', date('Y-m-d H:i:s', strtotime("-14 day")))->get();
+                ->where('maintenance_item_done_user.created_at', '>', date('Y-m-d H:i:s', strtotime("-14 day")))->get();
 
-            $numMissed = 1 - sizeof($itemsDone);
+            $numMissed = max(1 - sizeof($itemsDone), 0);
             return $numMissed;
         }
         if ($interval->name == "Monthly"){
             //if this is the first time we run the script this month, check if they did it at all last month.
             //so if first time we run it in feb, check the user did it at all in january.
+            $lastExecutionMonth = date('F', strtotime($lastExecutionDate));
+            $currentMonth = date('F');
+
+            if ($currentMonth != $lastExecutionMonth){
+                $lastExecutionMonthNum = date('n', strtotime($lastExecutionDate));
+
+                //get all items done last month
+                $itemsDone = $user->doneMaintenanceItems()
+                    ->where('maintenance_item_id', '=', $maintenanceItem->id)
+                    ->where( DB::raw('MONTH(maintenance_item_done_user.created_at)'), '=', $lastExecutionMonthNum)->get();
+
+                $numMissed = max(1 - sizeof($itemsDone), 0);
+                return $numMissed;
+            }
         }
 
         return 0;
