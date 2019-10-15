@@ -194,6 +194,8 @@ class WeeklyScoringCommand extends Command
             //if this is the first time we run the script this month, check if they did it at all last month.
             //so if first time we run it in feb, check the user did it at all in january.
             $lastExecutionMonth = date('F', strtotime($lastExecutionDate));
+            $lastExecutionYear = date('Y', strtotime($lastExecutionDate));
+
             $currentMonth = date('F');
 
             if ($currentMonth != $lastExecutionMonth){
@@ -202,7 +204,8 @@ class WeeklyScoringCommand extends Command
                 //get all items done last month
                 $itemsDone = $user->doneMaintenanceItems()
                     ->where('maintenance_item_id', '=', $maintenanceItem->id)
-                    ->where( DB::raw('MONTH(maintenance_item_done_user.created_at)'), '=', $lastExecutionMonthNum)->get();
+                    ->where( DB::raw('MONTH(maintenance_item_done_user.created_at)'), '=', $lastExecutionMonthNum)
+                    ->where( DB::raw('YEAR(maintenance_item_done_user.created_at)'), '=', $lastExecutionYear)->get();
 
                 $numMissed = max(1 - sizeof($itemsDone), 0);
                 return $numMissed;
