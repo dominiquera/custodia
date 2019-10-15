@@ -161,7 +161,7 @@ class UserController extends Controller
 
     public function apiCreateUser(Request $request){
 
-        $validation = Validator::make($request->all(),CreateUserRequest::rules());
+        $validation = Validator::make($request->all(),CreateUserRequest::apiRules());
         $errors = $validation->errors();
 
         if (sizeof($errors) > 0){

@@ -35,4 +35,20 @@ class CreateUserRequest extends FormRequest
             'mobility_issues' => 'required'
         ];
     }
+
+    public static function apiRules()
+    {
+        return [
+            'name' => 'required',
+            'email' => 'required|email|unique:users',
+            'role' => 'required',
+            'firebase_registration_token' => 'required',
+            'password' => 'required',
+            'home_type' => 'required',
+            'outdoor_spaces' => 'required',
+            'features' => 'required',
+            'driveways' => 'required',
+            'mobility_issues' => 'required'
+        ];
+    }
 }
