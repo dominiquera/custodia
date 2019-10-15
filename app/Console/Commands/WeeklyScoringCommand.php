@@ -2,6 +2,7 @@
 
 namespace Custodia\Console\Commands;
 
+use Custodia\Job;
 use Custodia\MaintenanceItem;
 use Custodia\MonthlyEvent;
 use Custodia\OutdoorSpaceType;
@@ -42,10 +43,20 @@ class WeeklyScoringCommand extends Command
      */
     public function handle()
     {
+        $job = Job::where('name', '=', 'WeeklyScoring')->firstOrFail();
+        $last_execution_date = $job->last_execution_date;
+        $job->last_execution_date = date("Y-m-d H:i:s");
+        $job->save();
+
         $month = date('F');
+        $dayOfMonth = date('j');
+        $weekOfMonth = $this->roundUp($dayOfMonth / 7, 0);
+
         $monthlyEvents = MonthlyEvent::where('month', '=', $month)->get();
 
         echo "Running Weekly Scoring command..." . PHP_EOL . PHP_EOL;
+        echo "Last executed: " . $last_execution_date . PHP_EOL;
+        echo $this->calcDaysSinceDate($last_execution_date) . " days since last execution." . PHP_EOL . PHP_EOL;
         echo "Month: " . $month . PHP_EOL . PHP_EOL;
 
         echo "Monthly Events: " . PHP_EOL;
@@ -58,23 +69,27 @@ class WeeklyScoringCommand extends Command
         $users = User::where('role_id', '=', Role::where('name', '=', 'User')->firstOrFail()->id)->get();
         foreach ($users as $user){
             echo "Processing User: " . $user->id . PHP_EOL;
-
+            $userProfile = $user->userProfile;
             foreach ($monthlyEvents as $monthlyEvent){
                 echo "Processing Monthly Event: " . $monthlyEvent->title . PHP_EOL;
 
                 foreach ($monthlyEvent->maintenanceItems as $maintenanceItem){
                     echo "Processing Maintenance Item: " . $maintenanceItem->title . PHP_EOL;
 
-                    //@todo check if maintenance item is relevant, if its done, ignored, etc here
                     if ($maintenanceItem->homeTypes->contains($user->userProfile->homeType)){
                         if (!$user->ignoredMaintenanceItems->contains($maintenanceItem)){
                             if ($this->hasMatchingOutdoorSpace($user, $maintenanceItem)){
                                 if ($this->hasMatchingDrivewayType($user, $maintenanceItem)){
                                     if ($this->hasMatchingHomeFeature($user, $maintenanceItem)){
                                         if ($this->hasMatchingMobilityIssue($user, $maintenanceItem)){
-
-                                            //@todo check if its done or missed
-                                            //@todo add or subtract points etc here
+                                            $numTimesMissed = $this->calcNumTimesMaintenanceItemMissedSinceLastRun($user,$maintenanceItem, $last_execution_date);
+                                            if ($numTimesMissed > 0){
+                                                $pointsToSubtract = $maintenanceItem->points * $numTimesMissed;
+                                                echo "User missed item " . $numTimesMissed . " times. ";
+                                                echo "Subtracting " . $pointsToSubtract . " points" . PHP_EOL;
+                                                $userProfile->score = $userProfile->score - $pointsToSubtract;
+                                                $userProfile->save();
+                                            }
                                         } else {
                                             echo "Ignoring because: No relevant mobility issue type";
                                         }
@@ -138,13 +153,74 @@ class WeeklyScoringCommand extends Command
         return false;
     }
 
-    private function isMaintenanceItemFinished(){
-        //calculate if the item is finished (been done as many times as interval requires)
-    }
 
-    private function calcNumTimesMissed($maintenanceItem){
-        //calculate how many times the item has been missed this week.
+    private function calcNumTimesMaintenanceItemMissedSinceLastRun(User $user, MaintenanceItem $maintenanceItem, $lastExecutionDate){
+        //calculate how many times the item has been missed since last run
         //ie if daily, we should have had 7 this week.
         //if only done 5 times this week, missed twice.
+
+        //@TODO WE NEED TO CONSIDER WHEN THE USER REGISTERED. CANT GIVE THEM -1000 ON FIRST WEEK.
+
+
+        $year= date('Y');
+        $month = date('F');
+        $dayOfMonth = date('j');
+        $weekOfMonth = $this->roundUp($dayOfMonth / 7, 0);
+
+        $daysSinceLastExecution = $this->calcDaysSinceDate($lastExecutionDate);
+
+        //what happens if we cross over a month?
+        //but then what about ones we've done 2 weeks ago, and only need doing once per month?
+
+        $interval = $maintenanceItem->interval;
+
+        if ($interval->name == "Daily"){
+            //item should have been done once for each day since last execution
+            $itemsDone = $user->doneMaintenanceItems()
+                ->where('maintenance_item_id', '=', $maintenanceItem->id)
+                ->where('created_at', '>', $lastExecutionDate)->get();
+
+            $numMissed = $daysSinceLastExecution - sizeof($itemsDone);
+            return $numMissed;
+        }
+        if ($interval->name == "Weekly"){
+            //item should be done once in the last week
+            $itemsDone = $user->doneMaintenanceItems()
+                ->where('maintenance_item_id', '=', $maintenanceItem->id)
+                ->where('created_at', '>', date('Y-m-d H:i:s', strtotime("-7 day")))->get();
+
+            $numMissed = max(sizeof($itemsDone), 0);
+            return $numMissed;
+        }
+        if ($interval->name == "Biweekly"){
+            //item should be done once in the last 14 days
+
+            //get items done in last 14 days
+            $itemsDone = $user->doneMaintenanceItems()
+                ->where('maintenance_item_id', '=', $maintenanceItem->id)
+                ->where('created_at', '>', date('Y-m-d H:i:s', strtotime("-14 day")))->get();
+
+            $numMissed = 1 - sizeof($itemsDone);
+            return $numMissed;
+        }
+        if ($interval->name == "Monthly"){
+            //if this is the first time we run the script this month, check if they did it at all last month.
+            //so if first time we run it in feb, check the user did it at all in january.
+        }
+
+        return 0;
     }
+
+    private function calcDaysSinceDate(String $date){
+        $now = time();
+        $datediff = $now - strtotime($date);
+        return round($datediff / (60 * 60 * 24));
+    }
+
+    private function roundUp($number)
+    {
+        $fig = (int) str_pad('1', 0, '0');
+        return (int) (ceil($number * $fig) / $fig);
+    }
+
 }
