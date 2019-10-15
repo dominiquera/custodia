@@ -49,6 +49,7 @@ class UserController extends Controller
         $user->email = $request->email;
         $user->phone = $request->phone;
         $user->google_auth_id = $request->google_auth_id;
+        $user->firebase_registration_token = $request->firebase_registration_token;
         $user->role_id = $request->role;
 
         $user->save();
@@ -93,6 +94,7 @@ class UserController extends Controller
         $user->email = $request->email;
         $user->phone = $request->phone;
         $user->google_auth_id = $request->google_auth_id;
+        $user->firebase_registration_token = $request->firebase_registration_token;
         $user->role_id = $request->role;
 
         $user->save();

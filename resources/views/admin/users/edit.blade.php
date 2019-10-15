@@ -33,6 +33,11 @@
           <input type="text" class="form-control" name="google_auth_id" id="google_auth_id" placeholder="Google Auth ID" value="{{$user->google_auth_id}}">
       </div>
       <div class="form-group">
+          <label for="firebase_registration_token">Firebase Registration Token</label>
+          <input type="text" class="form-control" name="firebase_registration_token" id="firebase_registration_token"
+                 placeholder="Firebase Registration Token" value="{{$user->firebase_registration_token}}">
+      </div>
+      <div class="form-group">
           <label for="phone">Phone Number</label>
           <input type="text" name="phone" class="form-control" id="phone" placeholder="Phone Number" value="{{$user->phone}}">
       </div>

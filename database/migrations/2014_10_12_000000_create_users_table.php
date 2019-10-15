@@ -20,6 +20,7 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->string('phone')->unique()->nullable()->index();
             $table->string('google_auth_id')->unique()->nullable()->index();
+            $table->string('firebase_registration_token')->unique()->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->default(bcrypt('secret'));
             $table->rememberToken();
