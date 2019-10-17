@@ -13,12 +13,24 @@ use Illuminate\Http\Request;
 |
 */
 
+
+Route::get('/v1/home_types', 'ApiMetadataController@apiGetAllHomeTypes');
+Route::get('/v1/outdoor_spaces', 'ApiMetadataController@apiGetAllOutdoorSpaces');
+Route::get('/v1/home_features', 'ApiMetadataController@apiGetAllHomeFeatures');
+Route::get('/v1/driveway_types', 'ApiMetadataController@apiGetAllDrivewayTypes');
+Route::get('/v1/mobility_issues', 'ApiMetadataController@apiGetAllMobilityIssues');
+Route::get('/v1/roles', 'ApiMetadataController@apiGetAllRoles');
+Route::get('/v1/intervals', 'ApiMetadataController@apiGetAllIntervals');
+Route::get('/v1/newsfeed_sections', 'ApiMetadataController@apiGetAllNewsfeedSections');
+Route::get('/v1/monthly_events', 'ApiMetadataController@apiGetAllMonthlyEvents');
+Route::get('/v1/weather_triggers', 'ApiMetadataController@apiGetAllWeatherTriggers');
+
+
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
 Route::post('/v1/users', 'Admin\UserController@apiCreateUser');
-
 
 Route::post('/v1/auth', 'Admin\UserController@apiAuthenticateUser');
 
@@ -44,7 +56,6 @@ Route::get('/v1/users/{user}/maintenance_item/{maintenance_item}/done', 'Admin\U
 Route::get('/v1/users/{user}/maintenance_item/{maintenance_item}/ignored', 'Admin\UserController@apiGetIsMaintenanceItemIgnored');
 Route::post('/v1/users/{user}/maintenance_item/{maintenance_item}/done', 'Admin\UserController@apiSetMaintenanceItemDone');
 Route::post('/v1/users/{user}/maintenance_item/{maintenance_item}/ignored', 'Admin\UserController@apiSetMaintenanceItemIgnored');
-
 
 Route::get('/v1/users/{user}/top_three_maintenance_items_today', 'Admin\UserController@apiGetTop3MaintenanceItemsTodayByUser');
 Route::get('/v1/users/{user}/section/{section}/top_three_maintenance_items_today', 'Admin\UserController@apiGetTop3MaintenanceItemsTodayByUserAndSection');
