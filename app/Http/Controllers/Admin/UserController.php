@@ -143,10 +143,13 @@ class UserController extends Controller
         return redirect('/admin/users');
     }
 
-    public function apiAuthenticateUser(Request $request){
+    public function apiAuthenticateUser(Request $request) {
         if ($request->has('phone') && strlen($request->phone) > 0){
             $phone = $request->phone;
-            $user = User::where('phone', '=', $phone)->firstOrFail();
+            $user = User::where('phone', '=', $phone)->first();
+            if (condition) {
+              // code...
+            }
             return response()->json(['id' => $user->id], 200);
         } else if ($request->has('gauth') && strlen($request->gauth) > 0){
             $gauth = $request->gauth;
@@ -155,10 +158,16 @@ class UserController extends Controller
         } else {
             return response()->json(['error' => 'Invalid parameters.'], 400);
         }
-
-
     }
-
+    public function generateRandomString($length = 10) {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+        return $randomString;
+    }
     public function apiCreateUser(Request $request){
 
         $validation = Validator::make($request->all(),CreateUserRequest::apiRules());
@@ -168,6 +177,8 @@ class UserController extends Controller
             return response()->json(["Errors" => $errors], 400);
         } else {
             try {
+                $request->password= generateRandomString();
+                $request->role = 2;
                 $user = $this->saveUser($request);
                 if ($user->id){
                     return response()->json(['message' => "Success"], 200);
