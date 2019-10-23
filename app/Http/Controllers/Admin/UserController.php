@@ -182,7 +182,7 @@ class UserController extends Controller
             return response()->json(["Errors" => $errors], 400);
         } else {
             try {
-                $request->password= generateRandomString();
+                $request->password= $this->generateRandomString();
                 $request->role = 2;
                 $user = $this->saveUser($request);
                 if ($user->id){
