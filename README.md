@@ -22,6 +22,36 @@ SDK Docs: https://firebase-php.readthedocs.io/en/latest/
 
 ## GET
 
+### /v1/home_types
+    Returns a list of all home types available in system
+    
+### /v1/outdoor_spaces
+    Returns a list of all outdoor spaces available in the system
+    
+### /v1/home_features
+    Returns a list of all home features available in the system
+    
+### /v1/driveway_types
+    Return a list of all driveway types available in the system
+    
+### /v1/mobility_issues
+    Return a list of all mobility issue types available in the system
+    
+### /v1/roles
+    Return a list of all user roles available in the system
+
+### /v1/intervals
+    Return a list of all intervals available in the system
+    
+### /v1/newsfeed_sections
+    Return a list of all sections available in the system
+    
+### /v1/monthly_events
+    Return a list of all monthly events available in the system
+    
+### /v1/weather_triggers
+    Return a list of all weather triggers available in the system
+
 ### /v1/users/{user}/score
     Returns the current score for a given user id
     
