@@ -151,7 +151,7 @@ class UserController extends Controller
     public function apiAuthenticateUser(Request $request) {
         if ($request->has('phone') && strlen($request->phone) > 0){
             $phone = $request->phone;
-            $user = User::where('phone', '=', $phone)->first();
+            $user = User::where('phone', '=', $phone)->firstOrFail();
             return response()->json(['id' => $user->id], 200);
         } else if ($request->has('gauth') && strlen($request->gauth) > 0){
             $gauth = $request->gauth;
