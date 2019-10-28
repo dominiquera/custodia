@@ -152,9 +152,6 @@ class UserController extends Controller
         if ($request->has('phone') && strlen($request->phone) > 0){
             $phone = $request->phone;
             $user = User::where('phone', '=', $phone)->first();
-            if (condition) {
-              // code...
-            }
             return response()->json(['id' => $user->id], 200);
         } else if ($request->has('gauth') && strlen($request->gauth) > 0){
             $gauth = $request->gauth;
@@ -182,7 +179,7 @@ class UserController extends Controller
             return response()->json(["Errors" => $errors], 400);
         } else {
             try {
-                $request->password= $this->generateRandomString();
+                $request->password = $this->generateRandomString();
                 $request->role = 2;
                 $user = $this->saveUser($request);
                 if ($user->id){
