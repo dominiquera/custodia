@@ -29,6 +29,18 @@
           <input type="text" name="email" class="form-control" id="email" placeholder="E-Mail" value="{{$user->email}}">
       </div>
       <div class="form-group">
+          <label for="address">Address</label>
+          <input type="text" name="address" class="form-control" id="address" placeholder="Address" value="{{$user->userProfile->address}}" required>
+      </div>
+      <div class="form-group">
+          <label for="city">City</label>
+          <input type="text" name="city" class="form-control" id="city" placeholder="City" value="{{$user->userProfile->city}}">
+      </div>
+      <div class="form-group">
+          <label for="zip">ZIP</label>
+          <input type="text" name="zip" class="form-control" id="zip" placeholder="ZIP" value="{{$user->userProfile->zip}}" required>
+      </div>
+      <div class="form-group">
           <label for="google_auth_id">Google Auth ID</label>
           <input type="text" class="form-control" name="google_auth_id" id="google_auth_id" placeholder="Google Auth ID" value="{{$user->google_auth_id}}">
       </div>

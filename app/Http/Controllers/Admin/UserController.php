@@ -107,6 +107,15 @@ class UserController extends Controller
         $userProfile = $user->userProfile;
         $userProfile->user_id = $user->id;
         $userProfile->home_type_id = $request->home_type;
+
+        $userProfile->address = $request->address;
+        $userProfile->zip = $request->zip;
+
+        if ($request->has('city')) {
+          $userProfile->city = $request->city;
+        }
+
+      
         $userProfile->score = $request->score;
         $userProfile->save();
 

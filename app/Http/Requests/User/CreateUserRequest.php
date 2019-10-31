@@ -48,7 +48,9 @@ class CreateUserRequest extends FormRequest
             'outdoor_spaces' => 'required',
             'features' => 'required',
             'driveways' => 'required',
-            'mobility_issues' => 'required'
+            'mobility_issues' => 'required',
+            'address' => 'required',
+            'zip' => 'required',
         ];
     }
 }

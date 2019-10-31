@@ -28,6 +28,18 @@
           <input type="text" name="email" class="form-control" id="email" placeholder="E-Mail" required>
       </div>
       <div class="form-group">
+          <label for="address">Address</label>
+          <input type="text" name="address" class="form-control" id="address" placeholder="Address" required>
+      </div>
+      <div class="form-group">
+          <label for="city">City</label>
+          <input type="text" name="city" class="form-control" id="city" placeholder="City">
+      </div>
+      <div class="form-group">
+          <label for="zip">ZIP</label>
+          <input type="text" name="zip" class="form-control" id="zip" placeholder="ZIP" required>
+      </div>
+      <div class="form-group">
           <label for="password">Password</label>
           <input type="password" name="password" class="form-control" id="password" required>
       </div>
