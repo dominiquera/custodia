@@ -62,6 +62,15 @@ class UserController extends Controller
         $userProfile = new UserProfile();
         $userProfile->user_id = $user->id;
         $userProfile->home_type_id = $request->home_type;
+
+        $userProfile->address = $request->address;
+        $userProfile->zip = $request->zip;
+
+        if ($request->has('city')) {
+          $userProfile->city = $request->city;
+        }
+
+
         $userProfile->save();
 
         if ($request->has('outdoor_spaces')){
@@ -115,7 +124,7 @@ class UserController extends Controller
           $userProfile->city = $request->city;
         }
 
-      
+
         $userProfile->score = $request->score;
         $userProfile->save();
 
