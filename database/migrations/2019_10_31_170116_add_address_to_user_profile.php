@@ -13,7 +13,7 @@ class AddAddressToUserProfile extends Migration
      */
     public function up()
     {
-        Schema::table('user_profile', function (Blueprint $table) {
+        Schema::table('user_profiles', function (Blueprint $table) {
             $table->string('address')->nullable();
             $table->string('city')->nullable();
             $table->string('zip')->nullable();
@@ -27,7 +27,7 @@ class AddAddressToUserProfile extends Migration
      */
     public function down()
     {
-        Schema::table('user_profile', function (Blueprint $table) {
+        Schema::table('user_profiles', function (Blueprint $table) {
             $table->dropColumn('address');
             $table->dropColumn('city');
             $table->dropColumn('zip');
