@@ -250,7 +250,7 @@ class UserController extends Controller
     }
 
 
-    public function apiGetTop3MaintenanceItemsTodayByUser(User $user){
+    public function apiGetTop3MaintenanceItemsTodayByUser(User $user) {
         $month = date('F');
         $query = $this->getUserItemsJoinQuery($user) . "
             ORDER BY ITEMS.points DESC
@@ -447,7 +447,7 @@ class UserController extends Controller
         return response()->json(['mobility_issues' => $user->userProfile->mobilityIssues], 200);
     }
 
-    public function apiSetMobilityIssues(User $user, Request $request){
+    public function apiSetMobilityIssues(User $user, Request $request) {
         $validation = Validator::make($request->all(),['mobility_issues' => 'required|array']);
         $errors = $validation->errors();
 
@@ -485,7 +485,11 @@ class UserController extends Controller
     public function apiSetMaintenanceItemDone(User $user, MaintenanceItem $maintenanceItem, Request $request){
             if ($maintenanceItem) {
                 $user->doneMaintenanceItems()->attach($maintenanceItem);
-                return response()->json(['message' => "Success"], 200);
+                $profile = $user->userProfile;
+                $profile->score = $profile->score + $maintenanceItem->points;
+                $profile->save();
+                $user->save();
+                return response()->json(['message' => "Success", "score" => $profile->score], 200);
             } else {
                 return response()->json('Error',  400);
             }
