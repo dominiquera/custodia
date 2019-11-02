@@ -264,12 +264,10 @@ class UserController extends Controller
         foreach ($results as $result){
             $m = MaintenanceItem::with("months")->find($result->id);
             $str = date('F');
-            $i = 0;
-            foreach ($m->months as $month  => &$element){
-              if ($element->month != $str) {
-                unset($m->months[$i]);
+            foreach ($m->months as $month){
+              if ($month->month == $str) {
+                $m->summary = $month->description;
               }
-              $i++;
             }
             $ret->push($m);
         }
@@ -290,7 +288,13 @@ class UserController extends Controller
         $ret = collect();
 
         foreach ($results as $result){
-            $m = MaintenanceItem::with('month')->find($result->id);
+            $m = MaintenanceItem::with("months")->find($result->id);
+            $str = date('F');
+            foreach ($m->months as $month){
+              if ($month->month == $str) {
+                $m->summary = $month->description;
+              }
+            }
             $ret->push($m);
         }
 
