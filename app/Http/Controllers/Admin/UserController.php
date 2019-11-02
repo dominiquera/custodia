@@ -262,7 +262,16 @@ class UserController extends Controller
         $ret = collect();
 
         foreach ($results as $result){
-            $ret->push(MaintenanceItem::find($result->id));
+            $m = MaintenanceItem::with("months")->find($result->id);
+            $str = date('F');
+            $i = 0;
+            foreach ($m->months as $month  => &$element){
+              if ($element->month != $str) {
+                unset($m->months[$i]);
+              }
+              $i++;
+            }
+            $ret->push($m);
         }
 
         return response()->json(['maintenance_items' => $ret], 200);
@@ -281,7 +290,8 @@ class UserController extends Controller
         $ret = collect();
 
         foreach ($results as $result){
-            $ret->push(MaintenanceItem::find($result->id));
+            $m = MaintenanceItem::with('month')->find($result->id);
+            $ret->push($m);
         }
 
         return response()->json(['maintenance_items' => $ret], 200);
