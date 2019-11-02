@@ -445,8 +445,14 @@ class UserController extends Controller
 
     public function apiGetMobilityIssues(User $user){
         return response()->json(['mobility_issues' => $user->userProfile->mobilityIssues], 200);
+
     }
 
+    public function getUserDetails(User $user) {
+        $user = User::findOrFail($user->id);
+        $user->score = $user->userProfile->score;
+        return response()->json(['message' => "Success", "user" => $user], 200);
+    }
     public function apiSetMobilityIssues(User $user, Request $request) {
         $validation = Validator::make($request->all(),['mobility_issues' => 'required|array']);
         $errors = $validation->errors();

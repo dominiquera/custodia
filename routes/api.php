@@ -24,7 +24,7 @@ Route::get('/v1/intervals', 'ApiMetadataController@apiGetAllIntervals');
 Route::get('/v1/newsfeed_sections', 'ApiMetadataController@apiGetAllNewsfeedSections');
 Route::get('/v1/monthly_events', 'ApiMetadataController@apiGetAllMonthlyEvents');
 Route::get('/v1/weather_triggers', 'ApiMetadataController@apiGetAllWeatherTriggers');
-
+Route::get('/v1/users/{user}/details', 'Admin\UserController@getUserDetails');
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
