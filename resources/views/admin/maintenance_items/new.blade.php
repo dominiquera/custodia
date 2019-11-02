@@ -119,6 +119,10 @@
           <label for="summary">Summary</label>
           <textarea name="summary" class="form-control" id="summary" placeholder="Summary" required></textarea>
       </div>
+
+      <div class="months-repeatable-container"></div>
+      <input type="button" class="add ui button" value="Add Month" style="margin-top: 10px;"/>
+
       <div class="form-group">
           <label for="cautions">Cautions</label>
           <textarea name="cautions" class="form-control" id="cautions" placeholder="Cautions" required></textarea>
@@ -145,6 +149,29 @@
             } else {
                 $("#weather-trigger-form-group").hide();
             }
+        });
+    </script>
+
+    <script type="text/template" id="months-repeatable-container">
+        <div class="field-group" style="display: flex; margin-top: 10px;">
+            <select class="form-control" name="months[]" id="month_{?}">
+                <option selected="selected" disabled="disabled">--Choose a Month--</option>
+                <option value="January">January</option>
+                <option value="February">February</option>
+                <option value="November">November</option>
+            </select>
+
+            <input type="text" name="descriptions[]" id="description_{?}">
+
+            <button  class="delete ui button negative" value="Remove">Remove</button>
+        </div>
+    </script>
+
+    <script>
+        $( document ).ready(function() {
+            $("form .months-repeatable-container").repeatable({
+                template: "#months-repeatable-container"
+            });
         });
     </script>
 @endsection

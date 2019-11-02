@@ -7,6 +7,7 @@ use Custodia\Http\Requests\MaintenanceItem\StoreMaintenanceItemRequest;
 use Custodia\Image;
 use Custodia\Interval;
 use Custodia\MaintenanceItem;
+use Custodia\Month;
 use Custodia\Section;
 use Custodia\User;
 use DemeterChain\Main;
@@ -39,6 +40,7 @@ class MaintenanceItemController extends Controller
     }
 
     private function saveMaintenanceItem($request){
+
         $item = new MaintenanceItem();
         $item->section_id = $request->section;
         $item->interval_id = $request->interval;
@@ -88,6 +90,19 @@ class MaintenanceItemController extends Controller
         if ($request->has('features')){
             foreach ($request->features as $feature){
                 $item->homeFeatures()->attach($feature);
+            }
+        }
+
+
+        if ($request->has('months')) {
+            $i = 0;
+            foreach($request->months as $month){
+                $newMonth = new Month();
+                $newMonth->month = $month;
+                $newMonth->maintenance_item_id = $item->id;
+                $newMonth->description = $request->descriptions[$i];
+                $i++;
+                $newMonth->save();
             }
         }
 
@@ -149,6 +164,19 @@ class MaintenanceItemController extends Controller
         if ($request->has('features')){
             foreach ($request->features as $feature){
                 $item->homeFeatures()->attach($feature);
+            }
+        }
+
+        Month::where('maintenance_item_id', '=', $item->id)->delete();
+        if ($request->has('months')) {
+            $i = 0;
+            foreach($request->months as $month){
+                $newMonth = new Month();
+                $newMonth->month = $month;
+                $newMonth->maintenance_item_id = $item->id;
+                $newMonth->description = $request->descriptions[$i];
+                $i++;
+                $newMonth->save();
             }
         }
 
