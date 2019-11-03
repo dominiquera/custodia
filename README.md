@@ -21,7 +21,13 @@ SDK Docs: https://firebase-php.readthedocs.io/en/latest/
 # REST API Endpoints
 
 ## GET
+### /v1/users/{user}/details
+    Gets the user details
 
+### /v1/management_plans
+    Returns a list of all management plan types available in system
+    
+    
 ### /v1/home_types
     Returns a list of all home types available in system
     
