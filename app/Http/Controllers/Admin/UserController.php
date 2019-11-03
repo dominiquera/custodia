@@ -97,6 +97,12 @@ class UserController extends Controller
             }
         }
 
+        if ($request->has('management_plans')){
+            foreach ($request->management_plans as $plan){
+                $userProfile->managementPlans()->attach($plan);
+            }
+        }
+
         $userProfile->save();
         return $user;
     }
@@ -155,6 +161,13 @@ class UserController extends Controller
                 $userProfile->homeFeatures()->attach($feature);
             }
         }
+
+        // $userProfile->homeFeatures()->detach();
+        // if ($request->has('features')){
+        //     foreach ($request->features as $feature){
+        //         $userProfile->homeFeatures()->attach($feature);
+        //     }
+        // }
 
         $userProfile->save();
         return redirect('/admin/users');
@@ -451,8 +464,34 @@ class UserController extends Controller
     public function getUserDetails(User $user) {
         $user = User::findOrFail($user->id);
         $user->score = $user->userProfile->score;
+
+
+        //With Mom, Dad, Myself. Mom and Dad = Your Parents | Mom, Dad, Myself = Families | Mom = Moms | Dad = Dad’s | Myself = Your
+        $plans = $user->userProfile->managementPlans->pluck('id')->toArray();
+
+        if (count($plans) == 2 && in_array(1, $plans) && in_array(2, $plans)) {
+          $user->title = "Your Parents Home Management Plan";
+        }
+
+        if (count($plans) == 3 && in_array(1, $plans) && in_array(2, $plans) && in_array(3, $plans)) {
+          $user->title = "Your Families Home Management Plan";
+        }
+
+        if (count($plans) == 1 && in_array(1, $plans)) {
+          $user->title = "Your Moms Home Management Plan";
+        }
+
+        if (count($plans) == 1 && in_array(2, $plans)) {
+          $user->title = "Your Dad’s Home Management Plan";
+        }
+
+        if (count($plans) == 1 && in_array(3, $plans)) {
+          $user->title = "Your Home Management Plan";
+        }
+
         return response()->json(['message' => "Success", "user" => $user], 200);
     }
+    
     public function apiSetMobilityIssues(User $user, Request $request) {
         $validation = Validator::make($request->all(),['mobility_issues' => 'required|array']);
         $errors = $validation->errors();

@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 */
 
 
+Route::get('/v1/management_plans', 'ApiMetadataController@apiGetAllManagementPlans');
 Route::get('/v1/home_types', 'ApiMetadataController@apiGetAllHomeTypes');
 Route::get('/v1/outdoor_spaces', 'ApiMetadataController@apiGetAllOutdoorSpaces');
 Route::get('/v1/home_features', 'ApiMetadataController@apiGetAllHomeFeatures');

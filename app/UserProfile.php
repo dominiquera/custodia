@@ -32,4 +32,9 @@ class UserProfile extends Model
     public function drivewayTypes(){
         return $this->belongsToMany(DrivewayType::class);
     }
+
+    public function managementPlans(){
+        return $this->belongsToMany(ManagementPlan::class);
+    }
+
 }

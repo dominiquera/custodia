@@ -45,6 +45,7 @@ class CreateUserRequest extends FormRequest
             'firebase_registration_token' => 'required',
             //'password' => 'required',
             'home_type' => 'required',
+            'management_plans' => 'required',
             'outdoor_spaces' => 'required',
             'features' => 'required',
             'driveways' => 'required',
