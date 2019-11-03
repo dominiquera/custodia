@@ -477,6 +477,14 @@ class UserController extends Controller
           $user->title = "Your Families Home Management Plan";
         }
 
+        if (count($plans) == 2 && in_array(1, $plans)  && in_array(3, $plans)) {
+          $user->title = "Your Families Home Management Plan";
+        }
+
+        if (count($plans) == 2 && in_array(1, $plans)  && in_array(2, $plans)) {
+          $user->title = "Your Families Home Management Plan";
+        }
+
         if (count($plans) == 1 && in_array(1, $plans)) {
           $user->title = "Your Moms Home Management Plan";
         }
@@ -491,7 +499,7 @@ class UserController extends Controller
 
         return response()->json(['message' => "Success", "user" => $user], 200);
     }
-    
+
     public function apiSetMobilityIssues(User $user, Request $request) {
         $validation = Validator::make($request->all(),['mobility_issues' => 'required|array']);
         $errors = $validation->errors();

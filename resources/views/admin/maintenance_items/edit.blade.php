@@ -160,14 +160,23 @@
           <label for="cautions">Cautions</label>
           <textarea name="cautions" class="form-control" id="cautions" placeholder="Cautions" required>{{$item->cautions}}</textarea>
       </div>
-      
+
       <div class="months-repeatable-container">
           @foreach ($item->months as $month)
               <div class="field-group" style="display: flex; margin-top: 10px;">
                   <select class="form-control" name="months[]" id="month_{{$month->id}}">
                       <option value="January" @if ($month->month == "January") selected="selected" @endif >January</option>
                       <option value="February" @if ($month->month == "February") selected="selected" @endif >February</option>
-                      <option value="November" @if ($month->month == "November") selected="selected" @endif> November</option>
+                      <option value="March" @if ($month->month == "March") selected="selected" @endif >March</option>
+                      <option value="April" @if ($month->month == "April") selected="selected" @endif >April</option>
+                      <option value="May" @if ($month->month == "May") selected="selected" @endif >May</option>
+                      <option value="June" @if ($month->month == "June") selected="selected" @endif >June</option>
+                      <option value="July" @if ($month->month == "July") selected="selected" @endif >July</option>
+                      <option value="August" @if ($month->month == "August") selected="selected" @endif >August</option>
+                      <option value="September" @if ($month->month == "September") selected="selected" @endif >September</option>
+                      <option value="October" @if ($month->month == "October") selected="selected" @endif >October</option>
+                      <option value="November" @if ($month->month == "November") selected="selected" @endif>November</option>
+                      <option value="December" @if ($month->month == "December") selected="selected" @endif>December</option>
                   </select>
 
                   <input type="text" name="descriptions[]" value="{{$month->description}}">
@@ -176,7 +185,7 @@
               </div>
           @endforeach
       </div>
-      <input type="button" class="add ui button" value="Add Maintenance Item" style="margin-top: 10px;"/>
+      <input type="button" class="add ui button" value="Add Month" style="margin-top: 10px;"/>
 
       <div class="form-group">
           <label for="photo" >Photo</label>
@@ -217,7 +226,16 @@
               <option selected="selected" disabled="disabled">--Choose a Month--</option>
               <option value="January">January</option>
               <option value="February">February</option>
+              <option value="March">March</option>
+              <option value="April">April</option>
+              <option value="May">May</option>
+              <option value="June">June</option>
+              <option value="July">July</option>
+              <option value="August">August</option>
+              <option value="September">September</option>
+              <option value="October">October</option>
               <option value="November">November</option>
+              <option value="December">December</option>
           </select>
 
           <input type="text" name="descriptions[]" id="description_{?}">
