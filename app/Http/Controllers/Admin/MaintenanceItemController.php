@@ -101,6 +101,9 @@ class MaintenanceItemController extends Controller
                 $newMonth->month = $month;
                 $newMonth->maintenance_item_id = $item->id;
                 $newMonth->description = $request->descriptions[$i];
+                if (isset($request->photos[$i])) {
+                  $this->updatedFeaturedImageMonth($newMonth, $request->photos[$i]);
+                }
                 $i++;
                 $newMonth->save();
             }
@@ -175,6 +178,11 @@ class MaintenanceItemController extends Controller
                 $newMonth->month = $month;
                 $newMonth->maintenance_item_id = $item->id;
                 $newMonth->description = $request->descriptions[$i];
+
+                if (isset($request->photos[$i])) {
+                  $this->updatedFeaturedImageMonth($newMonth, $request->photos[$i]);
+                }
+
                 $i++;
                 $newMonth->save();
             }
@@ -191,6 +199,26 @@ class MaintenanceItemController extends Controller
         $item = MaintenanceItem::findOrFail($id);
         $item->delete();
         return redirect('/admin/maintenance_items');
+    }
+
+    public function updatedFeaturedImageMonth(Month $item, $image) {
+        // Make a image name based on user name and current timestamp
+        $name = str_slug($item->id).'_'.time();
+        // Define folder path
+        $folder = '/uploads/images/';
+        // Make a file path where image will be stored [ folder path + file name + file extension]
+        $filePath = "/storage/" . $folder . $name. '.' . $image->getClientOriginalExtension();
+        // Upload image
+        $file = $image->storeAs($folder, $name.'.'.$image->getClientOriginalExtension(), 'public');
+
+        // Create image object and link to maintenace item
+        $image = new Image();
+        $image->path = $filePath;
+        $image->save();
+
+        $item->featured_image_id = $image->id;
+        $item->save();
+
     }
 
     public function updatedFeaturedImage(MaintenanceItem $item, $image){

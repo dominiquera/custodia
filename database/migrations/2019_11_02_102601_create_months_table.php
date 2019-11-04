@@ -18,6 +18,7 @@ class CreateMonthsTable extends Migration
             $table->string('month');
             $table->text('description');
             $table->bigInteger('maintenance_item_id');
+            $table->bigInteger('featured_image_id')->nullable()->unsigned();
             $table->timestamps();
         });
     }

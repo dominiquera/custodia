@@ -41,9 +41,28 @@ class MonthSeeder extends Seeder
       // DB::table('months')->insert([
       //     'month' => "October"
       // ]);
-      // DB::table('months')->insert([
-      //     'month' => "November"
-      // ]);
+      DB::table('months')->insert([
+          'month' => "November",
+          'description' => "Plants in the home give the room more life and feels better",
+          'maintenance_item_id' => 106
+      ]);
+
+      DB::table('months')->insert([
+          'month' => "November",
+          'description' => "Keep them alive and well and they will keep you happier",
+          'maintenance_item_id' => 107
+      ]);
+      DB::table('months')->insert([
+          'month' => "November",
+          'description' => "If you have sprinklers, they should be shut down during the colder months.",
+          'maintenance_item_id' => 105
+      ]);
+      DB::table('months')->insert([
+          'month' => "November",
+          'description' => "Before winter we turn off the exterior water and prepare for cold",
+          'maintenance_item_id' => 103
+      ]);
+
       // DB::table('months')->insert([
       //     'month' => "December"
       // ]);

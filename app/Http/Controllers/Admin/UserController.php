@@ -280,6 +280,7 @@ class UserController extends Controller
             foreach ($m->months as $month){
               if ($month->month == $str) {
                 $m->summary = $month->description;
+                $m->image = $month->featuredImage->path;
               }
             }
             $ret->push($m);
@@ -306,6 +307,7 @@ class UserController extends Controller
             foreach ($m->months as $month){
               if ($month->month == $str) {
                 $m->summary = $month->description;
+                $m->image = $month->featuredImage->path;
               }
             }
             $ret->push($m);
@@ -473,27 +475,30 @@ class UserController extends Controller
           $user->title = "Your Parents Home Management Plan";
         }
 
-        if (count($plans) == 3 && in_array(1, $plans) && in_array(2, $plans) && in_array(3, $plans)) {
+        elseif (count($plans) == 3 && in_array(1, $plans) && in_array(2, $plans) && in_array(3, $plans)) {
           $user->title = "Your Families Home Management Plan";
         }
 
-        if (count($plans) == 2 && in_array(1, $plans)  && in_array(3, $plans)) {
+        elseif (count($plans) == 2 && in_array(1, $plans)  && in_array(3, $plans)) {
           $user->title = "Your Families Home Management Plan";
         }
 
-        if (count($plans) == 2 && in_array(1, $plans)  && in_array(2, $plans)) {
+        elseif (count($plans) == 2 && in_array(1, $plans)  && in_array(2, $plans)) {
           $user->title = "Your Families Home Management Plan";
         }
 
-        if (count($plans) == 1 && in_array(1, $plans)) {
+        elseif (count($plans) == 1 && in_array(1, $plans)) {
           $user->title = "Your Moms Home Management Plan";
         }
 
-        if (count($plans) == 1 && in_array(2, $plans)) {
+        elseif (count($plans) == 1 && in_array(2, $plans)) {
           $user->title = "Your Dad’s Home Management Plan";
         }
 
-        if (count($plans) == 1 && in_array(3, $plans)) {
+        elseif (count($plans) == 1 && in_array(3, $plans)) {
+          $user->title = "Your Home Management Plan";
+        }
+        else {
           $user->title = "Your Home Management Plan";
         }
 

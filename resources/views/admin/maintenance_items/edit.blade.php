@@ -180,6 +180,10 @@
                   </select>
 
                   <input type="text" name="descriptions[]" value="{{$month->description}}">
+                  <input id="photo" type="file" class="form-control" name="photos[]" id="photos_{?}" style="border:none;">
+                  @if (isset($month->featuredImage->path))
+                    <img style="max-width:300px;" src="{{asset($month->featuredImage->path)}}" />
+                  @endif
 
                   <button  class="delete ui button negative" value="Remove">Remove</button>
               </div>
@@ -187,15 +191,16 @@
       </div>
       <input type="button" class="add ui button" value="Add Month" style="margin-top: 10px;"/>
 
-      <div class="form-group">
+      <!-- <div class="form-group">
           <label for="photo" >Photo</label>
-          <input id="photo" type="file" class="form-control" name="photo" style="border:none;">
-          @if (isset($item->featuredImage->path))
-            <img style="max-width:300px;" src="{{asset($item->featuredImage->path)}}" />
-          @endif
-      </div>
+
+      </div> -->
 
       <button style="margin-top:30px;" type="submit" class="ui button primary">Save</button>
+
+      <div class="" style="padding:30px;">
+
+      </div>
   </form>
 </div>
 @endsection
@@ -239,6 +244,7 @@
           </select>
 
           <input type="text" name="descriptions[]" id="description_{?}">
+          <input id="photo" type="file" class="form-control" name="photos[]" id="photos_{?}" style="border:none;">
 
           <button  class="delete ui button negative" value="Remove">Remove</button>
       </div>

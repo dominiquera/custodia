@@ -127,10 +127,10 @@
           <label for="cautions">Cautions</label>
           <textarea name="cautions" class="form-control" id="cautions" placeholder="Cautions" required></textarea>
       </div>
-      <div class="form-group">
+      <!-- <div class="form-group">
           <label for="photo" >Featured Image</label>
-          <input id="photo" type="file" class="form-control" name="photo" style="border:none;">
-      </div>
+
+      </div> -->
 
       <button style="margin-top:30px;" type="submit" class="ui button primary">Save</button>
   </form>
@@ -171,6 +171,7 @@
             </select>
 
             <input type="text" name="descriptions[]" id="description_{?}">
+            <input id="photo" type="file" class="form-control" name="photos[]" id="photos_{?}" style="border:none;">
 
             <button  class="delete ui button negative" value="Remove">Remove</button>
         </div>
