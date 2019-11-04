@@ -28,7 +28,7 @@ class UsersTableSeeder extends Seeder
     private function create_admin_user(){
         DB::table('users')->insert([
             'name' => 'admin',
-            'email' => 'dorademacher@gmail.com',
+            'email' => 'admin@gmail.com',
             'role_id' => 1,
             'password' => bcrypt('secret'),
         ]);
