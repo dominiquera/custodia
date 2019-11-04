@@ -280,7 +280,12 @@ class UserController extends Controller
             foreach ($m->months as $month){
               if ($month->month == $str) {
                 $m->summary = $month->description;
-                $m->image = $month->featuredImage->path;
+                if ($month->featuredImage && $month->featuredImage->path) {
+                  $m->image = $month->featuredImage->path;
+                } else {
+                  $m->image = "";
+                }
+
               }
             }
             $ret->push($m);
@@ -307,7 +312,11 @@ class UserController extends Controller
             foreach ($m->months as $month){
               if ($month->month == $str) {
                 $m->summary = $month->description;
-                $m->image = $month->featuredImage->path;
+                if ($month->featuredImage && $month->featuredImage->path) {
+                  $m->image = $month->featuredImage->path;
+                } else {
+                  $m->image = "";
+                }
               }
             }
             $ret->push($m);
