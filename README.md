@@ -134,3 +134,4 @@ SDK Docs: https://firebase-php.readthedocs.io/en/latest/
     * Expected input: none
 
 ### /v1/learning/{maintenance_item_id}
+        Get maintenance item by id
