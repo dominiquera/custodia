@@ -30,7 +30,7 @@
               <td>{{$item->interval->name}}</td>
               <td>
                   <a href="/admin/maintenance_items/edit/{{$item->id}}">Edit</a> |
-                  <a href="/admin/maintenance_items/destroy/{{$item->id}}">Delete</a>
+                  <a onclick="myFunction('{{url('/')}}/admin/maintenance_items/destroy/{{$item->id}}')" style="cursor: pointer;">Delete</a>
               </td>
           </tr>
       @endforeach
@@ -42,4 +42,13 @@
         </div>
     </div>
 </div>
+<script>
+    function myFunction(link) {
+        let r = confirm("Sind Sie sicher, dass Sie löschen möchten?");
+
+        if (r == true) {
+            window.location.href = link;
+        }
+    }
+</script>
 @endsection

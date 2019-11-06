@@ -9,6 +9,7 @@ use Custodia\Interval;
 use Custodia\MaintenanceItem;
 use Custodia\Month;
 use Custodia\Section;
+use Custodia\Tool;
 use Custodia\User;
 use DemeterChain\Main;
 use Illuminate\Http\Request;
@@ -39,7 +40,8 @@ class MaintenanceItemController extends Controller
         return redirect('/admin/maintenance_items');
     }
 
-    private function saveMaintenanceItem($request){
+    private function saveMaintenanceItem($request)
+    {
 
         $item = new MaintenanceItem();
         $item->section_id = $request->section;
@@ -50,7 +52,15 @@ class MaintenanceItemController extends Controller
         $item->cautions = $request->cautions;
         $item->summary = $request->summary;
         $item->save();
+        if(isset($request->tools)){
+            foreach ($request->tools as $tool) {
+                $tools = new Tool();
+                $tools->value = $tool;
+                $tools->maintenance_items_id = $item->id;
 
+                $tools->save();
+            }
+        }
         if ($request->has('photo')) {
             $image = $request->file('photo');
             $this->updatedFeaturedImage($item, $image);
@@ -115,10 +125,15 @@ class MaintenanceItemController extends Controller
 
     public function updateMaintenanceItem(StoreMaintenanceItemRequest $request)
     {
+        Tool::where('maintenance_items_id', $request->id)->delete();
+
         $item = MaintenanceItem::find($request->id);
         $item->section_id = $request->section;
         $item->interval_id = $request->interval;
         $item->title = $request->title;
+        if(isset($request->video)){
+            $item->video = $request->video;
+        }
         $item->points = $request->points;
         $item->mobility_priority = $request->mobility_priority;
         $item->cautions = $request->cautions;
@@ -187,15 +202,23 @@ class MaintenanceItemController extends Controller
                 $newMonth->save();
             }
         }
-
-
         $item->save();
+        if(isset($request->tools)){
+            foreach ($request->tools as $tool) {
+                $tools = new Tool();
+                $tools->value = $tool;
+                $tools->maintenance_items_id = $item->id;
+
+                $tools->save();
+            }
+        }
 
         return redirect('/admin/maintenance_items');
     }
 
     public function deleteMaintenanceItem($id)
     {
+        Tool::where('maintenance_items_id', $id)->delete();
         $item = MaintenanceItem::findOrFail($id);
         $item->delete();
         return redirect('/admin/maintenance_items');
