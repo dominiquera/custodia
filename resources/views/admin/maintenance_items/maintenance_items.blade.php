@@ -44,7 +44,7 @@
 </div>
 <script>
     function myFunction(link) {
-        let r = confirm("Sind Sie sicher, dass Sie löschen möchten?");
+        let r = confirm("Are you sure you want to delete?");
 
         if (r == true) {
             window.location.href = link;
