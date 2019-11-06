@@ -176,6 +176,9 @@
                     </div>
                 @endforeach
             </div>
+            <div>
+                <input type="button" class="add-tool ui button" value="Add Tool" style="margin-top: 10px;">
+            </div>
             <div class="months-repeatable-container">
                 @foreach ($item->months as $month)
                     <div class="field-group" style="display: flex; margin-top: 10px;">

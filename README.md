@@ -132,3 +132,5 @@ SDK Docs: https://firebase-php.readthedocs.io/en/latest/
 ### /v1/users/{user}/maintenance_item/{maintenance_item}/ignored
     	Set the a given maintenance item to be ignored for a given user id
     * Expected input: none
+
+### /v1/learning/{maintenance_item_id}
