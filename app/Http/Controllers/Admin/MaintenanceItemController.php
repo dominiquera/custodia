@@ -7,6 +7,7 @@ use Custodia\Http\Requests\MaintenanceItem\StoreMaintenanceItemRequest;
 use Custodia\Image;
 use Custodia\Interval;
 use Custodia\MaintenanceItem;
+use Custodia\Material;
 use Custodia\Month;
 use Custodia\Section;
 use Custodia\Tool;
@@ -62,6 +63,15 @@ class MaintenanceItemController extends Controller
                 $tools->maintenance_items_id = $item->id;
 
                 $tools->save();
+            }
+        }
+        if (isset($request->materials)) {
+            foreach ($request->materials as $material) {
+                $materials = new Material();
+                $materials->value = $material;
+                $materials->maintenance_items_id = $item->id;
+
+                $materials->save();
             }
         }
         if ($request->has('photo')) {
@@ -129,6 +139,7 @@ class MaintenanceItemController extends Controller
     public function updateMaintenanceItem(StoreMaintenanceItemRequest $request)
     {
         Tool::where('maintenance_items_id', $request->id)->delete();
+        Material::where('maintenance_items_id', $request->id)->delete();
 
         $item = MaintenanceItem::find($request->id);
         $item->section_id = $request->section;
@@ -215,6 +226,15 @@ class MaintenanceItemController extends Controller
                 $tools->save();
             }
         }
+        if (isset($request->materials)) {
+            foreach ($request->materials as $material) {
+                $materials = new Material();
+                $materials->value = $material;
+                $materials->maintenance_items_id = $item->id;
+
+                $materials->save();
+            }
+        }
 
         return redirect('/admin/maintenance_items');
     }
@@ -222,6 +242,7 @@ class MaintenanceItemController extends Controller
     public function deleteMaintenanceItem($id)
     {
         Tool::where('maintenance_items_id', $id)->delete();
+        Material::where('maintenance_items_id', $id)->delete();
         $item = MaintenanceItem::findOrFail($id);
         $item->delete();
         return redirect('/admin/maintenance_items');
@@ -281,7 +302,7 @@ class MaintenanceItemController extends Controller
     {
         $item = MaintenanceItem::where('id', $id)->with([
             'section', 'interval', 'featuredImage', 'weatherTriggerType', 'monthlyEvents',
-            'months', 'homeTypes', 'outdoorSpaces', 'mobilityIssues', 'homeFeatures', 'drivewayTypes', 'tools'])
+            'months', 'homeTypes', 'outdoorSpaces', 'mobilityIssues', 'homeFeatures', 'drivewayTypes', 'tools', 'materials'])
             ->get();
 
         return response()->json(['data' => $item], 200);

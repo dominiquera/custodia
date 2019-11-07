@@ -179,6 +179,18 @@
             <div>
                 <input type="button" class="add-tool ui button" value="Add Tool" style="margin-top: 10px;">
             </div>
+            <div class="materials">
+                @foreach($item->materials as $material)
+                    <div class="form-group">
+                        <label>Materials</label><br>
+                        <input name="materials[]" class="form-control" placeholder="Materials" style="width: 88%;" value="{{$tools->value}}">
+                        <button class="delete-materials ui button negative" value="Remove">Remove</button>
+                    </div>
+                @endforeach
+            </div>
+            <div>
+                <input type="button" class="add-materials ui button" value="Add Materials" style="margin-top: 10px;">
+            </div>
             <div class="months-repeatable-container">
                 @foreach ($item->months as $month)
                     <div class="field-group" style="display: flex; margin-top: 10px;">
@@ -297,6 +309,16 @@
                     '                </div>');
             });
             $(document).on('click', '.delete-tool', function () {
+                $(this).parent().remove();
+            });
+            $('.add-materials').click(function () {
+                $('.materials').append('<div class="form-group">\n' +
+                    '                    <label>Material</label><br>\n' +
+                    '                    <input name="materials[]" class="form-control" placeholder="Material" style="width: 88%;">\n' +
+                    '                    <button class="delete-materials ui button negative" value="Remove">Remove</button>\n' +
+                    '                </div>');
+            });
+            $(document).on('click', '.delete-materials', function () {
                 $(this).parent().remove();
             });
         });

@@ -137,6 +137,12 @@
             <div>
                 <input type="button" class="add-tool ui button" value="Add Tool" style="margin-top: 10px;">
             </div>
+            <div class="materials">
+
+            </div>
+            <div>
+                <input type="button" class="add-materials ui button" value="Add Materials" style="margin-top: 10px;">
+            </div>
 
             <!-- <div class="form-group">
                 <label for="photo" >Featured Image</label>
@@ -202,6 +208,16 @@
                     '                </div>');
             });
             $(document).on('click', '.delete-tool', function () {
+                $(this).parent().remove();
+            });
+            $('.add-materials').click(function () {
+                $('.materials').append('<div class="form-group">\n' +
+                    '                    <label>Material</label><br>\n' +
+                    '                    <input name="materials[]" class="form-control" placeholder="Material" style="width: 88%;">\n' +
+                    '                    <button class="delete-materials ui button negative" value="Remove">Remove</button>\n' +
+                    '                </div>');
+            });
+            $(document).on('click', '.delete-materials', function () {
                 $(this).parent().remove();
             });
         });

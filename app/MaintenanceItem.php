@@ -59,4 +59,9 @@ class MaintenanceItem extends Model
       return  $this->hasMany(Tool::class, 'maintenance_items_id');
     }
 
+    public function materials()
+    {
+      return  $this->hasMany(Material::class, 'maintenance_items_id');
+    }
+
 }
