@@ -54,4 +54,14 @@ class MaintenanceItem extends Model
         return $this->belongsToMany(DrivewayType::class);
     }
 
+    public function tools()
+    {
+      return  $this->hasMany(Tool::class, 'maintenance_items_id');
+    }
+
+    public function materials()
+    {
+      return  $this->hasMany(Material::class, 'maintenance_items_id');
+    }
+
 }

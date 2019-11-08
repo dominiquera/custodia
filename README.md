@@ -91,12 +91,18 @@ SDK Docs: https://firebase-php.readthedocs.io/en/latest/
 ### /v1/users/{user}/section/{section}/top_three_maintenance_items_today
     Returns the top 3 maintenance items due today for given user and section
     
+### /v1/users/{user}/section/{section}/all_maintenance_items
+    Returns the all maintenance items for given user and section
+    
 ### '/v1/sections/{section}/maintenance_items
     Returns maintenance items belonging to a given section
     
     
 ## POST
 
+### /v1/users/{user}/maintenance_item/{maintenance_item}/apiAutomate
+	Automate maintenance item
+    
 ### /v1/auth
 	Authenticate user via phone or google auth. Return user ID.
     * Expected input: phone (phone number) or gauth (user gauth id)
@@ -132,3 +138,6 @@ SDK Docs: https://firebase-php.readthedocs.io/en/latest/
 ### /v1/users/{user}/maintenance_item/{maintenance_item}/ignored
     	Set the a given maintenance item to be ignored for a given user id
     * Expected input: none
+
+### /v1/learning/{maintenance_item_id}
+        Get maintenance item by id

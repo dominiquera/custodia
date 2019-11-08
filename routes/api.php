@@ -65,3 +65,4 @@ Route::get('/v1/users/{user}/section/{section}/top_three_maintenance_items_today
 Route::get('/v1/users/{user}/section/{section}/all_maintenance_items', 'Admin\UserController@apiGetAllMaintenanceItemsTodayByUserAndSection');
 
 Route::get('/v1/sections/{section}/maintenance_items', 'Admin\MaintenanceItemController@apiGetSectionMaintenanceItems');
+Route::get('/v1/learning/{item_id}', 'Admin\MaintenanceItemController@apiGetMaintenance');

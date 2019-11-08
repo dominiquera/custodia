@@ -33,7 +33,9 @@
       </tbody>
   </table>
     <div class="motzi-admin-pagination">
-        {{ $events->links() }}
+        <div class="for-new-pagination" style="text-align: center;" >
+         {{ $events->links() }}
+        </div>
     </div>
 </div>
 @endsection
