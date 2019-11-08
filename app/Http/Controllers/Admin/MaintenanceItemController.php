@@ -205,7 +205,7 @@ class MaintenanceItemController extends Controller
         // Make a image name based on user name and current timestamp
         $name = str_slug($item->id).'_'.time();
         // Define folder path
-        $folder = '/uploads/images/';
+        $folder = 'uploads/images/';
         // Make a file path where image will be stored [ folder path + file name + file extension]
         $filePath = "/storage/" . $folder . $name. '.' . $image->getClientOriginalExtension();
         // Upload image
@@ -225,7 +225,7 @@ class MaintenanceItemController extends Controller
         // Make a image name based on user name and current timestamp
         $name = str_slug($item->id).'_'.time();
         // Define folder path
-        $folder = '/uploads/images/';
+        $folder = 'uploads/images/';
         // Make a file path where image will be stored [ folder path + file name + file extension]
         $filePath = "/storage/" . $folder . $name. '.' . $image->getClientOriginalExtension();
         // Upload image

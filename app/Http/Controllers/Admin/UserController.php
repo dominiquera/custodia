@@ -325,6 +325,40 @@ class UserController extends Controller
         return response()->json(['maintenance_items' => $ret], 200);
     }
 
+
+    public function apiGetAllMaintenanceItemsTodayByUserAndSection(User $user, Section $section){
+        $query = $this->getUserItemsJoinQuery($user) . "
+            and ITEMS.section_id = {$section->id}
+            ORDER BY ITEMS.points DESC;
+        ";
+
+        $results = DB::select($query);
+
+        $ret = collect();
+
+        foreach ($results as $result){
+            $m = MaintenanceItem::with("months")->find($result->id);
+            $str = date('F');
+            foreach ($m->months as $month){
+              if ($month->month == $str) {
+                $m->summary = $month->description;
+                if ($month->featuredImage && $month->featuredImage->path) {
+                  $m->image = $month->featuredImage->path;
+                } else {
+                  $m->image = "";
+                }
+              }
+            }
+            $ret->push($m);
+        }
+
+        return response()->json(['maintenance_items' => $ret], 200);
+    }
+
+    public function apiAutomate(User $user, MaintenanceItem $maintenanceItem){
+        return response()->json(['status' => "success"], 200);
+    }
+
     private function getUserItemsJoinQuery(User $user){
         $month = date('F');
         // $query = "
