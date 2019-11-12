@@ -365,6 +365,8 @@ class UserController extends Controller
         $to_name = "Test User";
         $to_email = "dorademacher@gmail.com";
 
+        $user->ignoredMaintenanceItems()->attach($maintenanceItem);
+
         Mail::send('emails.automate', $data, function ($message) use ($to_name, $to_email, $from_email) {
             $message->to($to_email, $to_name)->subject('Automation Request');
             $message->from($from_email,'Custodia');
