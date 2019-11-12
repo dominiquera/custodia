@@ -357,9 +357,15 @@ class UserController extends Controller
         return response()->json(['maintenance_items' => $ret], 200);
     }
 
-    public function apiAutomate(User $user, MaintenanceItem $maintenanceItem){
+    public function apiAutomate(User $user, MaintenanceItem $maintenanceItem) {
 
-        Mail::send('emails.automate', $data, function ($message) use ("Test", "dorademacher@gmail.com", "noreply@custodia.com") {
+        $data = array();
+
+        $from_email = 'noreply@custodia.com';
+        $to_name = "Test User";
+        $to_email = "dorademacher@gmail.com";
+
+        Mail::send('emails.automate', $data, function ($message) use ($to_name, $to_email, $from_email) {
             $message->to($to_email, $to_name)->subject('Automation Request');
             $message->from($from_email,'Custodia');
         });
