@@ -64,18 +64,27 @@ class WeeklyScoringCommand extends Command
         // }
         // echo PHP_EOL;
 
+        $allMaintenanceItems = MaintenanceItem::all();
+
 
         $users = User::where('role_id', '=', Role::where('name', '=', 'User')->firstOrFail()->id)->get();
+        $plucked = $months->pluck('maintenance_item_id')->all();
         foreach ($users as $user) {
             echo "Processing User: " . $user->id . PHP_EOL;
             $userProfile = $user->userProfile;
-            foreach ($months as $m){
-                echo "Processing Month: " . $m->title . PHP_EOL;
+            // foreach ($months as $m){
+                // echo "Processing Month: " . $m->month . PHP_EOL;
 
-                foreach ($m->maintenanceItems as $maintenanceItem){
+
+                // var_dump($plucked);exi
+
+
+
+                foreach ($allMaintenanceItems as $maintenanceItem){
+
+                    if (in_array($maintenanceItem->id,$plucked)) {
                     echo "Processing Maintenance Item: " . $maintenanceItem->title . PHP_EOL;
-
-                    if ($maintenanceItem->homeTypes->contains($user->userProfile->homeType)){
+                    if ($maintenanceItem->homeTypes->contains($user->userProfile->homeType)) {
                         if (!$user->ignoredMaintenanceItems->contains($maintenanceItem)){
                             if ($this->hasMatchingOutdoorSpace($user, $maintenanceItem)){
                                 if ($this->hasMatchingDrivewayType($user, $maintenanceItem)){
@@ -107,10 +116,13 @@ class WeeklyScoringCommand extends Command
                     } else {
                         echo "Ignoring because: Home Type incompatible";
                     }
-                    echo PHP_EOL;
+                  } else {
+                    //echo "Ignoring because: Maintenance Item not within this month";
+                  }
+                    // echo PHP_EOL;
                 }
-                echo PHP_EOL;
-            }
+            //     echo PHP_EOL;
+            // }
         }
     }
 
