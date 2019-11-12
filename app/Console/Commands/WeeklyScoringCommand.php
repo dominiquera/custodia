@@ -4,7 +4,8 @@ namespace Custodia\Console\Commands;
 
 use Custodia\Job;
 use Custodia\MaintenanceItem;
-use Custodia\MonthlyEvent;
+// use Custodia\MonthlyEvent;
+use Custodia\Month;
 use Custodia\OutdoorSpaceType;
 use Custodia\Role;
 use Custodia\User;
@@ -50,27 +51,28 @@ class WeeklyScoringCommand extends Command
 
         $month = date('F');
 
-        $monthlyEvents = MonthlyEvent::where('month', '=', $month)->get();
+        $months = Month::where('month', '=', $month)->get();
+        // TODO: this part has to change here
 
         echo "Running Weekly Scoring command..." . PHP_EOL . PHP_EOL;
         echo $this->calcDaysSinceDate($last_execution_date) . " days since last execution. (" . $last_execution_date . ")" . PHP_EOL . PHP_EOL;
         echo "Month: " . $month . PHP_EOL . PHP_EOL;
 
-        echo "Monthly Events: " . PHP_EOL;
-        foreach ($monthlyEvents as $monthlyEvent){
-            echo $monthlyEvent->title . PHP_EOL;
-        }
-        echo PHP_EOL;
+        // echo "Monthly Events: " . PHP_EOL;
+        // foreach ($monthlyEvents as $monthlyEvent){
+        //     echo $monthlyEvent->title . PHP_EOL;
+        // }
+        // echo PHP_EOL;
 
 
         $users = User::where('role_id', '=', Role::where('name', '=', 'User')->firstOrFail()->id)->get();
-        foreach ($users as $user){
+        foreach ($users as $user) {
             echo "Processing User: " . $user->id . PHP_EOL;
             $userProfile = $user->userProfile;
-            foreach ($monthlyEvents as $monthlyEvent){
-                echo "Processing Monthly Event: " . $monthlyEvent->title . PHP_EOL;
+            foreach ($months as $m){
+                echo "Processing Month: " . $m->title . PHP_EOL;
 
-                foreach ($monthlyEvent->maintenanceItems as $maintenanceItem){
+                foreach ($m->maintenanceItems as $maintenanceItem){
                     echo "Processing Maintenance Item: " . $maintenanceItem->title . PHP_EOL;
 
                     if ($maintenanceItem->homeTypes->contains($user->userProfile->homeType)){
@@ -107,10 +109,8 @@ class WeeklyScoringCommand extends Command
                     }
                     echo PHP_EOL;
                 }
-
                 echo PHP_EOL;
             }
-
         }
     }
 
