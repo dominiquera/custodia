@@ -328,7 +328,7 @@ class UserController extends Controller
     }
 
 
-    public function apiGetAllMaintenanceItemsTodayByUserAndSection(User $user, Section $section){
+    public function apiGetAllMaintenanceItemsTodayByUserAndSection(User $user, Section $section) {
         $query = $this->getUserItemsJoinQuery($user) . "
             and ITEMS.section_id = {$section->id}
             ORDER BY ITEMS.points DESC;
@@ -359,7 +359,7 @@ class UserController extends Controller
 
     public function apiAutomate(User $user, MaintenanceItem $maintenanceItem) {
 
-        $data = array();
+        $data = array("user" => $user->id, "item" => $maintenanceItem->title);
 
         $from_email = 'noreply@custodia.com';
         $to_name = "Test User";
@@ -373,7 +373,7 @@ class UserController extends Controller
         return response()->json(['status' => "success"], 200);
     }
 
-    private function getUserItemsJoinQuery(User $user){
+    private function getUserItemsJoinQuery(User $user) {
         $month = date('F');
         // $query = "
         //     select distinct(ITEMS.id) from maintenance_items ITEMS
