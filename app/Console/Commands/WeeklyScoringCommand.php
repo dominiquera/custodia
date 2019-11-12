@@ -97,24 +97,26 @@ class WeeklyScoringCommand extends Command
                                                 echo "Subtracting " . $pointsToSubtract . " points" . PHP_EOL;
                                                 $userProfile->score = $userProfile->score - $pointsToSubtract;
                                                 $userProfile->save();
+                                            } else {
+                                              echo "Ignoring because: Number of missed times was not greater than zero". PHP_EOL;
                                             }
                                         } else {
-                                            echo "Ignoring because: No relevant mobility issue type";
+                                            echo "Ignoring because: No relevant mobility issue type". PHP_EOL;
                                         }
                                     } else {
-                                        echo "Ignoring because: No relevant home features";
+                                        echo "Ignoring because: No relevant home features". PHP_EOL;
                                     }
                                 } else {
-                                    echo "Ignoring because: No relevant driveway types";
+                                    echo "Ignoring because: No relevant driveway types". PHP_EOL;
                                 }
                             } else {
-                                echo "Ignoring because: No relevant outdoor spaces";
+                                echo "Ignoring because: No relevant outdoor spaces". PHP_EOL;
                             }
                         } else {
-                            echo "Ignoring because: Maintenance Item ignored by User";
+                            echo "Ignoring because: Maintenance Item ignored by User". PHP_EOL;
                         }
                     } else {
-                        echo "Ignoring because: Home Type incompatible";
+                        echo "Ignoring because: Home Type incompatible". PHP_EOL;
                     }
                   } else {
                     //echo "Ignoring because: Maintenance Item not within this month";
