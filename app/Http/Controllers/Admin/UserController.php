@@ -22,6 +22,8 @@ use Custodia\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Mail;
+
 
 class UserController extends Controller
 {
@@ -356,6 +358,12 @@ class UserController extends Controller
     }
 
     public function apiAutomate(User $user, MaintenanceItem $maintenanceItem){
+
+        Mail::send('emails.automate', $data, function ($message) use ("Test", "dorademacher@gmail.com", "noreply@custodia.com") {
+            $message->to($to_email, $to_name)->subject('Automation Request');
+            $message->from($from_email,'Custodia');
+        });
+
         return response()->json(['status' => "success"], 200);
     }
 

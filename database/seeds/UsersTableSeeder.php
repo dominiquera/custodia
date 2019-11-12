@@ -37,6 +37,18 @@ class UsersTableSeeder extends Seeder
             'user_id' => 1,
             'home_type_id' => 1,
         ]);
+
+        DB::table('users')->insert([
+            'name' => 'geoff',
+            'email' => 'geoff@custodia.com',
+            'role_id' => 1,
+            'password' => bcrypt('custodia'),
+        ]);
+
+        DB::table('user_profiles')->insert([
+            'user_id' => 2,
+            'home_type_id' => 1,
+        ]);
     }
 
     private function create_test_user(): void
