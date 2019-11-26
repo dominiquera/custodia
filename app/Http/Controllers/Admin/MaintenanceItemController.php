@@ -9,6 +9,7 @@ use Custodia\Interval;
 use Custodia\MaintenanceItem;
 use Custodia\Material;
 use Custodia\Month;
+use Custodia\MonthsDescription;
 use Custodia\Section;
 use Custodia\Tool;
 use Custodia\User;
@@ -16,6 +17,7 @@ use DemeterChain\Main;
 use Illuminate\Http\Request;
 use Custodia\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 
 class MaintenanceItemController extends Controller
 {
@@ -46,7 +48,6 @@ class MaintenanceItemController extends Controller
 
     private function saveMaintenanceItem($request)
     {
-
         $item = new MaintenanceItem();
         $item->section_id = $request->section;
         $item->interval_id = $request->interval;
@@ -118,21 +119,41 @@ class MaintenanceItemController extends Controller
 
 
         if ($request->has('months')) {
-            $i = 0;
             foreach ($request->months as $month) {
                 $newMonth = new Month();
-                $newMonth->month = $month;
+                $newMonth->month = $month['month'];
                 $newMonth->maintenance_item_id = $item->id;
-                $newMonth->description = $request->descriptions[$i];
-                if (isset($request->photos[$i])) {
-                    $this->updatedFeaturedImageMonth($newMonth, $request->photos[$i]);
-                }
-                $i++;
+                $newMonth->interval_id = (int)$month['interval'];
+//                if (isset($request->photos[$i])) {
+//                    $this->updatedFeaturedImageMonth($newMonth, $request->photos[$i]);
+//                }
                 $newMonth->save();
+
+                foreach ($month['descriptions'] as $descriptions){
+                    if(!is_null($descriptions['text']) || (isset($descriptions['photos']) && !is_null($descriptions['photos']))){
+                        $newDesctiption = new MonthsDescription();
+                        $newDesctiption->months_id = $newMonth->id;
+                        if(!is_null($descriptions['text'])){
+                            $newDesctiption->description = $descriptions['text'];
+                        }
+                        if(isset($descriptions['photos']) && !is_null($descriptions['photos'])){
+                            $name = str_slug($item->id) . '_' . time();
+                            // Define folder path
+                            $folder = 'uploads/images/';
+                            // Make a file path where image will be stored [ folder path + file name + file extension]
+                            $filePath = "/storage/" . $folder . $name . '.' . $descriptions['photos']->getClientOriginalExtension();
+                            // Upload image
+                            $file = $descriptions['photos']->storeAs($folder, $name . '.' . $descriptions['photos']->getClientOriginalExtension(), 'public');
+                            $newDesctiption->img_name = $filePath;
+                        }
+                        $newDesctiption->save();
+                    }
+                }
             }
         }
 
         $item->save();
+
         return $item;
     }
 
@@ -198,22 +219,43 @@ class MaintenanceItemController extends Controller
                 $item->homeFeatures()->attach($feature);
             }
         }
-
+        MonthsDescription::whereIn('months_id', Month::where('maintenance_item_id', '=', $item->id)->get()->pluck('id'))->delete();
         Month::where('maintenance_item_id', '=', $item->id)->delete();
+
         if ($request->has('months')) {
-            $i = 0;
             foreach ($request->months as $month) {
+
                 $newMonth = new Month();
-                $newMonth->month = $month;
+                $newMonth->month = $month['month'];
                 $newMonth->maintenance_item_id = $item->id;
-                $newMonth->description = $request->descriptions[$i];
-
-                if (isset($request->photos[$i])) {
-                    $this->updatedFeaturedImageMonth($newMonth, $request->photos[$i]);
-                }
-
-                $i++;
+                $newMonth->interval_id = (int)$month['interval'];
                 $newMonth->save();
+                foreach ($month['descriptions'] as $descriptions){
+                    if(!is_null($descriptions['text']) || (isset($descriptions['photos']) && !is_null($descriptions['photos']))){
+                        $newDesctiption = new MonthsDescription();
+                        $newDesctiption->months_id = $newMonth->id;
+                        if(!is_null($descriptions['text'])){
+                            $newDesctiption->description = $descriptions['text'];
+                        }
+                        if(isset($descriptions['photos']) && !is_null($descriptions['photos'])){
+                            $name = str_slug($item->id) . '_' . time();
+                            // Define folder path
+                            $folder = 'uploads/images/';
+                            // Make a file path where image will be stored [ folder path + file name + file extension]
+                            $filePath = "/storage/" . $folder . $name . '.' . $descriptions['photos']->getClientOriginalExtension();
+                            // Upload image
+                            $file = $descriptions['photos']->storeAs($folder, $name . '.' . $descriptions['photos']->getClientOriginalExtension(), 'public');
+                            $newDesctiption->img_name = $filePath;
+                            if(isset($descriptions['old_photos'])){
+                                File::delete($descriptions['old_photos']);
+                            }
+
+                        }elseif (!isset($descriptions['photos']) && isset($descriptions['old_photos'])){
+                            $newDesctiption->img_name = $descriptions['old_photos'];
+                        }
+                        $newDesctiption->save();
+                    }
+                }
             }
         }
         $item->save();

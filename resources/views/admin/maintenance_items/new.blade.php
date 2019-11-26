@@ -120,7 +120,9 @@
                 <textarea name="summary" class="form-control" id="summary" placeholder="Summary" required></textarea>
             </div>
 
-            <div class="months-repeatable-container"></div>
+            <div class="months-repeatable-container">
+
+            </div>
             <input type="button" class="add ui button" value="Add Month" style="margin-top: 10px;"/>
 
             <div class="form-group">
@@ -168,38 +170,91 @@
             }
         });
     </script>
-
-    <script type="text/template" id="months-repeatable-container">
-        <div class="field-group" style="display: flex; margin-top: 10px;">
-            <select class="form-control" name="months[]" id="month_{?}">
-                <option selected="selected" disabled="disabled">--Choose a Month--</option>
-                <option value="January">January</option>
-                <option value="February">February</option>
-                <option value="March">March</option>
-                <option value="April">April</option>
-                <option value="May">May</option>
-                <option value="June">June</option>
-                <option value="July">July</option>
-                <option value="August">August</option>
-                <option value="September">September</option>
-                <option value="October">October</option>
-                <option value="November">November</option>
-                <option value="December">December</option>
-            </select>
-
-            <input type="text" name="descriptions[]" id="description_{?}">
-            <input id="photo" type="file" class="form-control" name="photos[]" id="photos_{?}" style="border:none;">
-
-            <button class="delete ui button negative" value="Remove">Remove</button>
-        </div>
-    </script>
-
     <script>
         $(document).ready(function () {
-            $("form .months-repeatable-container").repeatable({
-                template: "#months-repeatable-container"
-            });
+            row = 0;
 
+            $('.add').click(function () {
+
+                weekly = "       <div class=\"field-group\" style=\"display: flex; margin-top: 10px;\">\n" +
+                    "                <input type=\"text\" name=\"months["+row+"][descriptions][0][text]\" id=\"description\">\n" +
+                    "                <input id=\"photo\" type=\"file\" class=\"form-control\" name=\"months["+row+"][descriptions][0][photos]\" style=\"border:none;\">\n" +
+                    "            </div>" +
+                    "            <div class=\"field-group\" style=\"display: flex; margin-top: 10px;\">\n" +
+                    "                <input type=\"text\" name=\"months["+row+"][descriptions][1][text]\" id=\"description\">\n" +
+                    "                <input id=\"photo\" type=\"file\" class=\"form-control\" name=\"months["+row+"][descriptions][1][photos]\" style=\"border:none;\">\n" +
+                    "            </div>" +
+                    "            <div class=\"field-group\" style=\"display: flex; margin-top: 10px;\">\n" +
+                    "                <input type=\"text\" name=\"months["+row+"][descriptions][2][text]\" id=\"description\">\n" +
+                    "                <input id=\"photo\" type=\"file\" class=\"form-control\" name=\"months["+row+"][descriptions][2][photos]\" style=\"border:none;\">\n" +
+                    "            </div>" +
+                    "            <div class=\"field-group\" style=\"display: flex; margin-top: 10px;\">\n" +
+                    "                <input type=\"text\" name=\"months["+row+"][descriptions][3][text]\" id=\"description\">\n" +
+                    "                <input id=\"photo\" type=\"file\" class=\"form-control\" name=\"months["+row+"][descriptions][3][photos]\" style=\"border:none;\">\n" +
+                    "            </div>";
+                biweekly = '     <div class="field-group" style="display: flex; margin-top: 10px;">\n' +
+                    '                <input type="text" name="months['+row+'][descriptions][0][text]" id="description">\n' +
+                    '                <input id="photo" type="file" class="form-control" name="months['+row+'][descriptions][0][photos]" style="border:none;">\n' +
+                    '            </div>' +
+                    '            <div class="field-group" style="display: flex; margin-top: 10px;">\n' +
+                    '                <input type="text" name="months['+row+'][descriptions][1][text]" id="description">\n' +
+                    '                <input id="photo" type="file" class="form-control" name="months['+row+'][descriptions][1][photos]" style="border:none;">\n' +
+                    '            </div>';
+                montly = '       <div class="field-group" style="display: flex; margin-top: 10px;">\n' +
+                    '                <input type="text" name="months['+row+'][descriptions][0][text]" id="description">\n' +
+                    '                <input id="photo" type="file" class="form-control" name="months['+row+'][descriptions][0][photos]" style="border:none;">\n' +
+                    '            </div>';
+
+                let html = '<div class="field-group" style="margin-bottom: 40px">\n' +
+                    '            <div class="field-group" style="display: flex; margin-top: 10px;">\n' +
+                    '                <select class="form-control" name="months[' + row + '][month]" id="month" style="margin-right: 5px;">\n' +
+                    '                    <option selected="selected" disabled="disabled">--Choose a Month--</option>\n' +
+                    '                    <option value="January">January</option>\n' +
+                    '                    <option value="February">February</option>\n' +
+                    '                    <option value="March">March</option>\n' +
+                    '                    <option value="April">April</option>\n' +
+                    '                    <option value="May">May</option>\n' +
+                    '                    <option value="June">June</option>\n' +
+                    '                    <option value="July">July</option>\n' +
+                    '                    <option value="August">August</option>\n' +
+                    '                    <option value="September">September</option>\n' +
+                    '                    <option value="October">October</option>\n' +
+                    '                    <option value="November">November</option>\n' +
+                    '                    <option value="December">December</option>\n' +
+                    '                </select>\n' +
+                    '                <select class="form-control interval_repeatable" name="months['+row+'][interval]">\n' +
+                    '                    <option selected="selected" disabled="disabled">--Choose an Interval--</option>\n' +
+                    '                    @foreach (\Custodia\Interval::all() as $interval)' +
+                    '                        <option value="{{$interval->id}}" name="{{$interval->name}}">{{ $interval->name }}</option>\n' +
+                    '                    @endforeach\n' +
+                    '                </select>\n' +
+                    '            </div>\n' +
+                    '            <div class="desc_photo">\n' +
+                    '\n' +
+                    '            </div><br>\n' +
+                    '            <button class="delete ui button negative"\n' +
+                    '                    value="Remove">Remove\n' +
+                    '            </button>\n' +
+                    '        <hr></div>';
+                row++;
+                $('.months-repeatable-container').append(html);
+            });
+            $(document).on('click', '.delete', function () {
+                $(this).parent().remove();
+            });
+            $(document).on('change', '.interval_repeatable', function () {
+                let name = $(this).find(':selected').attr('name');
+                $(this).parent().next('.desc_photo').html('');
+                if(name == 'Weekly'){
+                    $(this).parent().next('.desc_photo').append(weekly);
+                }else if(name == 'Biweekly'){
+                    $(this).parent().next('.desc_photo').append(biweekly);
+                }else if(name == 'Monthly'){
+                    $(this).parent().next('.desc_photo').append(montly);
+                }else{
+                    $(this).parent().next('.desc_photo').html('');
+                }
+            });
             $('.add-tool').click(function () {
                 $('.tools').append('<div class="form-group">\n' +
                     '                    <label>Tool</label><br>\n' +

@@ -12,11 +12,11 @@ class IntervalsTableSeeder extends Seeder
     public function run()
     {
         $intervals = [
-            "Daily",
+//            "Daily",
             "Weekly",
             "Biweekly",
-            "Monthly",
-            "Weather Trigger"
+            "Monthly"
+//            "Weather Trigger"
         ];
 
         foreach ($intervals as $interval){
