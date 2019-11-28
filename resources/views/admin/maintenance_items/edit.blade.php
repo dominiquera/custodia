@@ -43,20 +43,20 @@
                 <label for="points">Points</label>
                 <input type="number" name="points" class="form-control" id="points" value="{{$item->points}}">
             </div>
-            <div class="form-group">
-                <label for="interval">Interval</label>
-                <select class="form-control" name="interval" id="interval">
-                    <option selected="selected" disabled="disabled">--Choose an Interval--</option>
-                    @foreach (Custodia\Interval::all() as $interval)
-                        <option
-                                @if ($interval->id == $item->interval->id)
-                                selected="selected"
-                                @endif
-                                value="{{$interval->id}}"
-                                name="{{$interval->name}}">{{ $interval->name }}</option>
-                    @endforeach
-                </select>
-            </div>
+{{--            <div class="form-group">--}}
+{{--                <label for="interval">Interval</label>--}}
+{{--                <select class="form-control" name="interval" id="interval">--}}
+{{--                    <option selected="selected" disabled="disabled">--Choose an Interval--</option>--}}
+{{--                    @foreach (Custodia\Interval::all() as $interval)--}}
+{{--                        <option--}}
+{{--                                @if ($interval->id == $item->interval->id)--}}
+{{--                                selected="selected"--}}
+{{--                                @endif--}}
+{{--                                value="{{$interval->id}}"--}}
+{{--                                name="{{$interval->name}}">{{ $interval->name }}</option>--}}
+{{--                    @endforeach--}}
+{{--                </select>--}}
+{{--            </div>--}}
             <div class="form-group" id="weather-trigger-form-group">
                 <select class="form-control" name="trigger" id="trigger">
                     <option selected="selected" disabled="disabled">--Choose a Weather Trigger--</option>
