@@ -198,7 +198,7 @@
                 @foreach ($item->months as $key => $month)
                     <div class="field-group" style="margin-bottom: 40px">
                         <div class="field-group" style="display: flex; margin-top: 10px;">
-                            <select class="form-control" name="months[{{$key}}][month]" id="month"
+                            <select required class="form-control" name="months[{{$key}}][month]" id="month"
                                     style="margin-right: 5px;">
                                 <option value="January" @if ($month->month == "January") selected="selected" @endif >
                                     January
@@ -233,7 +233,7 @@
                                     December
                                 </option>
                             </select>
-                            <select class="form-control interval_repeatable" name="months[{{$key}}][interval]">
+                            <select required class="form-control interval_repeatable" name="months[{{$key}}][interval]">
                                 <option selected="selected" disabled="disabled">--Choose an Interval--</option>
                                 @foreach (\Custodia\Interval::all() as $interval)
                                     <option value="{{$interval->id}}" name="{{$interval->name}}"
@@ -244,8 +244,8 @@
                         <div class="desc_photo">
                             @if($month->interval->name == 'Monthly')
                                 <div class="field-group" style="display: flex; margin-top: 10px;">
-                                    <input type="text" name="months[{{$key}}][descriptions][0][text]" id="description" value="{{$month->monthsDescription[0]->description ?? ''}}">
-                                    <input id="photo" type="file" class="form-control"
+                                    <input required type="text" name="months[{{$key}}][descriptions][0][text]" id="description" value="{{$month->monthsDescription[0]->description ?? ''}}">
+                                    <input required id="photo" type="file" class="form-control"
                                            name="months[{{$key}}][descriptions][0][photos]" style="border:none;">
                                     @if (isset($month->monthsDescription[0]->img_name))
                                         <input type="hidden" name="months[{{$key}}][descriptions][0][old_photos]" value="">
@@ -253,16 +253,16 @@
                                 </div>
                             @elseif($month->interval->name == 'Biweekly')
                                 <div class="field-group" style="display: flex; margin-top: 10px;">
-                                    <input type="text" name="months[{{$key}}][descriptions][0][text]" id="description" value="{{$month->monthsDescription[0]->description ?? ''}}">
-                                    <input id="photo" type="file" class="form-control"
+                                    <input required type="text" name="months[{{$key}}][descriptions][0][text]" id="description" value="{{$month->monthsDescription[0]->description ?? ''}}">
+                                    <input required id="photo" type="file" class="form-control"
                                            name="months[{{$key}}][descriptions][0][photos]" style="border:none;">
                                     @if (isset($month->monthsDescription[0]->img_name))
                                         <input type="hidden" name="months[{{$key}}][descriptions][0][old_photos]" value="{{$month->monthsDescription[0]->img_name}}">
                                         <div> <img style="max-width:62px;" src="{{asset($month->monthsDescription[0]->img_name)}}"/></div>                                      @endif
                                 </div>
                                 <div class="field-group" style="display: flex; margin-top: 10px;">
-                                    <input type="text" name="months[{{$key}}][descriptions][1][text]" id="description" value="{{$month->monthsDescription[1]->description ?? ''}}">
-                                    <input id="photo" type="file" class="form-control"
+                                    <input required type="text" name="months[{{$key}}][descriptions][1][text]" id="description" value="{{$month->monthsDescription[1]->description ?? ''}}">
+                                    <input required id="photo" type="file" class="form-control"
                                            name="months[{{$key}}][descriptions][1][photos]" style="border:none;">
                                     @if (isset($month->monthsDescription[1]->img_name))
                                         <input type="hidden" name="months[{{$key}}][descriptions][1][old_photos]" value="{{$month->monthsDescription[1]->img_name}}">
@@ -270,32 +270,32 @@
                                 </div>
                             @elseif($month->interval->name == 'Weekly')
                                 <div class="field-group" style="display: flex; margin-top: 10px;">
-                                    <input type="text" name="months[{{$key}}][descriptions][0][text]" id="description" value="{{$month->monthsDescription[0]->description ?? ''}}">
-                                    <input id="photo" type="file" class="form-control"
+                                    <input required type="text" name="months[{{$key}}][descriptions][0][text]" id="description" value="{{$month->monthsDescription[0]->description ?? ''}}">
+                                    <input required id="photo" type="file" class="form-control"
                                            name="months[{{$key}}][descriptions][0][photos]" style="border:none;">
                                     @if (isset($month->monthsDescription[0]->img_name))
                                         <input type="hidden" name="months[{{$key}}][descriptions][0][old_photos]" value="{{$month->monthsDescription[0]->img_name}}">
                                         <div> <img style="max-width:62px;" src="{{asset($month->monthsDescription[0]->img_name)}}"/></div>                                      @endif
                                 </div>
                                 <div class="field-group" style="display: flex; margin-top: 10px;">
-                                    <input type="text" name="months[{{$key}}][descriptions][1][text]" id="description" value="{{$month->monthsDescription[1]->description ?? ''}}">
-                                    <input id="photo" type="file" class="form-control"
+                                    <input required type="text" name="months[{{$key}}][descriptions][1][text]" id="description" value="{{$month->monthsDescription[1]->description ?? ''}}">
+                                    <input required id="photo" type="file" class="form-control"
                                            name="months[{{$key}}][descriptions][1][photos]" style="border:none;">
                                     @if (isset($month->monthsDescription[1]->img_name))
                                         <input type="hidden" name="months[{{$key}}][descriptions][1][old_photos]" value="{{$month->monthsDescription[1]->img_name}}">
                                         <div> <img style="max-width:62px;" src="{{asset($month->monthsDescription[1]->img_name)}}"/></div>                                      @endif
                                 </div>
                                 <div class="field-group" style="display: flex; margin-top: 10px;">
-                                    <input type="text" name="months[{{$key}}][descriptions][2][text]" id="description" value="{{$month->monthsDescription[2]->description ?? ''}}">
-                                    <input id="photo" type="file" class="form-control"
+                                    <input required type="text" name="months[{{$key}}][descriptions][2][text]" id="description" value="{{$month->monthsDescription[2]->description ?? ''}}">
+                                    <input required id="photo" type="file" class="form-control"
                                            name="months[{{$key}}][descriptions][2][photos]" style="border:none;">
                                     @if (isset($month->monthsDescription[2]->img_name))
-                                        <input type="hidden" name="months[{{$key}}][descriptions][2][old_photos]" value="{{$month->monthsDescription[2]->img_name}}">
+                                        <input required type="hidden" name="months[{{$key}}][descriptions][2][old_photos]" value="{{$month->monthsDescription[2]->img_name}}">
                                         <div> <img style="max-width:62px;" src="{{asset($month->monthsDescription[2]->img_name)}}"/></div>                                      @endif
                                 </div>
                                 <div class="field-group" style="display: flex; margin-top: 10px;">
-                                    <input type="text" name="months[{{$key}}][descriptions][3][text]" id="description" value="{{$month->monthsDescription[3]->description ?? ''}}">
-                                    <input id="photo" type="file" class="form-control"
+                                    <input required type="text" name="months[{{$key}}][descriptions][3][text]" id="description" value="{{$month->monthsDescription[3]->description ?? ''}}">
+                                    <input required id="photo" type="file" class="form-control"
                                            name="months[{{$key}}][descriptions][3][photos]" style="border:none;">
                                     @if (isset($month->monthsDescription[3]->img_name))
                                         <input type="hidden" name="months[{{$key}}][descriptions][3][old_photos]" value="{{$month->monthsDescription[3]->img_name}}">
@@ -359,37 +359,37 @@
             $('.add').click(function () {
 
                 weekly = "       <div class=\"field-group\" style=\"display: flex; margin-top: 10px;\">\n" +
-                    "                <input type=\"text\" name=\"months["+row+"][descriptions][0][text]\" id=\"description\">\n" +
-                    "                <input id=\"photo\" type=\"file\" class=\"form-control\" name=\"months["+row+"][descriptions][0][photos]\" style=\"border:none;\">\n" +
+                    "                <input required type=\"text\" name=\"months["+row+"][descriptions][0][text]\" id=\"description\">\n" +
+                    "                <input required id=\"photo\" type=\"file\" class=\"form-control\" name=\"months["+row+"][descriptions][0][photos]\" style=\"border:none;\">\n" +
                     "            </div>" +
                     "            <div class=\"field-group\" style=\"display: flex; margin-top: 10px;\">\n" +
-                    "                <input type=\"text\" name=\"months["+row+"][descriptions][1][text]\" id=\"description\">\n" +
-                    "                <input id=\"photo\" type=\"file\" class=\"form-control\" name=\"months["+row+"][descriptions][1][photos]\" style=\"border:none;\">\n" +
+                    "                <input required type=\"text\" name=\"months["+row+"][descriptions][1][text]\" id=\"description\">\n" +
+                    "                <input required id=\"photo\" type=\"file\" class=\"form-control\" name=\"months["+row+"][descriptions][1][photos]\" style=\"border:none;\">\n" +
                     "            </div>" +
                     "            <div class=\"field-group\" style=\"display: flex; margin-top: 10px;\">\n" +
-                    "                <input type=\"text\" name=\"months["+row+"][descriptions][2][text]\" id=\"description\">\n" +
-                    "                <input id=\"photo\" type=\"file\" class=\"form-control\" name=\"months["+row+"][descriptions][2][photos]\" style=\"border:none;\">\n" +
+                    "                <input required type=\"text\" name=\"months["+row+"][descriptions][2][text]\" id=\"description\">\n" +
+                    "                <input required id=\"photo\" type=\"file\" class=\"form-control\" name=\"months["+row+"][descriptions][2][photos]\" style=\"border:none;\">\n" +
                     "            </div>" +
                     "            <div class=\"field-group\" style=\"display: flex; margin-top: 10px;\">\n" +
-                    "                <input type=\"text\" name=\"months["+row+"][descriptions][3][text]\" id=\"description\">\n" +
-                    "                <input id=\"photo\" type=\"file\" class=\"form-control\" name=\"months["+row+"][descriptions][3][photos]\" style=\"border:none;\">\n" +
+                    "                <input required type=\"text\" name=\"months["+row+"][descriptions][3][text]\" id=\"description\">\n" +
+                    "                <input required id=\"photo\" type=\"file\" class=\"form-control\" name=\"months["+row+"][descriptions][3][photos]\" style=\"border:none;\">\n" +
                     "            </div>";
                 biweekly = '     <div class="field-group" style="display: flex; margin-top: 10px;">\n' +
-                    '                <input type="text" name="months['+row+'][descriptions][0][text]" id="description">\n' +
-                    '                <input id="photo" type="file" class="form-control" name="months['+row+'][descriptions][0][photos]" style="border:none;">\n' +
+                    '                <input required type="text" name="months['+row+'][descriptions][0][text]" id="description">\n' +
+                    '                <input required id="photo" type="file" class="form-control" name="months['+row+'][descriptions][0][photos]" style="border:none;">\n' +
                     '            </div>' +
                     '            <div class="field-group" style="display: flex; margin-top: 10px;">\n' +
-                    '                <input type="text" name="months['+row+'][descriptions][1][text]" id="description">\n' +
-                    '                <input id="photo" type="file" class="form-control" name="months['+row+'][descriptions][1][photos]" style="border:none;">\n' +
+                    '                <input required type="text" name="months['+row+'][descriptions][1][text]" id="description">\n' +
+                    '                <input required id="photo" type="file" class="form-control" name="months['+row+'][descriptions][1][photos]" style="border:none;">\n' +
                     '            </div>';
                 montly = '       <div class="field-group" style="display: flex; margin-top: 10px;">\n' +
-                    '                <input type="text" name="months['+row+'][descriptions][0][text]" id="description">\n' +
-                    '                <input id="photo" type="file" class="form-control" name="months['+row+'][descriptions][0][photos]" style="border:none;">\n' +
+                    '                <input required type="text" name="months['+row+'][descriptions][0][text]" id="description">\n' +
+                    '                <input required id="photo" type="file" class="form-control" name="months['+row+'][descriptions][0][photos]" style="border:none;">\n' +
                     '            </div>';
 
                 let html = '<div class="field-group" style="margin-bottom: 40px">\n' +
                     '            <div class="field-group" style="display: flex; margin-top: 10px;">\n' +
-                    '                <select class="form-control" name="months[' + row + '][month]" id="month" style="margin-right: 5px;">\n' +
+                    '                <select required class="form-control" name="months[' + row + '][month]" id="month" style="margin-right: 5px;">\n' +
                     '                    <option selected="selected" disabled="disabled">--Choose a Month--</option>\n' +
                     '                    <option value="January">January</option>\n' +
                     '                    <option value="February">February</option>\n' +
@@ -404,7 +404,7 @@
                     '                    <option value="November">November</option>\n' +
                     '                    <option value="December">December</option>\n' +
                     '                </select>\n' +
-                    '                <select class="form-control interval_repeatable" name="months['+row+'][interval]">\n' +
+                    '                <select required class="form-control interval_repeatable" name="months['+row+'][interval]">\n' +
                     '                    <option selected="selected" disabled="disabled">--Choose an Interval--</option>\n' +
                     '                    @foreach (\Custodia\Interval::all() as $interval)' +
                     '                        <option value="{{$interval->id}}" name="{{$interval->name}}">{{ $interval->name }}</option>\n' +

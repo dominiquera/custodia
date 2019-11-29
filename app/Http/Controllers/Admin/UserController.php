@@ -2,6 +2,7 @@
 
 namespace Custodia\Http\Controllers\Admin;
 
+use Carbon\Carbon;
 use Custodia\DrivewayType;
 use Custodia\HomeFeature;
 use Custodia\HomeType;
@@ -29,16 +30,19 @@ class UserController extends Controller
 {
 
 
-    public function users() {
+    public function users()
+    {
         $users = User::orderBy('id', 'desc')->paginate(10);
         return view('admin.users.users', ['users' => $users]);
     }
 
-    public function newUser() {
+    public function newUser()
+    {
         return view('admin.users.new');
     }
 
-    public function editUser(User $user) {
+    public function editUser(User $user)
+    {
         return view('admin.users.edit', ['user' => $user]);
     }
 
@@ -49,7 +53,8 @@ class UserController extends Controller
         return redirect('/admin/users');
     }
 
-    private function saveUser($request){
+    private function saveUser($request)
+    {
         $user = new User();
         $user->name = $request->name;
         $user->password = Hash::make($request->password);
@@ -69,38 +74,38 @@ class UserController extends Controller
         $userProfile->zip = $request->zip;
 
         if ($request->has('city')) {
-          $userProfile->city = $request->city;
+            $userProfile->city = $request->city;
         }
 
 
         $userProfile->save();
 
-        if ($request->has('outdoor_spaces')){
-            foreach ($request->outdoor_spaces as $outdoor_space){
+        if ($request->has('outdoor_spaces')) {
+            foreach ($request->outdoor_spaces as $outdoor_space) {
                 $userProfile->outdoorSpaces()->attach($outdoor_space);
             }
         }
 
-        if ($request->has('driveways')){
-            foreach ($request->driveways as $driveway){
+        if ($request->has('driveways')) {
+            foreach ($request->driveways as $driveway) {
                 $userProfile->drivewayTypes()->attach($driveway);
             }
         }
 
-        if ($request->has('mobility_issues')){
-            foreach ($request->mobility_issues as $issue){
+        if ($request->has('mobility_issues')) {
+            foreach ($request->mobility_issues as $issue) {
                 $userProfile->mobilityIssues()->attach($issue);
             }
         }
 
-        if ($request->has('features')){
-            foreach ($request->features as $feature){
+        if ($request->has('features')) {
+            foreach ($request->features as $feature) {
                 $userProfile->homeFeatures()->attach($feature);
             }
         }
 
-        if ($request->has('management_plans')){
-            foreach ($request->management_plans as $plan){
+        if ($request->has('management_plans')) {
+            foreach ($request->management_plans as $plan) {
                 $userProfile->managementPlans()->attach($plan);
             }
         }
@@ -129,7 +134,7 @@ class UserController extends Controller
         $userProfile->zip = $request->zip;
 
         if ($request->has('city')) {
-          $userProfile->city = $request->city;
+            $userProfile->city = $request->city;
         }
 
 
@@ -137,29 +142,29 @@ class UserController extends Controller
         $userProfile->save();
 
         $userProfile->outdoorSpaces()->detach();
-        if ($request->has('outdoor_spaces')){
-            foreach ($request->outdoor_spaces as $outdoor_space){
+        if ($request->has('outdoor_spaces')) {
+            foreach ($request->outdoor_spaces as $outdoor_space) {
                 $userProfile->outdoorSpaces()->attach($outdoor_space);
             }
         }
 
         $userProfile->drivewayTypes()->detach();
-        if ($request->has('driveways')){
-            foreach ($request->driveways as $driveway){
+        if ($request->has('driveways')) {
+            foreach ($request->driveways as $driveway) {
                 $userProfile->drivewayTypes()->attach($driveway);
             }
         }
 
         $userProfile->mobilityIssues()->detach();
-        if ($request->has('mobility_issues')){
-            foreach ($request->mobility_issues as $issue){
+        if ($request->has('mobility_issues')) {
+            foreach ($request->mobility_issues as $issue) {
                 $userProfile->mobilityIssues()->attach($issue);
             }
         }
 
         $userProfile->homeFeatures()->detach();
-        if ($request->has('features')){
-            foreach ($request->features as $feature){
+        if ($request->has('features')) {
+            foreach ($request->features as $feature) {
                 $userProfile->homeFeatures()->attach($feature);
             }
         }
@@ -181,12 +186,13 @@ class UserController extends Controller
         return redirect('/admin/users');
     }
 
-    public function apiAuthenticateUser(Request $request) {
-        if ($request->has('phone') && strlen($request->phone) > 0){
+    public function apiAuthenticateUser(Request $request)
+    {
+        if ($request->has('phone') && strlen($request->phone) > 0) {
             $phone = $request->phone;
             $user = User::where('phone', '=', $phone)->firstOrFail();
             return response()->json(['id' => $user->id], 200);
-        } else if ($request->has('gauth') && strlen($request->gauth) > 0){
+        } else if ($request->has('gauth') && strlen($request->gauth) > 0) {
             $gauth = $request->gauth;
             $user = User::where('google_auth_id', '=', $gauth)->firstOrFail();
             return response()->json(['id' => $user->id], 200);
@@ -194,7 +200,9 @@ class UserController extends Controller
             return response()->json(['error' => 'Invalid parameters.'], 400);
         }
     }
-    public function generateRandomString($length = 10) {
+
+    public function generateRandomString($length = 10)
+    {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $charactersLength = strlen($characters);
         $randomString = '';
@@ -203,24 +211,26 @@ class UserController extends Controller
         }
         return $randomString;
     }
-    public function apiCreateUser(Request $request){
 
-        $validation = Validator::make($request->all(),CreateUserRequest::apiRules());
+    public function apiCreateUser(Request $request)
+    {
+
+        $validation = Validator::make($request->all(), CreateUserRequest::apiRules());
         $errors = $validation->errors();
 
-        if (sizeof($errors) > 0){
+        if (sizeof($errors) > 0) {
             return response()->json(["Errors" => $errors], 400);
         } else {
             try {
                 $request->password = $this->generateRandomString();
                 $request->role = 2;
                 $user = $this->saveUser($request);
-                if ($user->id){
+                if ($user->id) {
                     return response()->json(['message' => "Success"], 200);
                 } else {
                     return response()->json(['message' => "Unknown error"], 400);
                 }
-            } catch (\Exception $e){
+            } catch (\Exception $e) {
                 return response()->json(['message' => $e], 400);
             }
 
@@ -228,27 +238,29 @@ class UserController extends Controller
 
     }
 
-    public function apiGetUserScore(User $user){
+    public function apiGetUserScore(User $user)
+    {
         return response()->json(['score' => $user->userProfile->score], 200);
     }
 
-    public function apiSetUserScore(User $user, Request $request){
-        $validation = Validator::make($request->all(),['score' => 'required|numeric']);
+    public function apiSetUserScore(User $user, Request $request)
+    {
+        $validation = Validator::make($request->all(), ['score' => 'required|numeric']);
         $errors = $validation->errors();
 
-        if (sizeof($errors) > 0){
+        if (sizeof($errors) > 0) {
             return response()->json(["Errors" => $errors], 400);
         } else {
             try {
                 $profile = $user->userProfile;
                 $profile->score = $request->score;
                 $profile->save();
-                if ($profile->score == $request->score){
+                if ($profile->score == $request->score) {
                     return response()->json(['message' => "Success"], 200);
                 } else {
                     return response()->json(['message' => "Unknown error"], 400);
                 }
-            } catch (\Exception $e){
+            } catch (\Exception $e) {
                 return response()->json(['message' => $e], 400);
             }
         }
@@ -256,16 +268,19 @@ class UserController extends Controller
         return response()->json(['score' => $user->userProfile->score], 200);
     }
 
-    public function apiGetUserDoneMaintenanceItems(User $user){
+    public function apiGetUserDoneMaintenanceItems(User $user)
+    {
         return response()->json(['maintenance_items' => $user->doneMaintenanceItems], 200);
     }
 
-    public function apiGetUserIgnoredMaintenanceItems(User $user){
+    public function apiGetUserIgnoredMaintenanceItems(User $user)
+    {
         return response()->json(['maintenance_items' => $user->ignoredMaintenanceItems], 200);
     }
 
 
-    public function apiGetTop3MaintenanceItemsTodayByUser(User $user) {
+    public function apiGetTop3MaintenanceItemsTodayByUser(User $user)
+    {
         $month = date('F');
         $query = $this->getUserItemsJoinQuery($user) . "
             ORDER BY ITEMS.points DESC
@@ -273,31 +288,30 @@ class UserController extends Controller
         ";
 
         $results = DB::select($query);
-
         $ret = collect();
 
-        foreach ($results as $result){
+        foreach ($results as $result) {
             $m = MaintenanceItem::with("months")->find($result->id);
+            $m_ar = MaintenanceItem::with("months")->find($result->id)->toArray();
             $str = date('F');
-            foreach ($m->months as $month){
-              if ($month->month == $str) {
-                $m->summary = $month->description;
-                if ($month->featuredImage && $month->featuredImage->path) {
-                  $m->image = $month->featuredImage->path;
-                } else {
-                  $m->image = "";
+            foreach ($m['months'] as $k => $month) {
+                if ($month['month'] == $str) {
+                    foreach ($month->monthsDescription as $key => $monthsDescription) {
+                        $m_ar['months'][$k]['description'][$key] = $monthsDescription->description;
+                        $m_ar['months'][$k]['image'][$key] = $monthsDescription->img_name;
+                    }
+                    $m_ar['months'][$k]['interval'] = $month->interval->name;
                 }
-
-              }
             }
-            $ret->push($m);
+            $ret->push($m_ar);
         }
 
         return response()->json(['maintenance_items' => $ret], 200);
     }
 
 
-    public function apiGetTop3MaintenanceItemsTodayByUserAndSection(User $user, Section $section){
+    public function apiGetTop3MaintenanceItemsTodayByUserAndSection(User $user, Section $section)
+    {
         $query = $this->getUserItemsJoinQuery($user) . "
             and ITEMS.section_id = {$section->id}
             ORDER BY ITEMS.points DESC
@@ -306,29 +320,14 @@ class UserController extends Controller
 
         $results = DB::select($query);
 
-        $ret = collect();
-
-        foreach ($results as $result){
-            $m = MaintenanceItem::with("months")->find($result->id);
-            $str = date('F');
-            foreach ($m->months as $month){
-              if ($month->month == $str) {
-                $m->summary = $month->description;
-                if ($month->featuredImage && $month->featuredImage->path) {
-                  $m->image = $month->featuredImage->path;
-                } else {
-                  $m->image = "";
-                }
-              }
-            }
-            $ret->push($m);
-        }
+        $ret = $this->intervalAlgorithm($results, $user);
 
         return response()->json(['maintenance_items' => $ret], 200);
     }
 
 
-    public function apiGetAllMaintenanceItemsTodayByUserAndSection(User $user, Section $section) {
+    public function apiGetAllMaintenanceItemsTodayByUserAndSection(User $user, Section $section)
+    {
         $query = $this->getUserItemsJoinQuery($user) . "
             and ITEMS.section_id = {$section->id}
             ORDER BY ITEMS.points DESC;
@@ -336,28 +335,14 @@ class UserController extends Controller
 
         $results = DB::select($query);
 
-        $ret = collect();
+        $ret = $this->intervalAlgorithm($results, $user);
 
-        foreach ($results as $result){
-            $m = MaintenanceItem::with("months")->find($result->id);
-            $str = date('F');
-            foreach ($m->months as $month){
-              if ($month->month == $str) {
-                $m->summary = $month->description;
-                if ($month->featuredImage && $month->featuredImage->path) {
-                  $m->image = $month->featuredImage->path;
-                } else {
-                  $m->image = "";
-                }
-              }
-            }
-            $ret->push($m);
-        }
 
         return response()->json(['maintenance_items' => $ret], 200);
     }
 
-    public function apiAutomate(User $user, MaintenanceItem $maintenanceItem) {
+    public function apiAutomate(User $user, MaintenanceItem $maintenanceItem)
+    {
 
         $data = array("user" => $user->id, "item" => $maintenanceItem->title);
 
@@ -369,13 +354,14 @@ class UserController extends Controller
 
         Mail::send('emails.automate', $data, function ($message) use ($to_name, $to_email, $from_email) {
             $message->to($to_email, $to_name)->subject('Automation Request');
-            $message->from($from_email,'Custodia');
+            $message->from($from_email, 'Custodia');
         });
 
         return response()->json(['status' => "success"], 200);
     }
 
-    private function getUserItemsJoinQuery(User $user) {
+    private function getUserItemsJoinQuery(User $user)
+    {
         $month = date('F');
         // $query = "
         //     select distinct(ITEMS.id) from maintenance_items ITEMS
@@ -399,7 +385,6 @@ class UserController extends Controller
         //     and MONTHLY_EVENT.month = \"{$month}\"
         // ";
 
-
         $query = "
             select distinct(ITEMS.id) from maintenance_items ITEMS
             join home_type_maintenance_item ITEM_HOME_TYPE on ITEMS.id = ITEM_HOME_TYPE.maintenance_item_id
@@ -416,7 +401,6 @@ class UserController extends Controller
             left outer join maintenance_item_done_user ITEMS_DONE_USER on ITEMS_DONE_USER.maintenance_item_id = ITEMS.id and ITEMS_DONE_USER.user_id = PROFILE.user_id
             left outer join maintenance_item_ignored_user ITEMS_IGNORED_USER on ITEMS_IGNORED_USER.maintenance_item_id = ITEMS.id and ITEMS_IGNORED_USER.user_id = PROFILE.user_id
             where PROFILE.id = {$user->userProfile->id}
-            and ITEMS_DONE_USER.id IS NULL
             and ITEMS_IGNORED_USER.id IS NULL
             and months.month = \"{$month}\"
         ";
@@ -424,22 +408,24 @@ class UserController extends Controller
         return $query;
     }
 
-    public function apiGetOutdoorSpaces(User $user){
+    public function apiGetOutdoorSpaces(User $user)
+    {
         return response()->json(['outdoor_spaces' => $user->userProfile->outdoorSpaces], 200);
     }
 
-    public function apiSetOutdoorSpaces(User $user, Request $request){
-        $validation = Validator::make($request->all(),['outdoor_spaces' => 'required|array']);
+    public function apiSetOutdoorSpaces(User $user, Request $request)
+    {
+        $validation = Validator::make($request->all(), ['outdoor_spaces' => 'required|array']);
         $errors = $validation->errors();
 
-        if (sizeof($errors) > 0){
+        if (sizeof($errors) > 0) {
             return response()->json(["Errors" => $errors], 400);
         } else {
             try {
-                if ($request->has('outdoor_spaces')){
+                if ($request->has('outdoor_spaces')) {
                     $profile = $user->userProfile;
                     $profile->outdoorSpaces()->detach();
-                    foreach ($request->outdoor_spaces as $outdoorSpaceId){
+                    foreach ($request->outdoor_spaces as $outdoorSpaceId) {
                         $outdoorSpace = OutdoorSpaceType::findOrFail($outdoorSpaceId);
                         $profile->outdoorSpaces()->attach($outdoorSpace);
                     }
@@ -449,28 +435,30 @@ class UserController extends Controller
                 } else {
                     return response()->json(['message' => "Unknown error."], 400);
                 }
-            } catch (\Exception $e){
+            } catch (\Exception $e) {
                 return response()->json(['message' => $e], 400);
             }
         }
     }
 
-    public function apiGetDriveways(User $user){
+    public function apiGetDriveways(User $user)
+    {
         return response()->json(['driveways' => $user->userProfile->drivewayTypes], 200);
     }
 
-    public function apiSetDriveways(User $user, Request $request){
-        $validation = Validator::make($request->all(),['driveways' => 'required|array']);
+    public function apiSetDriveways(User $user, Request $request)
+    {
+        $validation = Validator::make($request->all(), ['driveways' => 'required|array']);
         $errors = $validation->errors();
 
-        if (sizeof($errors) > 0){
+        if (sizeof($errors) > 0) {
             return response()->json(["Errors" => $errors], 400);
         } else {
             try {
-                if ($request->has('driveways')){
+                if ($request->has('driveways')) {
                     $profile = $user->userProfile;
                     $profile->drivewayTypes()->detach();
-                    foreach ($request->driveways as $drivewayId){
+                    foreach ($request->driveways as $drivewayId) {
                         $driveway = DrivewayType::findOrFail($drivewayId);
                         $profile->drivewayTypes()->attach($driveway);
                     }
@@ -480,28 +468,30 @@ class UserController extends Controller
                 } else {
                     return response()->json(['message' => "Unknown error."], 400);
                 }
-            } catch (\Exception $e){
+            } catch (\Exception $e) {
                 return response()->json(['message' => $e], 400);
             }
         }
     }
 
-    public function apiGetHomeFeatures(User $user){
+    public function apiGetHomeFeatures(User $user)
+    {
         return response()->json(['home_features' => $user->userProfile->homeFeatures], 200);
     }
 
-    public function apiSetHomeFeatures(User $user, Request $request){
-        $validation = Validator::make($request->all(),['home_features' => 'required|array']);
+    public function apiSetHomeFeatures(User $user, Request $request)
+    {
+        $validation = Validator::make($request->all(), ['home_features' => 'required|array']);
         $errors = $validation->errors();
 
-        if (sizeof($errors) > 0){
+        if (sizeof($errors) > 0) {
             return response()->json(["Errors" => $errors], 400);
         } else {
             try {
-                if ($request->has('home_features')){
+                if ($request->has('home_features')) {
                     $profile = $user->userProfile;
                     $profile->homeFeatures()->detach();
-                    foreach ($request->home_features as $featureId){
+                    foreach ($request->home_features as $featureId) {
                         $feature = HomeFeature::findOrFail($featureId);
                         $profile->homeFeatures()->attach($feature);
                     }
@@ -511,18 +501,20 @@ class UserController extends Controller
                 } else {
                     return response()->json(['message' => "Unknown error."], 400);
                 }
-            } catch (\Exception $e){
+            } catch (\Exception $e) {
                 return response()->json(['message' => $e], 400);
             }
         }
     }
 
-    public function apiGetMobilityIssues(User $user){
+    public function apiGetMobilityIssues(User $user)
+    {
         return response()->json(['mobility_issues' => $user->userProfile->mobilityIssues], 200);
 
     }
 
-    public function getUserDetails(User $user) {
+    public function getUserDetails(User $user)
+    {
         $user = User::findOrFail($user->id);
         $user->score = $user->userProfile->score;
 
@@ -531,51 +523,39 @@ class UserController extends Controller
         $plans = $user->userProfile->managementPlans->pluck('id')->toArray();
 
         if (count($plans) == 2 && in_array(1, $plans) && in_array(2, $plans)) {
-          $user->title = "Your Parents Home Management Plan";
-        }
-
-        elseif (count($plans) == 3 && in_array(1, $plans) && in_array(2, $plans) && in_array(3, $plans)) {
-          $user->title = "Your Families Home Management Plan";
-        }
-
-        elseif (count($plans) == 2 && in_array(1, $plans)  && in_array(3, $plans)) {
-          $user->title = "Your Families Home Management Plan";
-        }
-
-        elseif (count($plans) == 2 && in_array(1, $plans)  && in_array(2, $plans)) {
-          $user->title = "Your Families Home Management Plan";
-        }
-
-        elseif (count($plans) == 1 && in_array(1, $plans)) {
-          $user->title = "Your Moms Home Management Plan";
-        }
-
-        elseif (count($plans) == 1 && in_array(2, $plans)) {
-          $user->title = "Your Dad’s Home Management Plan";
-        }
-
-        elseif (count($plans) == 1 && in_array(3, $plans)) {
-          $user->title = "Your Home Management Plan";
-        }
-        else {
-          $user->title = "Your Home Management Plan";
+            $user->title = "Your Parents Home Management Plan";
+        } elseif (count($plans) == 3 && in_array(1, $plans) && in_array(2, $plans) && in_array(3, $plans)) {
+            $user->title = "Your Families Home Management Plan";
+        } elseif (count($plans) == 2 && in_array(1, $plans) && in_array(3, $plans)) {
+            $user->title = "Your Families Home Management Plan";
+        } elseif (count($plans) == 2 && in_array(1, $plans) && in_array(2, $plans)) {
+            $user->title = "Your Families Home Management Plan";
+        } elseif (count($plans) == 1 && in_array(1, $plans)) {
+            $user->title = "Your Moms Home Management Plan";
+        } elseif (count($plans) == 1 && in_array(2, $plans)) {
+            $user->title = "Your Dad’s Home Management Plan";
+        } elseif (count($plans) == 1 && in_array(3, $plans)) {
+            $user->title = "Your Home Management Plan";
+        } else {
+            $user->title = "Your Home Management Plan";
         }
 
         return response()->json(['message' => "Success", "user" => $user], 200);
     }
 
-    public function apiSetMobilityIssues(User $user, Request $request) {
-        $validation = Validator::make($request->all(),['mobility_issues' => 'required|array']);
+    public function apiSetMobilityIssues(User $user, Request $request)
+    {
+        $validation = Validator::make($request->all(), ['mobility_issues' => 'required|array']);
         $errors = $validation->errors();
 
-        if (sizeof($errors) > 0){
+        if (sizeof($errors) > 0) {
             return response()->json(["Errors" => $errors], 400);
         } else {
             try {
-                if ($request->has('mobility_issues')){
+                if ($request->has('mobility_issues')) {
                     $profile = $user->userProfile;
                     $profile->mobilityIssues()->detach();
-                    foreach ($request->mobility_issues as $issueId){
+                    foreach ($request->mobility_issues as $issueId) {
                         $issue = MobilityIssueType::findOrFail($issueId);
                         $profile->mobilityIssues()->attach($issue);
                     }
@@ -585,39 +565,110 @@ class UserController extends Controller
                 } else {
                     return response()->json(['message' => "Unknown error."], 400);
                 }
-            } catch (\Exception $e){
+            } catch (\Exception $e) {
                 return response()->json(['Error' => $e], 400);
             }
         }
     }
 
-    public function apiGetIsMaintenanceItemDone(User $user, MaintenanceItem $maintenanceItem){
+    public function apiGetIsMaintenanceItemDone(User $user, MaintenanceItem $maintenanceItem)
+    {
         return response()->json($user->doneMaintenanceItems->contains($maintenanceItem), 200);
     }
 
-    public function apiGetIsMaintenanceItemIgnored(User $user, MaintenanceItem $maintenanceItem){
+    public function apiGetIsMaintenanceItemIgnored(User $user, MaintenanceItem $maintenanceItem)
+    {
         return response()->json($user->ignoredMaintenanceItems->contains($maintenanceItem), 200);
     }
 
-    public function apiSetMaintenanceItemDone(User $user, MaintenanceItem $maintenanceItem, Request $request){
-            if ($maintenanceItem) {
-                $user->doneMaintenanceItems()->attach($maintenanceItem);
-                $profile = $user->userProfile;
-                $profile->score = $profile->score + $maintenanceItem->points;
-                $profile->save();
-                $user->save();
-                return response()->json(['message' => "Success", "score" => $profile->score], 200);
-            } else {
-                return response()->json('Error',  400);
-            }
+    public function apiSetMaintenanceItemDone(User $user, MaintenanceItem $maintenanceItem, Request $request)
+    {
+        if ($maintenanceItem) {
+            $user->doneMaintenanceItems()->attach($maintenanceItem);
+            $profile = $user->userProfile;
+            $profile->score = $profile->score + $maintenanceItem->points;
+            $profile->save();
+            $user->save();
+            return response()->json(['message' => "Success", "score" => $profile->score], 200);
+        } else {
+            return response()->json('Error', 400);
+        }
     }
 
-    public function apiSetMaintenanceItemIgnored(User $user, MaintenanceItem $maintenanceItem, Request $request){
+    public function apiSetMaintenanceItemIgnored(User $user, MaintenanceItem $maintenanceItem, Request $request)
+    {
         if ($maintenanceItem) {
             $user->ignoredMaintenanceItems()->attach($maintenanceItem);
             return response()->json(['message' => "Success"], 200);
         } else {
-            return response()->json('Error',  400);
+            return response()->json('Error', 400);
         }
+    }
+
+    public function intervalAlgorithm($results, $user)
+    {
+        $ret = collect();
+        $day = date('d');
+        $week = intval ($day / 7);
+        $biWeek = intval ($day / 14);
+
+        foreach ($results as $result) {
+            $done = DB::table('maintenance_item_done_user')->where('maintenance_item_id', $result->id)->where('user_id', $user->id)->whereMonth('created_at', date('m'))->orderBy('created_at', 'desc')->first();
+            $now = Carbon::now();
+            $difference = -1;
+            if(!is_null($done)){
+                $difference = $now->diff($done->created_at)->days;
+            }
+            $str = date('F');
+
+            $m = MaintenanceItem::with(["months" => function ($query) use ($str){
+                $query->where('month', $str);
+            }])->find($result->id);
+            $m_ar = MaintenanceItem::with(["months" => function ($query) use ($str){
+                $query->where('month', $str);
+            }])->find($result->id)->toArray();
+            foreach ($m['months'] as $k => $month) {
+                if ($month['month'] == $str) {
+                    if($month->interval->name == 'Weekly') {
+                        if($week > 3){
+                            $m_ar['months']['description '] = $month->monthsDescription[3]->description;
+                            $m_ar['months']['image '] = $month->monthsDescription[3]->img_name;
+                        }else{
+                            $m_ar['months']['description '] = $month->monthsDescription[$week]->description;
+                            $m_ar['months']['image '] = $month->monthsDescription[$week]->img_name;
+                        }
+                    }elseif($month->interval->name == 'Biweekly'){
+                        if($week > 1){
+                            $m_ar['months']['description '] = $month->monthsDescription[1]->description;
+                            $m_ar['months']['image '] = $month->monthsDescription[1]->img_name;
+                        }else{
+                            $m_ar['months']['description '] = $month->monthsDescription[$biWeek]->description;
+                            $m_ar['months']['image '] = $month->monthsDescription[$biWeek]->img_name;
+                        }
+                    }elseif($month->interval->name == 'Monthly'){
+                        $m_ar['months']['description '] = $month->monthsDescription[0]->description;
+                        $m_ar['months']['image '] = $month->monthsDescription[0]->img_name;
+                    }
+                    $m_ar['months']['interval'] = $month->interval->name;
+                }
+            }
+            if($m_ar['months']['interval'] == 'Monthly'){
+                if(is_null($done)){
+                    $ret->push($m_ar);
+                }
+            }elseif($m_ar['months']['interval'] == 'Biweekly'){
+                if(is_null($done) || ($difference != -1 && $difference > 14)){
+                    $ret->push($m_ar);
+                }
+            }elseif($m_ar['months']['interval'] == 'Weekly'){
+                if(is_null($done) || ($difference != -1 && $difference > 7)){
+                    $ret->push($m_ar);
+                }
+            }else{
+                $ret->push($m_ar);
+            }
+        }
+
+        return $ret;
     }
 }
