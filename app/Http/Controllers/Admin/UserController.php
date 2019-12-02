@@ -618,23 +618,23 @@ class UserController extends Controller
                 if ($month['month'] == $str) {
                     if($month->interval->name == 'Weekly') {
                         if($week > 3){
-                            $m_ar['description '] = $month->monthsDescription[3]->description;
-                            $m_ar['image '] = $month->monthsDescription[3]->img_name;
+                            $m_ar['months']['0']['description '] = $month->monthsDescription[3]->description;
+                            $m_ar['months']['0']['image '] = $month->monthsDescription[3]->img_name;
                         }else{
-                            $m_ar['description '] = $month->monthsDescription[$week]->description;
-                            $m_ar['image '] = $month->monthsDescription[$week]->img_name;
+                            $m_ar['months']['0']['description '] = $month->monthsDescription[$week]->description;
+                            $m_ar['months']['0']['image '] = $month->monthsDescription[$week]->img_name;
                         }
                     }elseif($month->interval->name == 'Biweekly'){
                         if($week > 1){
-                            $m_ar['description '] = $month->monthsDescription[1]->description;
-                            $m_ar['image '] = $month->monthsDescription[1]->img_name;
+                            $m_ar['months']['0']['description '] = $month->monthsDescription[1]->description;
+                            $m_ar['months']['0']['image '] = $month->monthsDescription[1]->img_name;
                         }else{
-                            $m_ar['description '] = $month->monthsDescription[$biWeek]->description;
-                            $m_ar['image '] = $month->monthsDescription[$biWeek]->img_name;
+                            $m_ar['months']['0']['description '] = $month->monthsDescription[$biWeek]->description;
+                            $m_ar['months']['0']['image '] = $month->monthsDescription[$biWeek]->img_name;
                         }
                     }elseif($month->interval->name == 'Monthly'){
-                        $m_ar['description '] = $month->monthsDescription[0]->description;
-                        $m_ar['image '] = $month->monthsDescription[0]->img_name;
+                        $m_ar['months']['0']['description '] = $month->monthsDescription[0]->description;
+                        $m_ar['months']['0']['image '] = $month->monthsDescription[0]->img_name;
                     }
                     $m_ar['months']['interval'] = $month->interval->name;
                 }
