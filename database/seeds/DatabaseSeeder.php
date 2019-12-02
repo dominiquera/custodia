@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
         // $this->call(MaintenanceItemSeeder::class);
         $this->call(UsersTableSeeder::class);
         $this->call(JobsTableSeeder::class);
-        $this->call(MonthSeeder::class);
+        // $this->call(MonthSeeder::class);
         $this->call(ManagementPlanTable::class);
     }
 }
