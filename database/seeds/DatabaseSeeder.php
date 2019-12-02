@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
         $this->call(MonthlyEventsTableSeeder::class);
         $this->call(EventTypeSeeder::class);
         $this->call(SectionTableSeeder::class);
-        $this->call(MaintenanceItemSeeder::class);
+        // $this->call(MaintenanceItemSeeder::class);
         $this->call(UsersTableSeeder::class);
         $this->call(JobsTableSeeder::class);
         $this->call(MonthSeeder::class);
