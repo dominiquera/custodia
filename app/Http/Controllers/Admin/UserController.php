@@ -288,23 +288,8 @@ class UserController extends Controller
         ";
 
         $results = DB::select($query);
-        $ret = collect();
-
-        foreach ($results as $result) {
-            $m = MaintenanceItem::with("months")->find($result->id);
-            $m_ar = MaintenanceItem::with("months")->find($result->id)->toArray();
-            $str = date('F');
-            foreach ($m['months'] as $k => $month) {
-                if ($month['month'] == $str) {
-                    foreach ($month->monthsDescription as $key => $monthsDescription) {
-                        $m_ar['months'][$k]['description'][$key] = $monthsDescription->description;
-                        $m_ar['months'][$k]['image'][$key] = $monthsDescription->img_name;
-                    }
-                    $m_ar['months'][$k]['interval'] = $month->interval->name;
-                }
-            }
-            $ret->push($m_ar);
-        }
+        
+        $ret = $this->intervalAlgorithm($results, $user);
 
         return response()->json(['maintenance_items' => $ret], 200);
     }
@@ -624,9 +609,11 @@ class UserController extends Controller
             $m = MaintenanceItem::with(["months" => function ($query) use ($str){
                 $query->where('month', $str);
             }])->find($result->id);
+
             $m_ar = MaintenanceItem::with(["months" => function ($query) use ($str){
                 $query->where('month', $str);
             }])->find($result->id)->toArray();
+
             foreach ($m['months'] as $k => $month) {
                 if ($month['month'] == $str) {
                     if($month->interval->name == 'Weekly') {
