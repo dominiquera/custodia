@@ -50,7 +50,6 @@ class MaintenanceItemController extends Controller
     {
         $item = new MaintenanceItem();
         $item->section_id = $request->section;
-        $item->interval_id = $request->interval;
         $item->title = $request->title;
         $item->points = $request->points;
         $item->mobility_priority = $request->mobility_priority;
@@ -80,12 +79,12 @@ class MaintenanceItemController extends Controller
             $this->updatedFeaturedImage($item, $image);
         }
 
-        $interval = Interval::find($request->interval);
-        if ($interval->name == "Weather Trigger") {
-            if ($request->has('trigger')) {
-                $item->weather_trigger_type_id = $request->trigger;
-            }
-        }
+//        $interval = Interval::find($request->interval);
+//        if ($interval->name == "Weather Trigger") {
+//            if ($request->has('trigger')) {
+//                $item->weather_trigger_type_id = $request->trigger;
+//            }
+//        }
 
         if ($request->has('home_types')) {
             foreach ($request->home_types as $home_type) {
@@ -164,7 +163,6 @@ class MaintenanceItemController extends Controller
 
         $item = MaintenanceItem::find($request->id);
         $item->section_id = $request->section;
-        $item->interval_id = $request->interval;
         $item->title = $request->title;
         if (isset($request->video)) {
             $item->video = $request->video;
@@ -178,12 +176,12 @@ class MaintenanceItemController extends Controller
             $this->updatedFeaturedImage($item, $image);
         }
 
-        $interval = Interval::find($request->interval);
-        if ($interval->name == "Weather Trigger") {
-            if ($request->has('trigger')) {
-                $item->weather_trigger_type_id = $request->trigger;
-            }
-        }
+//        $interval = Interval::find($request->interval);
+//        if ($interval->name == "Weather Trigger") {
+//            if ($request->has('trigger')) {
+//                $item->weather_trigger_type_id = $request->trigger;
+//            }
+//        }
 
         $item->homeTypes()->detach();
         if ($request->has('home_types')) {

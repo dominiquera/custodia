@@ -16,7 +16,7 @@
           <th scope="col">Maintenance Item</th>
           <th scope="col">Points</th>
           <th scope="col">Newsfeed Section</th>
-          <th scope="col">Interval</th>
+{{--          <th scope="col">Interval</th>--}}
           <th scope="col">Action</th>
       </tr>
       </thead>
@@ -27,7 +27,7 @@
               <td>{{$item->title}}</td>
               <td>{{$item->points}}</td>
               <td>@if (isset($item->section)){{$item->section->name}}@endif</td>
-              <td>{{$item->interval->name}}</td>
+{{--              <td>{{$item->interval->name}}</td>--}}
               <td>
                   <a href="/admin/maintenance_items/edit/{{$item->id}}">Edit</a> |
                   <a onclick="myFunction('{{url('/')}}/admin/maintenance_items/destroy/{{$item->id}}')" style="cursor: pointer;">Delete</a>
