@@ -234,7 +234,7 @@
                                 </option>
                             </select>
                             <select required class="form-control interval_repeatable" data-key="{{$key}}" name="months[{{$key}}][interval]">
-                                <option selected="selected" disabled="disabled">--Choose an Interval--</option>
+                                <option value="" selected="selected" disabled="disabled">--Choose an Interval--</option>
                                 @foreach (\Custodia\Interval::all() as $interval)
                                     <option value="{{$interval->id}}" name="{{$interval->name}}"
                                             @if ($month->interval_id == $interval->id) selected="selected" @endif>{{ $interval->name }}</option>
@@ -390,7 +390,7 @@
                 let html = '<div class="field-group" style="margin-bottom: 40px">\n' +
                     '            <div class="field-group" style="display: flex; margin-top: 10px;">\n' +
                     '                <select required class="form-control" name="months[' + row + '][month]" id="month" style="margin-right: 5px;">\n' +
-                    '                    <option selected="selected" disabled="disabled">--Choose a Month--</option>\n' +
+                    '                    <option value="" selected="selected" disabled="disabled">--Choose a Month--</option>\n' +
                     '                    <option value="January">January</option>\n' +
                     '                    <option value="February">February</option>\n' +
                     '                    <option value="March">March</option>\n' +
@@ -405,7 +405,7 @@
                     '                    <option value="December">December</option>\n' +
                     '                </select>\n' +
                     '                <select required class="form-control interval_repeatable" name="months['+row+'][interval]">\n' +
-                    '                    <option selected="selected" disabled="disabled">--Choose an Interval--</option>\n' +
+                    '                    <option value="" selected="selected" disabled="disabled">--Choose an Interval--</option>\n' +
                     '                    @foreach (\Custodia\Interval::all() as $interval)' +
                     '                        <option value="{{$interval->id}}" name="{{$interval->name}}">{{ $interval->name }}</option>\n' +
                     '                    @endforeach\n' +
