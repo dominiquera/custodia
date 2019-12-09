@@ -231,30 +231,32 @@ class MaintenanceItemController extends Controller
                 $newMonth->maintenance_item_id = $item->id;
                 $newMonth->interval_id = (int)$month['interval'];
                 $newMonth->save();
-                foreach ($month['descriptions'] as $descriptions) {
-                    if (!is_null($descriptions['text']) || (isset($descriptions['photos']) && !is_null($descriptions['photos']))) {
-                        $newDesctiption = new MonthsDescription();
-                        $newDesctiption->months_id = $newMonth->id;
-                        if (!is_null($descriptions['text'])) {
-                            $newDesctiption->description = $descriptions['text'];
-                        }
-                        if (isset($descriptions['photos']) && !is_null($descriptions['photos'])) {
-                            $name = uniqid() . '_' . time();
-                            // Define folder path
-                            $folder = 'uploads/images/';
-                            // Make a file path where image will be stored [ folder path + file name + file extension]
-                            $filePath = "/storage/" . $folder . $name . '.' . $descriptions['photos']->getClientOriginalExtension();
-                            // Upload image
-                            $file = $descriptions['photos']->storeAs($folder, $name . '.' . $descriptions['photos']->getClientOriginalExtension(), 'public');
-                            $newDesctiption->img_name = $filePath;
-                            if (isset($descriptions['old_photos'])) {
-                                File::delete($descriptions['old_photos']);
+                if (isset($month['descriptions'])) {
+                    foreach ($month['descriptions'] as $descriptions) {
+                        if (!is_null($descriptions['text']) || (isset($descriptions['photos']) && !is_null($descriptions['photos']))) {
+                            $newDesctiption = new MonthsDescription();
+                            $newDesctiption->months_id = $newMonth->id;
+                            if (!is_null($descriptions['text'])) {
+                                $newDesctiption->description = $descriptions['text'];
                             }
+                            if (isset($descriptions['photos']) && !is_null($descriptions['photos'])) {
+                                $name = uniqid() . '_' . time();
+                                // Define folder path
+                                $folder = 'uploads/images/';
+                                // Make a file path where image will be stored [ folder path + file name + file extension]
+                                $filePath = "/storage/" . $folder . $name . '.' . $descriptions['photos']->getClientOriginalExtension();
+                                // Upload image
+                                $file = $descriptions['photos']->storeAs($folder, $name . '.' . $descriptions['photos']->getClientOriginalExtension(), 'public');
+                                $newDesctiption->img_name = $filePath;
+                                if (isset($descriptions['old_photos'])) {
+                                    File::delete($descriptions['old_photos']);
+                                }
 
-                        } elseif (!isset($descriptions['photos']) && isset($descriptions['old_photos'])) {
-                            $newDesctiption->img_name = $descriptions['old_photos'];
+                            } elseif (!isset($descriptions['photos']) && isset($descriptions['old_photos'])) {
+                                $newDesctiption->img_name = $descriptions['old_photos'];
+                            }
+                            $newDesctiption->save();
                         }
-                        $newDesctiption->save();
                     }
                 }
             }
