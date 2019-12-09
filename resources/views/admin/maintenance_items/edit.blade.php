@@ -245,7 +245,7 @@
                             @if($month->interval->name == 'Monthly')
                                 <div class="field-group" style="display: flex; margin-top: 10px;">
                                     <input required type="text" name="months[{{$key}}][descriptions][0][text]" id="description" value="{{$month->monthsDescription[0]->description ?? ''}}">
-                                    <input required id="photo" type="file" class="form-control"
+                                    <input id="photo" type="file" class="form-control"
                                            name="months[{{$key}}][descriptions][0][photos]" style="border:none;">
                                     @if (isset($month->monthsDescription[0]->img_name))
                                         <input type="hidden" name="months[{{$key}}][descriptions][0][old_photos]" value="">
@@ -254,7 +254,7 @@
                             @elseif($month->interval->name == 'Biweekly')
                                 <div class="field-group" style="display: flex; margin-top: 10px;">
                                     <input required type="text" name="months[{{$key}}][descriptions][0][text]" id="description" value="{{$month->monthsDescription[0]->description ?? ''}}">
-                                    <input required id="photo" type="file" class="form-control"
+                                    <input id="photo" type="file" class="form-control"
                                            name="months[{{$key}}][descriptions][0][photos]" style="border:none;">
                                     @if (isset($month->monthsDescription[0]->img_name))
                                         <input type="hidden" name="months[{{$key}}][descriptions][0][old_photos]" value="{{$month->monthsDescription[0]->img_name}}">
@@ -262,7 +262,7 @@
                                 </div>
                                 <div class="field-group" style="display: flex; margin-top: 10px;">
                                     <input required type="text" name="months[{{$key}}][descriptions][1][text]" id="description" value="{{$month->monthsDescription[1]->description ?? ''}}">
-                                    <input required id="photo" type="file" class="form-control"
+                                    <input id="photo" type="file" class="form-control"
                                            name="months[{{$key}}][descriptions][1][photos]" style="border:none;">
                                     @if (isset($month->monthsDescription[1]->img_name))
                                         <input type="hidden" name="months[{{$key}}][descriptions][1][old_photos]" value="{{$month->monthsDescription[1]->img_name}}">
@@ -271,7 +271,7 @@
                             @elseif($month->interval->name == 'Weekly')
                                 <div class="field-group" style="display: flex; margin-top: 10px;">
                                     <input required type="text" name="months[{{$key}}][descriptions][0][text]" id="description" value="{{$month->monthsDescription[0]->description ?? ''}}">
-                                    <input required id="photo" type="file" class="form-control"
+                                    <input id="photo" type="file" class="form-control"
                                            name="months[{{$key}}][descriptions][0][photos]" style="border:none;">
                                     @if (isset($month->monthsDescription[0]->img_name))
                                         <input type="hidden" name="months[{{$key}}][descriptions][0][old_photos]" value="{{$month->monthsDescription[0]->img_name}}">
@@ -279,7 +279,7 @@
                                 </div>
                                 <div class="field-group" style="display: flex; margin-top: 10px;">
                                     <input required type="text" name="months[{{$key}}][descriptions][1][text]" id="description" value="{{$month->monthsDescription[1]->description ?? ''}}">
-                                    <input required id="photo" type="file" class="form-control"
+                                    <input id="photo" type="file" class="form-control"
                                            name="months[{{$key}}][descriptions][1][photos]" style="border:none;">
                                     @if (isset($month->monthsDescription[1]->img_name))
                                         <input type="hidden" name="months[{{$key}}][descriptions][1][old_photos]" value="{{$month->monthsDescription[1]->img_name}}">
@@ -287,7 +287,7 @@
                                 </div>
                                 <div class="field-group" style="display: flex; margin-top: 10px;">
                                     <input required type="text" name="months[{{$key}}][descriptions][2][text]" id="description" value="{{$month->monthsDescription[2]->description ?? ''}}">
-                                    <input required id="photo" type="file" class="form-control"
+                                    <input id="photo" type="file" class="form-control"
                                            name="months[{{$key}}][descriptions][2][photos]" style="border:none;">
                                     @if (isset($month->monthsDescription[2]->img_name))
                                         <input required type="hidden" name="months[{{$key}}][descriptions][2][old_photos]" value="{{$month->monthsDescription[2]->img_name}}">
@@ -295,7 +295,7 @@
                                 </div>
                                 <div class="field-group" style="display: flex; margin-top: 10px;">
                                     <input required type="text" name="months[{{$key}}][descriptions][3][text]" id="description" value="{{$month->monthsDescription[3]->description ?? ''}}">
-                                    <input required id="photo" type="file" class="form-control"
+                                    <input id="photo" type="file" class="form-control"
                                            name="months[{{$key}}][descriptions][3][photos]" style="border:none;">
                                     @if (isset($month->monthsDescription[3]->img_name))
                                         <input type="hidden" name="months[{{$key}}][descriptions][3][old_photos]" value="{{$month->monthsDescription[3]->img_name}}">
