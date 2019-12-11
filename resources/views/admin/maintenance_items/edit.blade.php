@@ -355,9 +355,7 @@
     <script>
         $(document).ready(function () {
             row = "{{count($item->months) + 1}}";
-
             $('.add').click(function () {
-
                 weekly = "       <div class=\"field-group\" style=\"display: flex; margin-top: 10px;\">\n" +
                     "                <input required type=\"text\" name=\"months["+row+"][descriptions][0][text]\" id=\"description\">\n" +
                     "                <input required id=\"photo\" type=\"file\" class=\"form-control\" name=\"months["+row+"][descriptions][0][photos]\" style=\"border:none;\">\n" +
@@ -404,7 +402,7 @@
                     '                    <option value="November">November</option>\n' +
                     '                    <option value="December">December</option>\n' +
                     '                </select>\n' +
-                    '                <select required class="form-control interval_repeatable" name="months['+row+'][interval]">\n' +
+                    '                <select required class="form-control interval_repeatable" data-key="'+row+'" name="months['+row+'][interval]">\n' +
                     '                    <option value="" selected="selected" disabled="disabled">--Choose an Interval--</option>\n' +
                     '                    @foreach (\Custodia\Interval::all() as $interval)' +
                     '                        <option value="{{$interval->id}}" name="{{$interval->name}}">{{ $interval->name }}</option>\n' +
