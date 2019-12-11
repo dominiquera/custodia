@@ -186,7 +186,7 @@
                     <div class="form-group">
                         <label>Materials</label><br>
                         <input name="materials[]" class="form-control" placeholder="Materials" style="width: 88%;"
-                               value="{{$tools->value}}">
+                               value="{{$material->value}}">
                         <button class="delete-materials ui button negative" value="Remove">Remove</button>
                     </div>
                 @endforeach
