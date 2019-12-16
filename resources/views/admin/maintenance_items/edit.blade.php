@@ -248,7 +248,7 @@
                                     <input id="photo" type="file" class="form-control"
                                            name="months[{{$key}}][descriptions][0][photos]" style="border:none;">
                                     @if (isset($month->monthsDescription[0]->img_name))
-                                        <input type="hidden" name="months[{{$key}}][descriptions][0][old_photos]" value="">
+                                        <input type="hidden" name="months[{{$key}}][descriptions][0][old_photos]" value="{{$month->monthsDescription[0]->img_name}}">
                                         <div> <img style="max-width:62px;" src="{{asset($month->monthsDescription[0]->img_name)}}"/></div>                                      @endif
                                 </div>
                             @elseif($month->interval->name == 'Biweekly')
