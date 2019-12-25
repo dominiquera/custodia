@@ -27,7 +27,7 @@
                 <a href="{{ route('manage-items') }}" class="item">
                     Maintenance Items
                 </a>
-                <a href="{{ route('manage-event-types') }}" class="item">
+                <!-- <a href="{{ route('manage-event-types') }}" class="item">
                     Event Types
                 </a>
                 <a href="{{ route('manage-monthly-events') }}" class="item">
@@ -35,7 +35,7 @@
                 </a>
                 <a href="{{ route('manage-weather-triggers') }}" class="item">
                     Weather Triggers
-                </a>
+                </a> -->
                 <div class="right menu">
                     <a class="item" href="{{ url('/logout') }}"
                         onclick="event.preventDefault();
