@@ -222,7 +222,7 @@
                     '                    <option value="November">November</option>\n' +
                     '                    <option value="December">December</option>\n' +
                     '                </select>\n' +
-                    '                <select required class="form-control interval_repeatable" name="months['+row+'][interval]">\n' +
+                    '                <select required class="form-control interval_repeatable" data-key="'+row+'" name="months['+row+'][interval]">\n' +
                     '                    <option selected="selected" disabled="disabled" value="">--Choose an Interval--</option>\n' +
                     '                    @foreach (\Custodia\Interval::all() as $interval)' +
                     '                        <option value="{{$interval->id}}" name="{{$interval->name}}">{{ $interval->name }}</option>\n' +
@@ -243,6 +243,37 @@
                 $(this).parent().remove();
             });
             $(document).on('change', '.interval_repeatable', function () {
+                if($(this).attr('data-key')){
+                    row = $(this).attr('data-key');
+                }
+                weekly = "       <div class=\"field-group\" style=\"display: flex; margin-top: 10px;\">\n" +
+                    "                <input required type=\"text\" name=\"months["+row+"][descriptions][0][text]\" id=\"description\">\n" +
+                    "                <input required id=\"photo\" type=\"file\" class=\"form-control\" name=\"months["+row+"][descriptions][0][photos]\" style=\"border:none;\">\n" +
+                    "            </div>" +
+                    "            <div class=\"field-group\" style=\"display: flex; margin-top: 10px;\">\n" +
+                    "                <input required type=\"text\" name=\"months["+row+"][descriptions][1][text]\" id=\"description\">\n" +
+                    "                <input required id=\"photo\" type=\"file\" class=\"form-control\" name=\"months["+row+"][descriptions][1][photos]\" style=\"border:none;\">\n" +
+                    "            </div>" +
+                    "            <div class=\"field-group\" style=\"display: flex; margin-top: 10px;\">\n" +
+                    "                <input required type=\"text\" name=\"months["+row+"][descriptions][2][text]\" id=\"description\">\n" +
+                    "                <input required id=\"photo\" type=\"file\" class=\"form-control\" name=\"months["+row+"][descriptions][2][photos]\" style=\"border:none;\">\n" +
+                    "            </div>" +
+                    "            <div class=\"field-group\" style=\"display: flex; margin-top: 10px;\">\n" +
+                    "                <input required type=\"text\" name=\"months["+row+"][descriptions][3][text]\" id=\"description\">\n" +
+                    "                <input required id=\"photo\" type=\"file\" class=\"form-control\" name=\"months["+row+"][descriptions][3][photos]\" style=\"border:none;\">\n" +
+                    "            </div>";
+                biweekly = '     <div class="field-group" style="display: flex; margin-top: 10px;">\n' +
+                    '                <input required type="text" name="months['+row+'][descriptions][0][text]" id="description">\n' +
+                    '                <input required id="photo" type="file" class="form-control" name="months['+row+'][descriptions][0][photos]" style="border:none;">\n' +
+                    '            </div>' +
+                    '            <div class="field-group" style="display: flex; margin-top: 10px;">\n' +
+                    '                <input required type="text" name="months['+row+'][descriptions][1][text]" id="description">\n' +
+                    '                <input required id="photo" type="file" class="form-control" name="months['+row+'][descriptions][1][photos]" style="border:none;">\n' +
+                    '            </div>';
+                montly = '       <div class="field-group" style="display: flex; margin-top: 10px;">\n' +
+                    '                <input required type="text" name="months['+row+'][descriptions][0][text]" id="description">\n' +
+                    '                <input required id="photo" type="file" class="form-control" name="months['+row+'][descriptions][0][photos]" style="border:none;">\n' +
+                    '            </div>';
                 let name = $(this).find(':selected').attr('name');
                 $(this).parent().next('.desc_photo').html('');
                 if(name == 'Weekly'){
