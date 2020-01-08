@@ -55,6 +55,7 @@ class MaintenanceItemController extends Controller
         $item->mobility_priority = $request->mobility_priority;
         $item->cautions = $request->cautions;
         $item->summary = $request->summary;
+        $item->video = $request->video;
         $item->save();
         if (isset($request->tools)) {
             foreach ($request->tools as $tool) {
