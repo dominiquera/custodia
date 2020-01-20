@@ -14,23 +14,27 @@ class HomeFeatureTableSeeder extends Seeder
         DB::table('home_features')->insert([
             'name' => 'No Features',
         ]);
+
         DB::table('home_features')->insert([
-            'name' => 'Deck',
-        ]);
-        DB::table('home_features')->insert([
-            'name' => 'Porch',
-        ]);
-        DB::table('home_features')->insert([
-            'name' => 'Balcony',
-        ]);
-        DB::table('home_features')->insert([
-            'name' => 'Walkway',
+            'name' => 'Wheelchair Ramp',
         ]);
         DB::table('home_features')->insert([
             'name' => 'Fireplace',
         ]);
         DB::table('home_features')->insert([
             'name' => 'Pool',
+        ]);
+        DB::table('home_features')->insert([
+            'name' => 'Chair Lift',
+        ]);
+        DB::table('home_features')->insert([
+            'name' => 'Entry Stairs',
+        ]);
+        DB::table('home_features')->insert([
+            'name' => 'Accessible Bathroom',
+        ]);
+        DB::table('home_features')->insert([
+            'name' => 'Other',
         ]);
     }
 }

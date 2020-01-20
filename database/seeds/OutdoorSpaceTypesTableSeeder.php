@@ -35,5 +35,14 @@ class OutdoorSpaceTypesTableSeeder extends Seeder
         DB::table('outdoor_space_types')->insert([
             'name' => 'Lots of trees',
         ]);
+        // DB::table('home_features')->insert([
+        //     'name' => 'Deck',
+        // ]);
+        // DB::table('home_features')->insert([
+        //     'name' => 'Porch',
+        // ]);
+        // DB::table('home_features')->insert([
+        //     'name' => 'Balcony',
+        // ]);
     }
 }
