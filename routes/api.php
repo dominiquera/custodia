@@ -56,7 +56,9 @@ Route::get('/v1/users/{user}/ignored_maintenance_items', 'Admin\UserController@a
 Route::get('/v1/users/{user}/maintenance_item/{maintenance_item}/done', 'Admin\UserController@apiGetIsMaintenanceItemDone');
 Route::get('/v1/users/{user}/maintenance_item/{maintenance_item}/ignored', 'Admin\UserController@apiGetIsMaintenanceItemIgnored');
 Route::post('/v1/users/{user}/maintenance_item/{maintenance_item}/done', 'Admin\UserController@apiSetMaintenanceItemDone');
+
 Route::post('/v1/users/{user}/maintenance_item/{maintenance_item}/ignored', 'Admin\UserController@apiSetMaintenanceItemIgnored');
+Route::post('/v1/users/{user}/maintenance_item/{maintenance_item}/ignoredOnce', 'Admin\UserController@apiSetMaintenanceItemIgnoreOnce');
 
 Route::post('/v1/users/{user}/maintenance_item/{maintenance_item}/apiAutomate', 'Admin\UserController@apiAutomate');
 

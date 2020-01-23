@@ -386,7 +386,7 @@ class UserController extends Controller
             left outer join maintenance_item_done_user ITEMS_DONE_USER on ITEMS_DONE_USER.maintenance_item_id = ITEMS.id and ITEMS_DONE_USER.user_id = PROFILE.user_id
             left outer join maintenance_item_ignored_user ITEMS_IGNORED_USER on ITEMS_IGNORED_USER.maintenance_item_id = ITEMS.id and ITEMS_IGNORED_USER.user_id = PROFILE.user_id
             where PROFILE.id = {$user->userProfile->id}
-            and ITEMS_IGNORED_USER.id IS NULL
+            and ( ITEMS_IGNORED_USER.id IS NULL OR now() > ITEMS_IGNORED_USER.ignore_until )
             and months.month = \"{$month}\"
         ";
 
@@ -583,7 +583,25 @@ class UserController extends Controller
     public function apiSetMaintenanceItemIgnored(User $user, MaintenanceItem $maintenanceItem, Request $request)
     {
         if ($maintenanceItem) {
-            $user->ignoredMaintenanceItems()->attach($maintenanceItem);
+
+            $date = new \DateTime();
+            $date->modify("+1 year");
+
+            $user->ignoredMaintenanceItems()->attach($maintenanceItem, ['ignore_until' => $date->format("Y-m-d")]);
+            return response()->json(['message' => "Success"], 200);
+        } else {
+            return response()->json('Error', 400);
+        }
+    }
+
+    public function apiSetMaintenanceItemIgnoreOnce(User $user, MaintenanceItem $maintenanceItem, Request $request)
+    {
+        if ($maintenanceItem) {
+
+            $date = new \DateTime();
+            $date->modify("+7 day");
+
+            $user->ignoredMaintenanceItems()->attach($maintenanceItem, ['ignore_until' => $date->format("Y-m-d")]);
             return response()->json(['message' => "Success"], 200);
         } else {
             return response()->json('Error', 400);
