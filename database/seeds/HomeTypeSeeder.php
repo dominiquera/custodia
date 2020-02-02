@@ -38,5 +38,8 @@ class HomeTypeSeeder extends Seeder
         DB::table('home_types')->insert([
             'name' => 'Larger Home',
         ]);
+        DB::table('home_types')->insert([
+            'name' => 'Other',
+        ]);
     }
 }
