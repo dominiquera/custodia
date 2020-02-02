@@ -353,18 +353,21 @@ class UserController extends Controller
           $query = "
               select distinct(ITEMS.id) from maintenance_items ITEMS
               join months on ITEMS.id = months.maintenance_item_id
-              join outdoor_space_type_user_profile USER_OUTDOOR_SPACE on user_profiles.id = USER_OUTDOOR_SPACE.user_profile_id
+
+              join user_profiles PROFILE on PROFILE.id = {$user->userProfile->id}
+
+              join outdoor_space_type_user_profile USER_OUTDOOR_SPACE on PROFILE.id = USER_OUTDOOR_SPACE.user_profile_id
               join maintenance_item_outdoor_space_type ITEM_OUTDOOR_SPACE on ITEMS.id = ITEM_OUTDOOR_SPACE.maintenance_item_id and ITEM_OUTDOOR_SPACE.outdoor_space_type_id = USER_OUTDOOR_SPACE.outdoor_space_type_id
-              join driveway_type_user_profile USER_DRIVEWAY_TYPE on user_profiles.id = USER_DRIVEWAY_TYPE.user_profile_id
+              join driveway_type_user_profile USER_DRIVEWAY_TYPE on PROFILE.id = USER_DRIVEWAY_TYPE.user_profile_id
               join driveway_type_maintenance_item ITEM_DRIVEWAY_TYPE on ITEMS.id = ITEM_DRIVEWAY_TYPE.maintenance_item_id and ITEM_DRIVEWAY_TYPE.driveway_type_id = USER_DRIVEWAY_TYPE.driveway_type_id
-              join mobility_issue_type_user_profile USER_MOBILITY_ISSUE_TYPE on user_profiles.id = USER_MOBILITY_ISSUE_TYPE.user_profile_id
+              join mobility_issue_type_user_profile USER_MOBILITY_ISSUE_TYPE on PROFILE.id = USER_MOBILITY_ISSUE_TYPE.user_profile_id
               join maintenance_item_mobility_issue_type ITEM_MOBILITY_ISSUE_TYPE on ITEMS.id = ITEM_MOBILITY_ISSUE_TYPE.maintenance_item_id and ITEM_MOBILITY_ISSUE_TYPE.mobility_issue_type_id = USER_MOBILITY_ISSUE_TYPE.mobility_issue_type_id
-              join home_feature_user_profile USER_HOME_FEATURE on user_profiles.id = USER_HOME_FEATURE.user_profile_id
+              join home_feature_user_profile USER_HOME_FEATURE on PROFILE.id = USER_HOME_FEATURE.user_profile_id
               join home_feature_maintenance_item ITEM_HOME_FEATURE on ITEMS.id = ITEM_HOME_FEATURE.maintenance_item_id and ITEM_HOME_FEATURE.home_feature_id = USER_HOME_FEATURE.home_feature_id
-              left outer join maintenance_item_done_user ITEMS_DONE_USER on ITEMS_DONE_USER.maintenance_item_id = ITEMS.id and ITEMS_DONE_USER.user_id = user_profiles.user_id
-              left outer join maintenance_item_ignored_user ITEMS_IGNORED_USER on ITEMS_IGNORED_USER.maintenance_item_id = ITEMS.id and ITEMS_IGNORED_USER.user_id = user_profiles.user_id
-              where user_profiles.id = {$user->userProfile->id}
-              and ( ITEMS_IGNORED_USER.id IS NULL OR now() > ITEMS_IGNORED_USER.ignore_until )
+              left outer join maintenance_item_done_user ITEMS_DONE_USER on ITEMS_DONE_USER.maintenance_item_id = ITEMS.id and ITEMS_DONE_USER.user_id = PROFILE.user_id
+              left outer join maintenance_item_ignored_user ITEMS_IGNORED_USER on ITEMS_IGNORED_USER.maintenance_item_id = ITEMS.id and ITEMS_IGNORED_USER.user_id = PROFILE.user_id
+              WHERE
+              ( ITEMS_IGNORED_USER.id IS NULL OR now() > ITEMS_IGNORED_USER.ignore_until )
               and months.month = \"{$month}\"
           ";
         } else {
@@ -657,6 +660,9 @@ class UserController extends Controller
                     $m_ar['months']['interval'] = $month->interval->name;
                 }
             }
+            // if (!isset($m_ar['months']['interval'])) {
+            //   continue;
+            // }
             if($m_ar['months']['interval'] == 'Monthly'){
                 if(is_null($done)){
                     $ret->push($m_ar);
