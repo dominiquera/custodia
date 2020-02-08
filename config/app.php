@@ -165,6 +165,9 @@ return [
         /*
          * Package Service Providers...
          */
+        Naughtonium\LaravelDarkSky\LaravelDarkSkyServiceProvider::class,
+        Geocoder\Laravel\Providers\GeocoderService::class,
+        PragmaRX\ZipCode\Vendor\Laravel\ServiceProvider::class,
 
         /*
          * Application Service Providers...

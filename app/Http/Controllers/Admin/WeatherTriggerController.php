@@ -36,6 +36,7 @@ class WeatherTriggerController extends Controller
     private function saveWeatherTrigger($request){
         $trigger = new WeatherTriggerType();
         $trigger->name = $request->name;
+        $trigger->rule = $request->rule;
 
         $trigger->save();
         return $trigger;
@@ -45,6 +46,7 @@ class WeatherTriggerController extends Controller
     {
         $trigger = WeatherTriggerType::find($request->id);
         $trigger->name = $request->name;
+        $trigger->rule = $request->rule;
 
         $trigger->save();
 

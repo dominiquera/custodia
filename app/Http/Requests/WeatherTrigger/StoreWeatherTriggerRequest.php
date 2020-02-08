@@ -25,6 +25,7 @@ class StoreWeatherTriggerRequest extends FormRequest
     {
         return [
             'name' => 'required',
+            'rule' => 'required',
         ];
     }
 }
