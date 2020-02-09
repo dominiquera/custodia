@@ -182,13 +182,6 @@ class MaintenanceItemController extends Controller
             $this->updatedFeaturedImage($item, $image);
         }
 
-//        $interval = Interval::find($request->interval);
-//        if ($interval->name == "Weather Trigger") {
-//            if ($request->has('trigger')) {
-//                $item->weather_trigger_type_id = $request->trigger;
-//            }
-//        }
-
         $item->homeTypes()->detach();
         if ($request->has('home_types')) {
             foreach ($request->home_types as $home_type) {
@@ -226,6 +219,8 @@ class MaintenanceItemController extends Controller
         MonthsDescription::whereIn('months_id', Month::where('maintenance_item_id', '=', $item->id)->get()->pluck('id'))->delete();
         Month::where('maintenance_item_id', '=', $item->id)->delete();
 
+        $has_weather_trigger = false;
+        
         if ($request->has('months')) {
             foreach ($request->months as $month) {
                 if (isset($month['month'])) {
@@ -262,8 +257,19 @@ class MaintenanceItemController extends Controller
                             }
                         }
                     }
+                    
+                    if (!$has_weather_trigger) {
+                        $interval = Interval::find((int)$month['interval']);
+
+                        if ($interval->name == "Weather Trigger") {
+                            $has_weather_trigger = true;
+                        }
+                    }
                 }
             }
+        }
+        if ($has_weather_trigger && $request->has('trigger')) {
+            $item->weather_trigger_type_id = $request->trigger;
         }
         $item->save();
         if (isset($request->tools)) {

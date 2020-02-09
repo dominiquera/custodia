@@ -242,7 +242,7 @@
                             </select>
                         </div>
                         <div class="desc_photo">
-                            @if($month->interval->name == 'Monthly')
+                            @if($month->interval->name == 'Monthly' || $month->interval->name == 'Weather Trigger')
                                 <div class="field-group" style="display: flex; margin-top: 10px;">
                                     <input required type="text" name="months[{{$key}}][descriptions][0][text]" id="description" value="{{$month->monthsDescription[0]->description ?? ''}}">
                                     <input id="photo" type="file" class="form-control"
@@ -334,14 +334,14 @@
 @section('scripts')
     <script>
         $(document).ready(function () {
-            if ($('#interval').children("option:selected").attr('name') == "Weather Trigger") {
+            if ($('.interval_repeatable').children("option:selected").attr('name') == "Weather Trigger") {
                 $("#weather-trigger-form-group").show();
             } else {
                 $("#weather-trigger-form-group").hide();
             }
         });
 
-        $('#interval').on('change', function () {
+        $('.interval_repeatable').on('change', function () {
             if ($(this).children("option:selected").attr('name') == "Weather Trigger") {
                 $("#weather-trigger-form-group").show();
             } else {
@@ -356,35 +356,6 @@
         $(document).ready(function () {
             row = "{{count($item->months) + 1}}";
             $('.add').click(function () {
-                weekly = "       <div class=\"field-group\" style=\"display: flex; margin-top: 10px;\">\n" +
-                    "                <input required type=\"text\" name=\"months["+row+"][descriptions][0][text]\" id=\"description\">\n" +
-                    "                <input required id=\"photo\" type=\"file\" class=\"form-control\" name=\"months["+row+"][descriptions][0][photos]\" style=\"border:none;\">\n" +
-                    "            </div>" +
-                    "            <div class=\"field-group\" style=\"display: flex; margin-top: 10px;\">\n" +
-                    "                <input required type=\"text\" name=\"months["+row+"][descriptions][1][text]\" id=\"description\">\n" +
-                    "                <input required id=\"photo\" type=\"file\" class=\"form-control\" name=\"months["+row+"][descriptions][1][photos]\" style=\"border:none;\">\n" +
-                    "            </div>" +
-                    "            <div class=\"field-group\" style=\"display: flex; margin-top: 10px;\">\n" +
-                    "                <input required type=\"text\" name=\"months["+row+"][descriptions][2][text]\" id=\"description\">\n" +
-                    "                <input required id=\"photo\" type=\"file\" class=\"form-control\" name=\"months["+row+"][descriptions][2][photos]\" style=\"border:none;\">\n" +
-                    "            </div>" +
-                    "            <div class=\"field-group\" style=\"display: flex; margin-top: 10px;\">\n" +
-                    "                <input required type=\"text\" name=\"months["+row+"][descriptions][3][text]\" id=\"description\">\n" +
-                    "                <input required id=\"photo\" type=\"file\" class=\"form-control\" name=\"months["+row+"][descriptions][3][photos]\" style=\"border:none;\">\n" +
-                    "            </div>";
-                biweekly = '     <div class="field-group" style="display: flex; margin-top: 10px;">\n' +
-                    '                <input required type="text" name="months['+row+'][descriptions][0][text]" id="description">\n' +
-                    '                <input required id="photo" type="file" class="form-control" name="months['+row+'][descriptions][0][photos]" style="border:none;">\n' +
-                    '            </div>' +
-                    '            <div class="field-group" style="display: flex; margin-top: 10px;">\n' +
-                    '                <input required type="text" name="months['+row+'][descriptions][1][text]" id="description">\n' +
-                    '                <input required id="photo" type="file" class="form-control" name="months['+row+'][descriptions][1][photos]" style="border:none;">\n' +
-                    '            </div>';
-                montly = '       <div class="field-group" style="display: flex; margin-top: 10px;">\n' +
-                    '                <input required type="text" name="months['+row+'][descriptions][0][text]" id="description">\n' +
-                    '                <input required id="photo" type="file" class="form-control" name="months['+row+'][descriptions][0][photos]" style="border:none;">\n' +
-                    '            </div>';
-
                 let html = '<div class="field-group" style="margin-bottom: 40px">\n' +
                     '            <div class="field-group" style="display: flex; margin-top: 10px;">\n' +
                     '                <select required class="form-control" name="months[' + row + '][month]" id="month" style="margin-right: 5px;">\n' +
@@ -454,6 +425,10 @@
                     '                <input required type="text" name="months['+row2+'][descriptions][0][text]" id="description">\n' +
                     '                <input required id="photo" type="file" class="form-control" name="months['+row2+'][descriptions][0][photos]" style="border:none;">\n' +
                     '            </div>';
+                weather = '       <div class="field-group" style="display: flex; margin-top: 10px;">\n' +
+                    '                <input required type="text" name="months['+row2+'][descriptions][0][text]" id="description">\n' +
+                    '                <input required id="photo" type="file" class="form-control" name="months['+row2+'][descriptions][0][photos]" style="border:none;">\n' +
+                    '            </div>';
                 let name = $(this).find(':selected').attr('name');
                 $(this).parent().next('.desc_photo').html('');
                 if(name == 'Weekly'){
@@ -462,6 +437,8 @@
                     $(this).parent().next('.desc_photo').append(biweekly);
                 }else if(name == 'Monthly'){
                     $(this).parent().next('.desc_photo').append(montly);
+                }else if(name == 'Weather Trigger'){
+                    $(this).parent().next('.desc_photo').append(weather);
                 }else{
                     $(this).parent().next('.desc_photo').html('');
                 }

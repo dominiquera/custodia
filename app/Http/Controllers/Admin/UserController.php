@@ -20,8 +20,10 @@ use Custodia\UserProfile;
 use Custodia\WeatherTriggerType;
 use Illuminate\Http\Request;
 use Custodia\Http\Controllers\Controller;
+use Custodia\Services\WeatherTriggerService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Mail;
 
@@ -279,39 +281,37 @@ class UserController extends Controller
     }
 
 
-    public function apiGetTop3MaintenanceItemsTodayByUser(User $user)
+    public function apiGetTop3MaintenanceItemsTodayByUser(User $user, WeatherTriggerService $weatherTriggerService)
     {
         $month = date('F');
         $query = $this->getUserItemsJoinQuery($user) . "
             ORDER BY ITEMS.points DESC
-            LIMIT 3;
         ";
 
         $results = DB::select($query);
 
-        $ret = $this->intervalAlgorithm($results, $user);
+        $ret = $this->intervalAlgorithm($results, $user, $weatherTriggerService, 3);
 
         return response()->json(['maintenance_items' => $ret], 200);
     }
 
 
-    public function apiGetTop3MaintenanceItemsTodayByUserAndSection(User $user, Section $section)
+    public function apiGetTop3MaintenanceItemsTodayByUserAndSection(User $user, Section $section, WeatherTriggerService $weatherTriggerService)
     {
         $query = $this->getUserItemsJoinQuery($user) . "
             and ITEMS.section_id = {$section->id}
             ORDER BY ITEMS.points DESC
-            LIMIT 3;
         ";
 
         $results = DB::select($query);
 
-        $ret = $this->intervalAlgorithm($results, $user);
+        $ret = $this->intervalAlgorithm($results, $user, $weatherTriggerService, 3);
 
         return response()->json(['maintenance_items' => $ret], 200);
     }
 
 
-    public function apiGetAllMaintenanceItemsTodayByUserAndSection(User $user, Section $section)
+    public function apiGetAllMaintenanceItemsTodayByUserAndSection(User $user, Section $section, WeatherTriggerService $weatherTriggerService)
     {
         $query = $this->getUserItemsJoinQuery($user) . "
             and ITEMS.section_id = {$section->id}
@@ -320,7 +320,7 @@ class UserController extends Controller
 
         $results = DB::select($query);
 
-        $ret = $this->intervalAlgorithm($results, $user);
+        $ret = $this->intervalAlgorithm($results, $user, $weatherTriggerService);
 
 
         return response()->json(['maintenance_items' => $ret], 200);
@@ -636,7 +636,7 @@ class UserController extends Controller
         }
     }
 
-    public function intervalAlgorithm($results, $user)
+    public function intervalAlgorithm($results, User $user, WeatherTriggerService $weatherTriggerService, $limit = 0)
     {
         $ret = collect();
         $day = date('d');
@@ -681,13 +681,13 @@ class UserController extends Controller
                     } elseif($month->interval->name == 'Monthly') {
                         $m_ar['months']['description'] = $month->monthsDescription[0]->description;
                         $m_ar['months']['image'] = $month->monthsDescription[0]->img_name;
+                    } elseif($month->interval->name == 'Weather Trigger') {
+                        $m_ar['months']['description'] = $month->monthsDescription[0]->description;
+                        $m_ar['months']['image'] = $month->monthsDescription[0]->img_name;
                     }
                     $m_ar['months']['interval'] = $month->interval->name;
                 }
             }
-            // if (!isset($m_ar['months']['interval'])) {
-            //   continue;
-            // }
             if($m_ar['months']['interval'] == 'Monthly'){
                 if(is_null($done)){
                     $ret->push($m_ar);
@@ -700,9 +700,27 @@ class UserController extends Controller
                 if(is_null($done) || ($difference != -1 && $difference > 7)){
                     $ret->push($m_ar);
                 }
+            }elseif($m_ar['months']['interval'] == 'Weather Trigger') {
+                if (empty($m_ar['weather_trigger_type_id'])) {
+                    Log::error("weather trigger type not set", $m_ar);
+                    continue;
+                }
+                
+                $wtt = WeatherTriggerType::find((int)$m_ar['weather_trigger_type_id']);
+
+                if (empty($wtt)) {
+                    Log::error("unable to resolve weather trigger type", $m_ar);
+                    continue;
+                }
+                
+                if ($weatherTriggerService->checkWeatherTrigger($wtt, $user))
+                    $ret->push($m_ar);
             }else{
                 $ret->push($m_ar);
             }
+
+            if ($limit && count($ret) == $limit)
+                break;
         }
 
         return $ret;
