@@ -10,6 +10,10 @@ use Custodia\OutdoorSpaceType;
 use Custodia\Role;
 use Custodia\User;
 use Illuminate\Console\Command;
+use LaravelFCM\Message\OptionsBuilder;
+use LaravelFCM\Message\PayloadDataBuilder;
+use LaravelFCM\Message\PayloadNotificationBuilder;
+use FCM;
 
 class WeeklyScoringCommand extends Command
 {
@@ -46,6 +50,9 @@ class WeeklyScoringCommand extends Command
     {
         $job = Job::where('name', '=', 'WeeklyScoring')->firstOrFail();
         $last_execution_date = $job->last_execution_date;
+        if ($last_execution_date == null) {
+          $last_execution_date = date("Y-m-d", strtotime('-7 days'));
+        }
         $job->last_execution_date = date("Y-m-d H:i:s");
         $job->save();
 
@@ -97,6 +104,44 @@ class WeeklyScoringCommand extends Command
                                                 echo "Subtracting " . $pointsToSubtract . " points" . PHP_EOL;
                                                 $userProfile->score = $userProfile->score - $pointsToSubtract;
                                                 $userProfile->save();
+
+
+                                                $optionBuilder = new OptionsBuilder();
+                                                $optionBuilder->setTimeToLive(60*20);
+
+                                                $notificationBuilder = new PayloadNotificationBuilder('my title');
+                                                $notificationBuilder->setBody('Hello world')
+                                                				    ->setSound('default');
+
+                                                $dataBuilder = new PayloadDataBuilder();
+                                                $dataBuilder->addData(['a_data' => 'my_data']);
+
+                                                $option = $optionBuilder->build();
+                                                $notification = $notificationBuilder->build();
+                                                $data = $dataBuilder->build();
+
+                                                $token = $user->firebase_registration_token;
+
+                                                $downstreamResponse = FCM::sendTo($token, $option, $notification, $data);
+
+                                                // $downstreamResponse->numberSuccess();
+                                                // $downstreamResponse->numberFailure();
+                                                // $downstreamResponse->numberModification();
+                                                //
+                                                // // return Array - you must remove all this tokens in your database
+                                                // $downstreamResponse->tokensToDelete();
+                                                //
+                                                // // return Array (key : oldToken, value : new token - you must change the token in your database)
+                                                // $downstreamResponse->tokensToModify();
+                                                //
+                                                // // return Array - you should try to resend the message to the tokens in the array
+                                                // $downstreamResponse->tokensToRetry();
+                                                //
+                                                // // return Array (key:token, value:error) - in production you should remove from your database the tokens
+                                                // $downstreamResponse->tokensWithError();
+
+
+
                                             } else {
                                               echo "Ignoring because: Number of missed times was not greater than zero". PHP_EOL;
                                             }
