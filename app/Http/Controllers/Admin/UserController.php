@@ -514,6 +514,7 @@ class UserController extends Controller
         if (count($plans) == 2 && in_array(1, $plans) && in_array(2, $plans)) {
             $user->title = "Your Parents Home Management Plan";
             $user->subtitle = "Your objective is to complete these items and keep your parents happy and safe at home.";
+
         }
         //MOM DAD MYSELF
         elseif (count($plans) == 3 && in_array(1, $plans) && in_array(2, $plans) && in_array(3, $plans)) {
@@ -549,6 +550,8 @@ class UserController extends Controller
         else {
             $user->title = "Welcome ".$user->name.". Here is your current home score.";
             $user->subtitle = "Your objective is to complete these items and keep everyone happy and safe at home.";
+            $user->outside = "Suggestions for outside everyone's home.";
+
         }
 
 
@@ -705,14 +708,14 @@ class UserController extends Controller
                     Log::error("weather trigger type not set", $m_ar);
                     continue;
                 }
-                
+
                 $wtt = WeatherTriggerType::find((int)$m_ar['weather_trigger_type_id']);
 
                 if (empty($wtt)) {
                     Log::error("unable to resolve weather trigger type", $m_ar);
                     continue;
                 }
-                
+
                 if ($weatherTriggerService->checkWeatherTrigger($wtt, $user))
                     $ret->push($m_ar);
             }else{
