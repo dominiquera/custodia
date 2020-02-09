@@ -514,44 +514,57 @@ class UserController extends Controller
         if (count($plans) == 2 && in_array(1, $plans) && in_array(2, $plans)) {
             $user->title = "Your Parents Home Management Plan";
             $user->subtitle = "Your objective is to complete these items and keep your parents happy and safe at home.";
-
+            $user->outside = "Suggestions for outside your parents's home.";
+            $user->inside = "Suggestions for inside your parents's home.";
         }
         //MOM DAD MYSELF
         elseif (count($plans) == 3 && in_array(1, $plans) && in_array(2, $plans) && in_array(3, $plans)) {
             $user->title = "Your Families Home Management Plan";
             $user->subtitle = "Your objective is to complete these items and keep your family happy and safe at home.";
+            $user->outside = "Suggestions for outside your family's home.";
+            $user->inside = "Suggestions for inside your family's home.";
         }
         //MOM AND MYSELF
         elseif (count($plans) == 2 && in_array(1, $plans) && in_array(3, $plans)) {
             $user->title = "Your Families Home Management Plan";
             $user->subtitle = "Your objective is to complete these items and keep your family happy and safe at home.";
+            $user->outside = "Suggestions for outside your family's home.";
+            $user->inside = "Suggestions for inside your family's home.";
         }
         //DAD AND MYSELF
         elseif (count($plans) == 2 && in_array(1, $plans) && in_array(2, $plans)) {
             $user->title = "Your Families Home Management Plan";
             $user->subtitle = "Your objective is to complete these items and keep your family happy and safe at home.";
+            $user->outside = "Suggestions for outside your family's home.";
+            $user->inside = "Suggestions for inside your family's home.";
         }
         //MOM
         elseif (count($plans) == 1 && in_array(1, $plans)) {
             $user->title = "Your Moms Home Management Plan";
             $user->subtitle = "Your objective is to complete these items and keep her happy and safe at home.";
+            $user->outside = "Suggestions for outside your mom's home.";
+            $user->inside = "Suggestions for inside your mom's home.";
         }
         //DAD
         elseif (count($plans) == 1 && in_array(2, $plans)) {
             $user->title = "Your Dad’s Home Management Plan";
             $user->subtitle = "Your objective is to complete these items and keep him happy and safe at home.";
+            $user->outside = "Suggestions for outside your dad's home.";
+            $user->inside = "Suggestions for inside your dad's home.";
         }
         //MYSELF
         elseif (count($plans) == 1 && in_array(3, $plans)) {
             $user->title = "Welcome ".$user->name.". Here is your current home score.";
             $user->subtitle = "Your objective is to complete these items and keep you happy and safe at home.";
+            $user->outside = "Suggestions for outside your home.";
+            $user->inside = "Suggestions for inside your home.";
         }
         //OTHER
         else {
             $user->title = "Welcome ".$user->name.". Here is your current home score.";
             $user->subtitle = "Your objective is to complete these items and keep everyone happy and safe at home.";
             $user->outside = "Suggestions for outside everyone's home.";
-
+            $user->inside = "Suggestions for inside everyone's home.";
         }
 
 
