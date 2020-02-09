@@ -510,23 +510,48 @@ class UserController extends Controller
         //With Mom, Dad, Myself. Mom and Dad = Your Parents | Mom, Dad, Myself = Families | Mom = Moms | Dad = Dad’s | Myself = Your
         $plans = $user->userProfile->managementPlans->pluck('id')->toArray();
 
+        //MOM AND DAD
         if (count($plans) == 2 && in_array(1, $plans) && in_array(2, $plans)) {
             $user->title = "Your Parents Home Management Plan";
-        } elseif (count($plans) == 3 && in_array(1, $plans) && in_array(2, $plans) && in_array(3, $plans)) {
-            $user->title = "Your Families Home Management Plan";
-        } elseif (count($plans) == 2 && in_array(1, $plans) && in_array(3, $plans)) {
-            $user->title = "Your Families Home Management Plan";
-        } elseif (count($plans) == 2 && in_array(1, $plans) && in_array(2, $plans)) {
-            $user->title = "Your Families Home Management Plan";
-        } elseif (count($plans) == 1 && in_array(1, $plans)) {
-            $user->title = "Your Moms Home Management Plan";
-        } elseif (count($plans) == 1 && in_array(2, $plans)) {
-            $user->title = "Your Dad’s Home Management Plan";
-        } elseif (count($plans) == 1 && in_array(3, $plans)) {
-            $user->title = "Your Home Management Plan";
-        } else {
-            $user->title = "Your Home Management Plan";
+            $user->subtitle = "Your objective is to complete these items and keep your parents happy and safe at home.";
         }
+        //MOM DAD MYSELF
+        elseif (count($plans) == 3 && in_array(1, $plans) && in_array(2, $plans) && in_array(3, $plans)) {
+            $user->title = "Your Families Home Management Plan";
+            $user->subtitle = "Your objective is to complete these items and keep your family happy and safe at home.";
+        }
+        //MOM AND MYSELF
+        elseif (count($plans) == 2 && in_array(1, $plans) && in_array(3, $plans)) {
+            $user->title = "Your Families Home Management Plan";
+            $user->subtitle = "Your objective is to complete these items and keep your family happy and safe at home.";
+        }
+        //DAD AND MYSELF
+        elseif (count($plans) == 2 && in_array(1, $plans) && in_array(2, $plans)) {
+            $user->title = "Your Families Home Management Plan";
+            $user->subtitle = "Your objective is to complete these items and keep your family happy and safe at home.";
+        }
+        //MOM
+        elseif (count($plans) == 1 && in_array(1, $plans)) {
+            $user->title = "Your Moms Home Management Plan";
+            $user->subtitle = "Your objective is to complete these items and keep her happy and safe at home.";
+        }
+        //DAD
+        elseif (count($plans) == 1 && in_array(2, $plans)) {
+            $user->title = "Your Dad’s Home Management Plan";
+            $user->subtitle = "Your objective is to complete these items and keep him happy and safe at home.";
+        }
+        //MYSELF
+        elseif (count($plans) == 1 && in_array(3, $plans)) {
+            $user->title = "Welcome ".$user->name.". Here is your current home score.";
+            $user->subtitle = "Your objective is to complete these items and keep you happy and safe at home.";
+        }
+        //OTHER
+        else {
+            $user->title = "Welcome ".$user->name.". Here is your current home score.";
+            $user->subtitle = "Your objective is to complete these items and keep everyone happy and safe at home.";
+        }
+
+
 
         return response()->json(['message' => "Success", "user" => $user], 200);
     }
