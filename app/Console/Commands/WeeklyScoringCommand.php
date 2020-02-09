@@ -216,7 +216,17 @@ class WeeklyScoringCommand extends Command
 
         //@TODO WE NEED TO CONSIDER WHEN THE USER REGISTERED. CANT GIVE THEM -1000 ON FIRST WEEK.
 
-        $interval = $maintenanceItem->interval;
+
+
+
+        $interval = $maintenanceItem->months->first(function ($value, $key) {
+            $m = date('F');
+            return $value->month == $m;
+        });
+
+        $interval=$interval->interval:
+
+
 
         if ($interval->name == "Daily"){
             //item should have been done once for each day since last execution
