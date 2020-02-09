@@ -10,6 +10,7 @@ use Custodia\OutdoorSpaceType;
 use Custodia\Role;
 use Custodia\User;
 use Illuminate\Console\Command;
+
 use LaravelFCM\Message\OptionsBuilder;
 use LaravelFCM\Message\PayloadDataBuilder;
 use LaravelFCM\Message\PayloadNotificationBuilder;
@@ -106,39 +107,39 @@ class WeeklyScoringCommand extends Command
                                                 $userProfile->save();
 
 
-                                                $optionBuilder = new OptionsBuilder();
-                                                $optionBuilder->setTimeToLive(60*20);
-
-                                                $notificationBuilder = new PayloadNotificationBuilder('my title');
-                                                $notificationBuilder->setBody('Hello world')
-                                                				    ->setSound('default');
-
-                                                $dataBuilder = new PayloadDataBuilder();
-                                                $dataBuilder->addData(['a_data' => 'my_data']);
-
-                                                $option = $optionBuilder->build();
-                                                $notification = $notificationBuilder->build();
-                                                $data = $dataBuilder->build();
-
                                                 $token = $user->firebase_registration_token;
 
-                                                $downstreamResponse = FCM::sendTo($token, $option, $notification, $data);
+                                                $fcmUrl = 'https://fcm.googleapis.com/fcm/send';
 
-                                                // $downstreamResponse->numberSuccess();
-                                                // $downstreamResponse->numberFailure();
-                                                // $downstreamResponse->numberModification();
-                                                //
-                                                // // return Array - you must remove all this tokens in your database
-                                                // $downstreamResponse->tokensToDelete();
-                                                //
-                                                // // return Array (key : oldToken, value : new token - you must change the token in your database)
-                                                // $downstreamResponse->tokensToModify();
-                                                //
-                                                // // return Array - you should try to resend the message to the tokens in the array
-                                                // $downstreamResponse->tokensToRetry();
-                                                //
-                                                // // return Array (key:token, value:error) - in production you should remove from your database the tokens
-                                                // $downstreamResponse->tokensWithError();
+                                                $notification = [
+                                                    'title' => $title,
+                                                    'sound' => true,
+                                                ];
+
+                                                $extraNotificationData = ["message" => $notification,"moredata" =>'dd'];
+
+                                                $fcmNotification = [
+                                                    //'registration_ids' => $tokenList, //multple token array
+                                                    'to'        => $token, //single token
+                                                    'notification' => $notification,
+                                                    'data' => $extraNotificationData
+                                                ];
+
+                                                $headers = [
+                                                    'Authorization: key=AIzaSyBHmgFKeuw05iu12qvJfDgP5hVAQo5h80w',
+                                                    'Content-Type: application/json'
+                                                ];
+
+
+                                                $ch = curl_init();
+                                                curl_setopt($ch, CURLOPT_URL,$fcmUrl);
+                                                curl_setopt($ch, CURLOPT_POST, true);
+                                                curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+                                                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                                                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                                                curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fcmNotification));
+                                                $result = curl_exec($ch);
+                                                curl_close($ch);
 
 
 
@@ -224,7 +225,7 @@ class WeeklyScoringCommand extends Command
             return $value->month == $m;
         });
 
-        $interval=$interval->interval:
+        $interval = $interval->interval;
 
 
 
