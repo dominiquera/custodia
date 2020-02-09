@@ -67,7 +67,8 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    // TODO put this back to UTC after adding non-EST support
+    'timezone' => 'America/Toronto',
 
     /*
     |--------------------------------------------------------------------------

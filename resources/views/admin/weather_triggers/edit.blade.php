@@ -29,23 +29,7 @@
       <div class="form-group">
           <label for="rule">Rule</label>
           <input type="text" name="rule" class="form-control" id="name" placeholder="Rule" value="{{$trigger->rule}}" required>
-          
-          <pre>Rule Syntax:
-------------
-
-VARIABLES
-
-  $today_temp    Today's temperature (in C)
-  $today_snow    Today's snowfall (in cm)
-  $today_rain    Today's rainfall (in mm)
-
-EXAMPLE RULES
-
-  $today_snow > 5
-  $today_temp < -5
-  $today_rain > 0
-          
-          </pre>
+          @include('partials.weather_trigger_rule_syntax')
       </div>
 
       <button style="margin-top:30px;" type="submit" class="ui button primary">Save</button>
