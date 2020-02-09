@@ -6,7 +6,7 @@ VARIABLES
 $last_rain          Time since last rain (in hours)
 $last_snow          Time since last snowfall (in hours)
 $last_rain_accum    Rainfall in last 7 days (in mm)
-$last_snow_accum    Snofall in last 7 days (in cm)
+$last_snow_accum    Snowfall in last 7 days (in cm)
 $last_temp_low      Lowest temperature in last 7 days
 $last_temp_high     Highest temperature in last 7 days
 
