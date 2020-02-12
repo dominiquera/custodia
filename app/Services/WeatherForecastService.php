@@ -7,7 +7,42 @@ use Illuminate\Support\Facades\Log;
 // TODO better support for timezones and future forecast information
 class WeatherForecastService
 {
-    public function getDailyForecast(string $city, string $state, $date = false)
+    public function getFutureResults(string $city, string $state, $date = false)
+    {
+        if (!$date)
+            $date = date('Y-m-d');
+
+        $weatherForecast = WeatherForecast::where('for_date', $date)
+            ->where('city', $city)
+            ->where('state', $state)
+            ->orderBy('for_date', 'desc')
+            ->orderBy('for_hour', 'desc')
+            ->first();
+
+        return $weatherForecast;
+    }
+
+    public function getPastResults(string $city, string $state, $date_from = false, $date_to = false)
+    {
+        if (!$date_from)
+            $date_from = date('Y-m-d', strtotime('-7 days'));
+
+        if (!$date_to)
+            $date_to = date('Y-m-d');
+
+        $weatherResults = WeatherForecast::where([
+            'city' => $city,
+            'state' => $state
+        ])
+            ->whereBetween('for_date', [$date_from, $date_to])
+            ->orderBy('for_date', 'asc')
+            ->orderBy('for_hour', 'asc')
+            ->get();
+
+        return $weatherResults;
+    }
+
+    public function getTodayResults(string $city, string $state, $date = false)
     {
         if (!$date)
             $date = date('Y-m-d');
@@ -65,25 +100,5 @@ class WeatherForecastService
         $weatherForecast->raw = $result;
 
         $weatherForecast->save();
-    }
-
-    public function getPastResults(string $city, string $state, $date_from = false, $date_to = false)
-    {
-        if (!$date_from)
-            $date_from = date('Y-m-d', strtotime('-7 days'));
-
-        if (!$date_to)
-            $date_to = date('Y-m-d');
-
-        $weatherResults = WeatherForecast::where([
-                'city' => $city,
-                'state' => $state
-            ])
-            ->whereBetween('for_date', [$date_from, $date_to])
-            ->orderBy('for_date', 'asc')
-            ->orderBy('for_hour', 'asc')
-            ->get();
-
-        return $weatherResults;
     }
 }
