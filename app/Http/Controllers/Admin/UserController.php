@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Custodia\DrivewayType;
 use Custodia\HomeFeature;
 use Custodia\HomeType;
+use Custodia\Http\Requests\UpdatePasswordRequest;
 use Custodia\Http\Requests\User\CreateUserRequest;
 use Custodia\Http\Requests\User\StoreUserRequest;
 use Custodia\Interval;
@@ -33,6 +34,7 @@ class UserController extends Controller
     public function users()
     {
         $users = User::orderBy('id', 'desc')->paginate(10);
+
         return view('admin.users.users', ['users' => $users]);
     }
 
@@ -675,5 +677,23 @@ class UserController extends Controller
         }
 
         return $ret;
+    }
+
+    /**
+     * @param User $user
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function changePassword(User $user)
+    {
+        return view('admin.users.change_password', compact('user'));
+    }
+
+    public function updatePassword(UpdatePasswordRequest $request)
+    {
+        $user = User::find($request->id);
+        $user->password = Hash::make($request['password']);
+        $user->save();
+
+        return redirect()->route('manage-users');
     }
 }

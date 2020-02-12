@@ -28,7 +28,8 @@
               <td>{{$user->role->name}}</td>
               <td>
                   <a href="/admin/users/edit/{{$user->id}}">Edit</a> |
-                  <a href="/admin/users/destroy/{{$user->id}}">Delete</a>
+                  <a href="/admin/users/destroy/{{$user->id}}">Delete</a> |
+                  <a href="/admin/users/change-password/{{$user->id}}">Change Password</a>
               </td>
           </tr>
       @endforeach
