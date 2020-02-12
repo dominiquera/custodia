@@ -688,6 +688,10 @@ class UserController extends Controller
         return view('admin.users.change_password', compact('user'));
     }
 
+    /**
+     * @param UpdatePasswordRequest $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function updatePassword(UpdatePasswordRequest $request)
     {
         $user = User::find($request->id);
