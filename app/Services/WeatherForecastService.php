@@ -54,9 +54,6 @@ class WeatherForecastService
         // SECTION: "TODAY"
         // - includes real-time data up to the hour
         // - includes forecasted data for remainder of day
-
-        // TODO use hourly data + latest forecast to increase precision of today's data
-
         $today_hours = (int)date('H', $now_hour);
 
         if (empty($results_today['history'])) {
@@ -147,7 +144,6 @@ class WeatherForecastService
 
         // SECTION: "NEXT"
         // - includes forecasted data for the next 7 days
-
         if ($results_next && isset($results_next->raw['daily'])) {
             $rain_next = PHP_INT_MAX; // infinity
             $snow_next = PHP_INT_MAX; // infinity
@@ -215,8 +211,7 @@ class WeatherForecastService
             $arguments['$next_snow_accum'] = $snow_accum;
         }
 
-
-        // SECTION: "NEXT"
+        // SECTION: "LAST"
         // - includes historical data for the past 7 days
         if ($results_last) {
             $temp_min = PHP_INT_MAX; // error
