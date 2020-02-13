@@ -26,6 +26,9 @@ Route::get('/', 'Auth\LoginController@showLoginForm');
 Route::middleware('can:accessAdminpanel')->group(function() {
     Route::get('/admin/', 'Admin\AdminController@index')->name('admin');
 
+    Route::get('/admin/devtools', 'Admin\DevToolsController@index')->name('devtools');
+    Route::get('/admin/devtools/weather/{state}/{city}', 'Admin\DevToolsController@weather');
+
     Route::get('/admin/users', 'Admin\UserController@users')->name('manage-users');
     Route::get('/admin/users/new', 'Admin\UserController@newUser');
     Route::get('/admin/users/edit/{user}', 'Admin\UserController@editUser');

@@ -10,6 +10,8 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <script src="{{ asset('js/semantic.min.js') }}" defer></script>
     <link href="{{ asset('css/semantic.min.css') }}" rel="stylesheet">
+    <script src="{{ asset('js/calendar.js') }}" defer></script>
+    <link href="{{ asset('css/dist/calendar.css') }}" rel="stylesheet">
 </head>
 <body>
     <div id="vue" class="vue">
@@ -35,6 +37,9 @@
                 </a> -->
                 <a href="{{ route('manage-weather-triggers') }}" class="item">
                     Weather Triggers
+                </a>
+                <a href="{{ route('devtools') }}" class="item">
+                    DevTools
                 </a>
                 <div class="right menu">
                     <a class="item" href="{{ url('/logout') }}"

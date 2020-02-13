@@ -2,6 +2,7 @@
 
 namespace Custodia\Console\Commands;
 
+use Custodia\Services\UserService;
 use Custodia\Services\WeatherForecastService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Cache;
@@ -22,26 +23,26 @@ class WeatherUpdate extends Command
      * The cache timeout (in seconds)
      */
     const CACHE_TIME = 1800;
-
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
     protected $signature = 'weather:update {--backfill= : Number of days to backfill}';
-
     /**
      * The console command description.
      *
      * @var string
      */
     protected $description = 'Update weather forecasts';
-
+    /**
+     * @var UserService
+     */
+    private $userService;
     /**
      * @var WeatherForecastService
      */
     private $weatherForecastService;
-
     /**
      * ZipCode lookup service
      *
@@ -54,10 +55,11 @@ class WeatherUpdate extends Command
      *
      * @return void
      */
-    public function __construct(WeatherForecastService $weatherForecastService, ZipCode $zipcode)
+    public function __construct(WeatherForecastService $weatherForecastService, UserService $userService, ZipCode $zipcode)
     {
         parent::__construct();
         $this->weatherForecastService = $weatherForecastService;
+        $this->userService = $userService;
         $this->zipcode = $zipcode;
 
         // TODO support for other countries
@@ -87,14 +89,16 @@ class WeatherUpdate extends Command
 
     /**
      * Attempt to find & fill missing city information
+     *
+     * @return void
      */
     public function findMissingCities()
     {
         // find all user profiles with zip but without city
         $locations = UserProfile::all()
-            ->unique('zip')
-            ->where('city', null)
-            ->where('zip', '!=', null);
+                                ->unique('zip')
+                                ->where('city', null)
+                                ->where('zip', '!=', null);
 
         foreach ($locations as $location) {
             $zip = Cache::remember(
@@ -107,41 +111,83 @@ class WeatherUpdate extends Command
             if ($zip && $this->validateZipCodeFindResult($zip)) {
                 // use the first address from the result if present
                 UserProfile::where('zip', $location->zip)
-                    ->where('city', null)
-                    ->update([
-                        'city' => $zip['result_raw']['standard']['city'],
-                        'state' => $zip['result_raw']['standard']['prov'],
-                        'longitude' => $zip['result_raw']['longt'],
-                        'latitude' => $zip['result_raw']['latt'],
-                    ]);
-            } else {
+                           ->where('city', null)
+                           ->update([
+                                        'city' => $zip['result_raw']['standard']['city'],
+                                        'state' => $zip['result_raw']['standard']['prov'],
+                                        'longitude' => $zip['result_raw']['longt'],
+                                        'latitude' => $zip['result_raw']['latt'],
+                                    ]);
+            }
+            else {
                 Log::warning("Unable to resolve location information for zip: " . $location->zip);
             }
         }
     }
 
     /**
-     * Validates the data returned from ZipCode::find()
+     * Get the historical weather data for a location
      *
-     * @param array $result
-     * @return bool
+     * @param $location
+     * @param $time
+     * @return mixed
      */
-    public function validateZipCodeFindResult($result)
+    public function getHistoricalWeatherForecast($location, $time)
     {
-        return !(empty($result) ||
-            empty($result['result_raw']) ||
-            empty($result['result_raw']['standard']) ||
-            empty($result['result_raw']['standard']['city']) ||
-            empty($result['result_raw']['standard']['prov']));
+        $result = Cache::remember(
+        // NOTE end of cache key signifies included dataset(s)
+            sprintf('getHistoricalWeatherForecast_CA_%0.6f_%0.6f_%d:C+A',
+                    $location->latitude, $location->longitude, $time),
+            self::CACHE_TIME,
+            function () use ($location, $time) {
+                return DarkSky::location(
+                    $location->latitude,
+                    $location->longitude)
+                    // NOTE if changing includes also change the cache key
+                              ->includes([ 'currently', 'alerts' ])
+                              ->units('ca')
+                              ->atTime($time)
+                              ->get();
+            });
+
+        return $result;
+    }
+
+    /**
+     * Get the weather forecast for a location
+     *
+     * @param array $location
+     * @return mixed
+     */
+    public function getWeatherForecast($location)
+    {
+        $result = Cache::remember(
+        // NOTE end of cache key signifies included dataset(s)
+            sprintf('getWeatherForecast_CA_%0.6f_%0.6f:C+D+A',
+                    $location->latitude, $location->longitude),
+            self::CACHE_TIME,
+            function () use ($location) {
+                return DarkSky::location(
+                    $location->latitude,
+                    $location->longitude)
+                    // NOTE if changing includes also change the cache key
+                              ->includes([ 'currently', 'daily', 'alerts' ])
+                              ->units('ca')
+                              ->get();
+            });
+
+        return $result;
     }
 
     /**
      * Update historical weather forecast and alerts for known locations.
      *
      * @param int $days number of days to backfill
+     * @return void
      */
-    public function updateHistoricalForecasts($days = 2) {
-        $locations = $this->getUserLocations();
+    public function updateHistoricalForecasts($days = 2)
+    {
+        $locations = $this->userService->getUserLocations();
 
         // time to backfill until; excludes the current hour
         $now = time();
@@ -157,6 +203,8 @@ class WeatherUpdate extends Command
                 if ($this->weatherForecastService->hasForecast($profile->city, $profile->state, $date, $hour))
                     continue;
 
+                Log::info("Fetching forecast for $profile->city, $profile->state on $date at $hour:00");
+
                 $result = $this->getHistoricalWeatherForecast($profile, $time);
 
                 if (!$this->validateWeatherForecastResult($result)) {
@@ -170,60 +218,13 @@ class WeatherUpdate extends Command
     }
 
     /**
-     * @return UserProfile[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Support\Collection
-     */
-    private function getUserLocations()
-    {
-        $locations = UserProfile::all()
-            ->unique('city', 'state')
-            ->where('city', '!=', null)
-            ->where('state', '!=', null)
-            ->where('longitude', '!=', null)
-            ->where('latitude', '!=', null);
-        return $locations;
-    }
-
-    /**
-     * Get the historical weather data for a location
+     * Update current weather forecast and alerts for known locations\
      *
-     * @param $location
-     * @param $time
-     * @return mixed
-     */
-    public function getHistoricalWeatherForecast($location, $time) {
-        $result = Cache::remember(
-            // NOTE end of cache key signifies included dataset(s)
-            sprintf('getHistoricalWeatherForecast_CA_%0.6f_%0.6f_%d:C+A',
-                $location->latitude, $location->longitude, $time),
-            self::CACHE_TIME,
-            function () use ($location, $time) {
-                return DarkSky::location(
-                    $location->latitude,
-                    $location->longitude)
-                    // NOTE if changing includes also change the cache key
-                    ->includes(['currently', 'alerts'])
-                    ->units('ca')
-                    ->atTime($time)
-                    ->get();
-            });
-
-        return $result;
-    }
-
-    public function validateWeatherForecastResult($result)
-    {
-        // at least make sure the current forecast is present
-        // TODO further validate this, translate to an app-specific DTO
-        return !empty($result) &&
-            !empty($result->currently);
-    }
-
-    /**
-     * Update current weather forecast and alerts for known locations
+     * @return void
      */
     public function updateWeatherForecasts()
     {
-        $locations = $this->getUserLocations();
+        $locations = $this->userService->getUserLocations();
 
         foreach ($locations as $profile) {
             $result = $this->getWeatherForecast($profile);
@@ -232,35 +233,39 @@ class WeatherUpdate extends Command
 
             if ($this->validateWeatherForecastResult($result)) {
                 $this->weatherForecastService->saveForecast($profile->city, $profile->state, $date, $hour, $result);
-            } else {
+            }
+            else {
                 Log::error("weather forecast result did not validate", (array)$result);
             }
         }
     }
 
     /**
-     * Get the weather forecast for a location
+     * Validate the weather forecast result
      *
-     * @param array $location
-     * @return array
+     * @param $result
+     * @return bool
      */
-    public function getWeatherForecast($location)
+    public function validateWeatherForecastResult($result) : bool
     {
-        $result = Cache::remember(
-            // NOTE end of cache key signifies included dataset(s)
-            sprintf('getWeatherForecast_CA_%0.6f_%0.6f:C+D+A',
-                $location->latitude, $location->longitude),
-            self::CACHE_TIME,
-            function () use ($location) {
-                return DarkSky::location(
-                    $location->latitude,
-                    $location->longitude)
-                    // NOTE if changing includes also change the cache key
-                    ->includes(['currently', 'daily', 'alerts'])
-                    ->units('ca')
-                    ->get();
-            });
+        // at least make sure the current forecast is present
+        // TODO further validate this, translate to an app-specific DTO
+        return !empty($result) &&
+            !empty($result->currently);
+    }
 
-        return $result;
+    /**
+     * Validate the data returned from ZipCode::find()
+     *
+     * @param array $result
+     * @return bool
+     */
+    public function validateZipCodeFindResult($result) : bool
+    {
+        return !(empty($result) ||
+            empty($result['result_raw']) ||
+            empty($result['result_raw']['standard']) ||
+            empty($result['result_raw']['standard']['city']) ||
+            empty($result['result_raw']['standard']['prov']));
     }
 }
