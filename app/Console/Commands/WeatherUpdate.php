@@ -23,26 +23,31 @@ class WeatherUpdate extends Command
      * The cache timeout (in seconds)
      */
     const CACHE_TIME = 1800;
+
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
     protected $signature = 'weather:update {--backfill= : Number of days to backfill}';
+
     /**
      * The console command description.
      *
      * @var string
      */
     protected $description = 'Update weather forecasts';
+
     /**
      * @var UserService
      */
     private $userService;
+
     /**
      * @var WeatherForecastService
      */
     private $weatherForecastService;
+
     /**
      * ZipCode lookup service
      *
