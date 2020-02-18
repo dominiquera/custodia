@@ -44,6 +44,11 @@ class User extends Authenticatable
         return $this->hasOne(UserProfile::class);
     }
 
+    public function tokens()
+    {
+        return  $this->hasMany(UserToken::class, 'user_id');
+    }
+
     public function role()
     {
         return $this->belongsTo(Role::class);
