@@ -17,6 +17,7 @@ use Custodia\Role;
 use Custodia\Section;
 use Custodia\User;
 use Custodia\UserProfile;
+use Custodia\UserToken;
 use Custodia\WeatherTriggerType;
 use Illuminate\Http\Request;
 use Custodia\Http\Controllers\Controller;
@@ -262,6 +263,40 @@ class UserController extends Controller
                 } else {
                     return response()->json(['message' => "Unknown error"], 400);
                 }
+            } catch (\Exception $e) {
+                return response()->json(['message' => $e], 400);
+            }
+        }
+
+        return response()->json(['score' => $user->userProfile->score], 200);
+    }
+
+    public function apiSetUserFirebaseToken(User $user, Request $request)
+    {
+        $validation = Validator::make($request->all(), [
+            'token' => 'required',
+            'scope' => 'required'
+        ]);
+        $errors = $validation->errors();
+
+        if (sizeof($errors) > 0) {
+            return response()->json(["Errors" => $errors], 400);
+        } else {
+            try {
+                $token_exists = $user->tokens()->where('token', $request->token)
+                                               ->where('scope', $request->scope)
+                                               ->exists();
+
+                if (!$token_exists) {
+                    $userToken = new UserToken();
+                    $userToken->user_id = $user->id;
+                    $userToken->token = $request->token;
+                    $userToken->hash = hash('sha256', $request->token);
+                    $userToken->scope = $request->scope;
+                    $userToken->save();
+                }
+
+                return response()->json(['message' => "Success"], 200);
             } catch (\Exception $e) {
                 return response()->json(['message' => $e], 400);
             }
