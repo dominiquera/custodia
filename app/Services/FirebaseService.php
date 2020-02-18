@@ -37,4 +37,9 @@ class FirebaseService
             ->withDatabaseUri(config('services.firebase.database_url'))
             ->create();
     }
+
+    public function getMessaging(): Firebase\Messaging
+    {
+        return $this->firebase->getMessaging();
+    }
 }
