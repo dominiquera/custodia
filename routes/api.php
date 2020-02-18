@@ -38,6 +38,8 @@ Route::post('/v1/auth', 'Admin\UserController@apiAuthenticateUser');
 Route::post('/v1/users/{user}/score', 'Admin\UserController@apiSetUserScore');
 Route::get('/v1/users/{user}/score', 'Admin\UserController@apiGetUserScore');
 
+Route::post('/v1/users/{user}/firebase_token', 'Admin\UserController@apiSetUserFirebaseToken');
+
 Route::post('/v1/users/{user}/outdoor_spaces', 'Admin\UserController@apiSetOutdoorSpaces');
 Route::get('/v1/users/{user}/outdoor_spaces', 'Admin\UserController@apiGetOutdoorSpaces');
 
