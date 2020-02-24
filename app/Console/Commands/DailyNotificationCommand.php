@@ -79,7 +79,7 @@ class DailyNotificationCommand extends Command
                     $title = 'Maintain';
 
                 $this->userNotificationService->sendNotificationToUser($user,
-                                                                       "Reminder",
+                                                                       $title,
                                                                        $triggered_item['months']['description']);
             }
         }
