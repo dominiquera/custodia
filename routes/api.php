@@ -38,7 +38,9 @@ Route::post('/v1/auth', 'Admin\UserController@apiAuthenticateUser');
 Route::post('/v1/users/{user}/score', 'Admin\UserController@apiSetUserScore');
 Route::get('/v1/users/{user}/score', 'Admin\UserController@apiGetUserScore');
 
-Route::post('/v1/users/{user}/firebase_token', 'Admin\UserController@apiSetUserFirebaseToken');
+#TODO remove /v1/users/{user}/firebase_token route after a few more client updates; was missnamed
+Route::post('/v1/users/{user}/firebase_token', 'Admin\UserController@apiUpdateUserToken');
+Route::post('/v1/users/{user}/update_token', 'Admin\UserController@apiUpdateUserToken');
 
 Route::post('/v1/users/{user}/outdoor_spaces', 'Admin\UserController@apiSetOutdoorSpaces');
 Route::get('/v1/users/{user}/outdoor_spaces', 'Admin\UserController@apiGetOutdoorSpaces');
