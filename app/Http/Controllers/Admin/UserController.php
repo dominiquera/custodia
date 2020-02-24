@@ -15,6 +15,7 @@ use Custodia\MonthlyEvent;
 use Custodia\OutdoorSpaceType;
 use Custodia\Role;
 use Custodia\Section;
+use Custodia\Services\UserService;
 use Custodia\User;
 use Custodia\UserProfile;
 use Custodia\UserToken;
@@ -271,7 +272,7 @@ class UserController extends Controller
         return response()->json(['score' => $user->userProfile->score], 200);
     }
 
-    public function apiSetUserFirebaseToken(User $user, Request $request)
+    public function apiUpdateUserToken(User $user, Request $request)
     {
         $validation = Validator::make($request->all(), [
             'token' => 'required',
@@ -316,48 +317,23 @@ class UserController extends Controller
     }
 
 
-    public function apiGetTop3MaintenanceItemsTodayByUser(User $user, WeatherTriggerService $weatherTriggerService)
+    public function apiGetTop3MaintenanceItemsTodayByUser(User $user, UserService $userService, WeatherTriggerService $weatherTriggerService)
     {
-        $month = date('F');
-        $query = $this->getUserItemsJoinQuery($user) . "
-            ORDER BY ITEMS.points DESC
-        ";
-
-        $results = DB::select($query);
-
-        $ret = $this->intervalAlgorithm($results, $user, $weatherTriggerService, 3);
-
+        $ret = $userService->getTop3MaintenanceItemsTodayByUser($user, $weatherTriggerService);
         return response()->json(['maintenance_items' => $ret], 200);
     }
 
 
-    public function apiGetTop3MaintenanceItemsTodayByUserAndSection(User $user, Section $section, WeatherTriggerService $weatherTriggerService)
+    public function apiGetTop3MaintenanceItemsTodayByUserAndSection(User $user, Section $section,  UserService $userService, WeatherTriggerService $weatherTriggerService)
     {
-        $query = $this->getUserItemsJoinQuery($user) . "
-            and ITEMS.section_id = {$section->id}
-            ORDER BY ITEMS.points DESC
-        ";
-
-        $results = DB::select($query);
-
-        $ret = $this->intervalAlgorithm($results, $user, $weatherTriggerService, 3);
-
+        $ret = $userService->getTop3MaintenanceItemsTodayByUserAndSection($user, $section, $weatherTriggerService);
         return response()->json(['maintenance_items' => $ret], 200);
     }
 
 
-    public function apiGetAllMaintenanceItemsTodayByUserAndSection(User $user, Section $section, WeatherTriggerService $weatherTriggerService)
+    public function apiGetAllMaintenanceItemsTodayByUserAndSection(User $user, Section $section,  UserService $userService, WeatherTriggerService $weatherTriggerService)
     {
-        $query = $this->getUserItemsJoinQuery($user) . "
-            and ITEMS.section_id = {$section->id}
-            ORDER BY ITEMS.points DESC;
-        ";
-
-        $results = DB::select($query);
-
-        $ret = $this->intervalAlgorithm($results, $user, $weatherTriggerService);
-
-
+        $ret = $userService->getAllMaintenanceItemsTodayByUserAndSection($user, $section, $weatherTriggerService);
         return response()->json(['maintenance_items' => $ret], 200);
     }
 
@@ -378,57 +354,6 @@ class UserController extends Controller
         });
 
         return response()->json(['status' => "success"], 200);
-    }
-
-    private function getUserItemsJoinQuery(User $user)
-    {
-        $month = date('F');
-
-        if ($user->userProfile->home_type_id == 8) {
-          $query = "
-              select distinct(ITEMS.id) from maintenance_items ITEMS
-              join months on ITEMS.id = months.maintenance_item_id
-
-              join user_profiles PROFILE on PROFILE.id = {$user->userProfile->id}
-
-              join outdoor_space_type_user_profile USER_OUTDOOR_SPACE on PROFILE.id = USER_OUTDOOR_SPACE.user_profile_id
-              join maintenance_item_outdoor_space_type ITEM_OUTDOOR_SPACE on ITEMS.id = ITEM_OUTDOOR_SPACE.maintenance_item_id and ITEM_OUTDOOR_SPACE.outdoor_space_type_id = USER_OUTDOOR_SPACE.outdoor_space_type_id
-              join driveway_type_user_profile USER_DRIVEWAY_TYPE on PROFILE.id = USER_DRIVEWAY_TYPE.user_profile_id
-              join driveway_type_maintenance_item ITEM_DRIVEWAY_TYPE on ITEMS.id = ITEM_DRIVEWAY_TYPE.maintenance_item_id and ITEM_DRIVEWAY_TYPE.driveway_type_id = USER_DRIVEWAY_TYPE.driveway_type_id
-              join mobility_issue_type_user_profile USER_MOBILITY_ISSUE_TYPE on PROFILE.id = USER_MOBILITY_ISSUE_TYPE.user_profile_id
-              join maintenance_item_mobility_issue_type ITEM_MOBILITY_ISSUE_TYPE on ITEMS.id = ITEM_MOBILITY_ISSUE_TYPE.maintenance_item_id and ITEM_MOBILITY_ISSUE_TYPE.mobility_issue_type_id = USER_MOBILITY_ISSUE_TYPE.mobility_issue_type_id
-              join home_feature_user_profile USER_HOME_FEATURE on PROFILE.id = USER_HOME_FEATURE.user_profile_id
-              join home_feature_maintenance_item ITEM_HOME_FEATURE on ITEMS.id = ITEM_HOME_FEATURE.maintenance_item_id and ITEM_HOME_FEATURE.home_feature_id = USER_HOME_FEATURE.home_feature_id
-              left outer join maintenance_item_done_user ITEMS_DONE_USER on ITEMS_DONE_USER.maintenance_item_id = ITEMS.id and ITEMS_DONE_USER.user_id = PROFILE.user_id
-              left outer join maintenance_item_ignored_user ITEMS_IGNORED_USER on ITEMS_IGNORED_USER.maintenance_item_id = ITEMS.id and ITEMS_IGNORED_USER.user_id = PROFILE.user_id
-              WHERE
-              ( ITEMS_IGNORED_USER.id IS NULL OR now() > ITEMS_IGNORED_USER.ignore_until )
-              and months.month = \"{$month}\"
-          ";
-        } else {
-          $query = "
-              select distinct(ITEMS.id) from maintenance_items ITEMS
-              join home_type_maintenance_item ITEM_HOME_TYPE on ITEMS.id = ITEM_HOME_TYPE.maintenance_item_id
-              join months on ITEMS.id = months.maintenance_item_id
-              join user_profiles PROFILE on PROFILE.home_type_id = ITEM_HOME_TYPE.home_type_id
-              join outdoor_space_type_user_profile USER_OUTDOOR_SPACE on PROFILE.id = USER_OUTDOOR_SPACE.user_profile_id
-              join maintenance_item_outdoor_space_type ITEM_OUTDOOR_SPACE on ITEMS.id = ITEM_OUTDOOR_SPACE.maintenance_item_id and ITEM_OUTDOOR_SPACE.outdoor_space_type_id = USER_OUTDOOR_SPACE.outdoor_space_type_id
-              join driveway_type_user_profile USER_DRIVEWAY_TYPE on PROFILE.id = USER_DRIVEWAY_TYPE.user_profile_id
-              join driveway_type_maintenance_item ITEM_DRIVEWAY_TYPE on ITEMS.id = ITEM_DRIVEWAY_TYPE.maintenance_item_id and ITEM_DRIVEWAY_TYPE.driveway_type_id = USER_DRIVEWAY_TYPE.driveway_type_id
-              join mobility_issue_type_user_profile USER_MOBILITY_ISSUE_TYPE on PROFILE.id = USER_MOBILITY_ISSUE_TYPE.user_profile_id
-              join maintenance_item_mobility_issue_type ITEM_MOBILITY_ISSUE_TYPE on ITEMS.id = ITEM_MOBILITY_ISSUE_TYPE.maintenance_item_id and ITEM_MOBILITY_ISSUE_TYPE.mobility_issue_type_id = USER_MOBILITY_ISSUE_TYPE.mobility_issue_type_id
-              join home_feature_user_profile USER_HOME_FEATURE on PROFILE.id = USER_HOME_FEATURE.user_profile_id
-              join home_feature_maintenance_item ITEM_HOME_FEATURE on ITEMS.id = ITEM_HOME_FEATURE.maintenance_item_id and ITEM_HOME_FEATURE.home_feature_id = USER_HOME_FEATURE.home_feature_id
-              left outer join maintenance_item_done_user ITEMS_DONE_USER on ITEMS_DONE_USER.maintenance_item_id = ITEMS.id and ITEMS_DONE_USER.user_id = PROFILE.user_id
-              left outer join maintenance_item_ignored_user ITEMS_IGNORED_USER on ITEMS_IGNORED_USER.maintenance_item_id = ITEMS.id and ITEMS_IGNORED_USER.user_id = PROFILE.user_id
-              where PROFILE.id = {$user->userProfile->id}
-              and ( ITEMS_IGNORED_USER.id IS NULL OR now() > ITEMS_IGNORED_USER.ignore_until )
-              and months.month = \"{$month}\"
-          ";
-        }
-
-
-        return $query;
     }
 
     public function apiGetOutdoorSpaces(User $user)
@@ -685,95 +610,5 @@ class UserController extends Controller
         } else {
             return response()->json('Error', 400);
         }
-    }
-
-    public function intervalAlgorithm($results, User $user, WeatherTriggerService $weatherTriggerService, $limit = 0)
-    {
-        $ret = collect();
-        $day = date('d');
-        $week = intval ($day / 7);
-        $biWeek = intval ($day / 14);
-
-        foreach ($results as $result) {
-            $done = DB::table('maintenance_item_done_user')->where('maintenance_item_id', $result->id)->where('user_id', $user->id)->whereMonth('created_at', date('m'))->orderBy('created_at', 'desc')->first();
-            $now = Carbon::now();
-            $difference = -1;
-            if(!is_null($done)){
-                $difference = $now->diff($done->created_at)->days;
-            }
-            $str = date('F');
-
-            $m = MaintenanceItem::with(["months" => function ($query) use ($str){
-                $query->where('month', $str);
-            }])->find($result->id);
-
-            $m_ar = MaintenanceItem::with(["months" => function ($query) use ($str){
-                $query->where('month', $str);
-            }])->find($result->id)->toArray();
-
-            foreach ($m['months'] as $k => $month) {
-                if ($month['month'] == $str) {
-                    if($month->interval->name == 'Weekly') {
-                        if($week > 3){
-                            $m_ar['months']['description'] = $month->monthsDescription[3]->description;
-                            $m_ar['months']['image'] = $month->monthsDescription[3]->img_name;
-                        } else{
-                            $m_ar['months']['description'] = $month->monthsDescription[$week]->description;
-                            $m_ar['months']['image'] = $month->monthsDescription[$week]->img_name;
-                        }
-                    }elseif($month->interval->name == 'Biweekly') {
-                        if($week > 1){
-                            $m_ar['months']['description'] = $month->monthsDescription[1]->description;
-                            $m_ar['months']['image'] = $month->monthsDescription[1]->img_name;
-                        } else {
-                            $m_ar['months']['description'] = $month->monthsDescription[$biWeek]->description;
-                            $m_ar['months']['image'] = $month->monthsDescription[$biWeek]->img_name;
-                        }
-                    } elseif($month->interval->name == 'Monthly') {
-                        $m_ar['months']['description'] = $month->monthsDescription[0]->description;
-                        $m_ar['months']['image'] = $month->monthsDescription[0]->img_name;
-                    } elseif($month->interval->name == 'Weather Trigger') {
-                        $m_ar['months']['description'] = $month->monthsDescription[0]->description;
-                        $m_ar['months']['image'] = $month->monthsDescription[0]->img_name;
-                    }
-                    $m_ar['months']['interval'] = $month->interval->name;
-                }
-            }
-            if($m_ar['months']['interval'] == 'Monthly'){
-                if(is_null($done)){
-                    $ret->push($m_ar);
-                }
-            }elseif($m_ar['months']['interval'] == 'Biweekly'){
-                if(is_null($done) || ($difference != -1 && $difference > 14)){
-                    $ret->push($m_ar);
-                }
-            }elseif($m_ar['months']['interval'] == 'Weekly'){
-                if(is_null($done) || ($difference != -1 && $difference > 7)){
-                    $ret->push($m_ar);
-                }
-            }elseif($m_ar['months']['interval'] == 'Weather Trigger') {
-                if (empty($m_ar['weather_trigger_type_id'])) {
-                    Log::error("weather trigger type not set", $m_ar);
-                    continue;
-                }
-
-                $wtt = WeatherTriggerType::find((int)$m_ar['weather_trigger_type_id']);
-
-                if (empty($wtt)) {
-                    Log::error("unable to resolve weather trigger type", $m_ar);
-                    continue;
-                }
-
-                if ($weatherTriggerService->checkWeatherTrigger($wtt, $user))
-                    $ret->push($m_ar);
-            }else{
-                $ret->push($m_ar);
-            }
-
-            if ($limit && count($ret) == $limit)
-                break;
-        }
-
-        return $ret;
     }
 }
