@@ -16,6 +16,10 @@ class FirebaseService
      * @var Firebase
      */
     protected $firebase;
+    /**
+     * @var Factory
+     */
+    protected $factory;
 
     public function __construct()
     {
@@ -32,14 +36,16 @@ class FirebaseService
             "client_x509_cert_url" => config('services.firebase.client_x509_cert_url')
         ]);
 
-        $this->firebase = (new Factory)
+        $this->factory = (new Factory)
             ->withServiceAccount($serviceAccount)
-            ->withDatabaseUri(config('services.firebase.database_url'))
-            ->create();
+            ->withDatabaseUri(config('services.firebase.database_url'));
+
+        // TODO remove this if unused
+        $this->firebase = $this->factory->create();
     }
 
     public function getMessaging(): Firebase\Messaging
     {
-        return $this->firebase->getMessaging();
+        return $this->factory->createMessaging();
     }
 }
