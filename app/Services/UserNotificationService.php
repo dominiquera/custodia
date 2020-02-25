@@ -35,7 +35,6 @@ class UserNotificationService
 
         if ($report->hasFailures()) {
             foreach ($report->failures()->getItems() as $failure) {
-                print "warning: failed to send to " . $failure->target()->value() . ": " . $failure->error()->getMessage() . "\n";
                 Log::warning("failed to send notification to device", [
                     'target' => $failure->target()->value(),
                     'error' => $failure->error()->getMessage()
