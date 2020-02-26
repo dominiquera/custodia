@@ -184,36 +184,56 @@ class MaintenanceItemController extends Controller
 
         $item->homeTypes()->detach();
         if ($request->has('home_types')) {
+            $homeTypeScoreFactor = $request->has('home_type_score_factor') ? $request->home_type_score_factor : [];
+
             foreach ($request->home_types as $home_type) {
-                $item->homeTypes()->attach($home_type);
+                $item->homeTypes()->attach($home_type, [
+                    'score_factor' => isset($homeTypeScoreFactor[$home_type]) ? $homeTypeScoreFactor[$home_type] : 1
+                ]);
             }
         }
 
         $item->outdoorSpaces()->detach();
         if ($request->has('outdoor_spaces')) {
+            $outdoorSpaceScoreFactor = $request->has('outdoor_space_score_factor') ? $request->outdoor_space_score_factor : [];
+
             foreach ($request->outdoor_spaces as $outdoor_space) {
-                $item->outdoorSpaces()->attach($outdoor_space);
+                $item->outdoorSpaces()->attach($outdoor_space, [
+                    'score_factor' => isset($outdoorSpaceScoreFactor[$outdoor_space]) ? $outdoorSpaceScoreFactor[$outdoor_space] : 1
+                ]);
             }
         }
 
         $item->drivewayTypes()->detach();
         if ($request->has('driveways')) {
+            $drivewayScoreFactor = $request->has('driveway_score_factor') ? $request->driveway_score_factor : [];
+
             foreach ($request->driveways as $driveway) {
-                $item->drivewayTypes()->attach($driveway);
+                $item->drivewayTypes()->attach($driveway, [
+                    'score_factor' => isset($drivewayScoreFactor[$driveway]) ? $drivewayScoreFactor[$driveway] : 1
+                ]);
             }
         }
 
         $item->mobilityIssues()->detach();
         if ($request->has('mobility_issues')) {
+            $mobilityIssueScoreFactor = $request->has('mobility_issue_score_factor') ? $request->mobility_issue_score_factor : [];
+
             foreach ($request->mobility_issues as $issue) {
-                $item->mobilityIssues()->attach($issue);
+                $item->mobilityIssues()->attach($issue, [
+                    'score_factor' => isset($mobilityIssueScoreFactor[$issue]) ? $mobilityIssueScoreFactor[$issue] : 1
+                ]);
             }
         }
 
         $item->homeFeatures()->detach();
         if ($request->has('features')) {
+            $homeFeatureScoreFactor = $request->has('feature_score_factor') ? $request->feature_score_factor : [];
+
             foreach ($request->features as $feature) {
-                $item->homeFeatures()->attach($feature);
+                $item->homeFeatures()->attach($feature, [
+                    'score_factor' => isset($drivewayScoreFactor[$feature]) ? $drivewayScoreFactor[$feature] : 1
+                ]);
             }
         }
         MonthsDescription::whereIn('months_id', Month::where('maintenance_item_id', '=', $item->id)->get()->pluck('id'))->delete();
@@ -291,7 +311,7 @@ class MaintenanceItemController extends Controller
             }
         }
 
-        return redirect('/admin/maintenance_items');
+        return redirect('/admin/maintenance_items/edit/' . $item->id);
     }
 
     public function deleteMaintenanceItem($id)

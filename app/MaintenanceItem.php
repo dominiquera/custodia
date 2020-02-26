@@ -35,23 +35,28 @@ class MaintenanceItem extends Model
     }
 
     public function homeTypes(){
-        return $this->belongsToMany(HomeType::class);
+        return $this->belongsToMany(HomeType::class)
+                    ->withPivot('score_factor');
     }
 
     public function outdoorSpaces(){
-        return $this->belongsToMany(OutdoorSpaceType::class);
+        return $this->belongsToMany(OutdoorSpaceType::class)
+                    ->withPivot('score_factor');
     }
 
     public function mobilityIssues(){
-        return $this->belongsToMany(MobilityIssueType::class);
+        return $this->belongsToMany(MobilityIssueType::class)
+                    ->withPivot('score_factor');
     }
 
     public function homeFeatures(){
-        return $this->belongsToMany(HomeFeature::class);
+        return $this->belongsToMany(HomeFeature::class)
+                    ->withPivot('score_factor');
     }
 
     public function drivewayTypes(){
-        return $this->belongsToMany(DrivewayType::class);
+        return $this->belongsToMany(DrivewayType::class)
+                    ->withPivot('score_factor');
     }
 
     public function tools()

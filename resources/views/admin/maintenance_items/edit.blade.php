@@ -77,14 +77,32 @@
                 <label for="home_types">Home Types</label>
                 <div style="display: block;">
                     @foreach (\Custodia\HomeType::all() as $homeType)
-                        <div class="ui checkbox" style="display: block;">
-                            <input
-                                    type="checkbox"
-                                    name="home_types[]"
-                                    value="{{$homeType->id}}"
-                                    @if ($item->homeTypes->contains($homeType)) checked="checked" @endif
-                            >
-                            <label>{{$homeType->name}}</label>
+                        <div class="equal width fields">
+                            <div class="ui checkbox field" style="display: block;">
+                                <input
+                                        type="checkbox"
+                                        name="home_types[]"
+                                        value="{{$homeType->id}}"
+                                        @if ($item->homeTypes->contains($homeType)) checked="checked" @endif
+                                >
+                                <label>{{$homeType->name}}</label>
+                            </div>
+                            <div class="field inline">
+                                <div class="ui labeled input mini">
+                                    <div class="ui label">Score Factor</div>
+                                    <input
+                                        type="text"
+                                        name="home_type_score_factor[{{$homeType->id}}]"
+                                        placeholder="1"
+                                        maxlength="1"
+                                        size="1"
+                                        @if ($item->homeTypes->contains($homeType))
+                                        value="{{$item->homeTypes->find($homeType->id)->pivot->score_factor}}"
+                                        @endif
+                                    >
+                                </div>
+                            </div>
+                            <div class="field">&nbsp;</div>
                         </div>
                     @endforeach
                 </div>
@@ -93,14 +111,32 @@
                 <label for="home_type">Outdoor Spaces Applicable</label>
                 <div style="display: block;">
                     @foreach (\Custodia\OutdoorSpaceType::all() as $spaceType)
-                        <div class="ui checkbox" style="display: block;">
-                            <input
-                                    type="checkbox"
-                                    name="outdoor_spaces[]"
-                                    value="{{$spaceType->id}}"
-                                    @if ($item->outdoorSpaces->contains($spaceType)) checked="checked" @endif
-                            >
-                            <label>{{$spaceType->name}}</label>
+                        <div class="equal width fields">
+                            <div class="ui checkbox field" style="display: block;">
+                                <input
+                                        type="checkbox"
+                                        name="outdoor_spaces[]"
+                                        value="{{$spaceType->id}}"
+                                        @if ($item->outdoorSpaces->contains($spaceType)) checked="checked" @endif
+                                >
+                                <label>{{$spaceType->name}}</label>
+                            </div>
+                            <div class="field inline">
+                                <div class="ui labeled input mini">
+                                    <div class="ui label">Score Factor</div>
+                                    <input
+                                            type="text"
+                                            name="outdoor_space_score_factor[{{$spaceType->id}}]"
+                                            placeholder="1"
+                                            maxlength="1"
+                                            size="1"
+                                            @if ($item->outdoorSpaces->contains($spaceType))
+                                            value="{{$item->outdoorSpaces->find($spaceType->id)->pivot->score_factor}}"
+                                            @endif
+                                    >
+                                </div>
+                            </div>
+                            <div class="field">&nbsp;</div>
                         </div>
                     @endforeach
                 </div>
@@ -109,14 +145,33 @@
                 <label for="driveways">Driveways Applicable</label>
                 <div style="display: block;">
                     @foreach (\Custodia\DrivewayType::all() as $drivewayType)
-                        <div class="ui checkbox" style="display: block;">
-                            <input
-                                    type="checkbox"
-                                    name="driveways[]"
-                                    value="{{$drivewayType->id}}"
-                                    @if ($item->drivewayTypes->contains($drivewayType)) checked="checked" @endif
-                            >
-                            <label>{{$drivewayType->name}}</label>
+                        <div class="equal width fields">
+                            <div class="ui checkbox field" style="display: block;">
+                                <input
+                                        type="checkbox"
+                                        name="driveways[]"
+                                        value="{{$drivewayType->id}}"
+                                        @if ($item->drivewayTypes->contains($drivewayType)) checked="checked" @endif
+                                >
+                                <label>{{$drivewayType->name}}</label>
+                            </div>
+                            <div class="field inline">
+                                <div class="ui labeled input mini">
+                                    <div class="ui label">Score Factor</div>
+                                    <input
+                                            type="text"
+                                            name="driveway_score_factor[{{$drivewayType->id}}]"
+                                            placeholder="1"
+                                            maxlength="1"
+                                            size="1"
+                                            @if ($item->drivewayTypes->contains($drivewayType))
+                                            value="{{$item->drivewayTypes->find($drivewayType->id)->pivot->score_factor}}"
+                                            @endif
+
+                                    >
+                                </div>
+                            </div>
+                            <div class="field">&nbsp;</div>
                         </div>
                     @endforeach
                 </div>
@@ -125,14 +180,32 @@
                 <label for="features">Home Features Applicable</label>
                 <div style="display: block;">
                     @foreach (\Custodia\HomeFeature::all() as $featureType)
-                        <div class="ui checkbox" style="display: block;">
-                            <input
-                                    type="checkbox"
-                                    name="features[]"
-                                    value="{{$featureType->id}}"
-                                    @if ($item->homeFeatures->contains($featureType)) checked="checked" @endif
-                            >
-                            <label>{{$featureType->name}}</label>
+                        <div class="equal width fields">
+                            <div class="ui checkbox field" style="display: block;">
+                                <input
+                                        type="checkbox"
+                                        name="features[]"
+                                        value="{{$featureType->id}}"
+                                        @if ($item->homeFeatures->contains($featureType)) checked="checked" @endif
+                                >
+                                <label>{{$featureType->name}}</label>
+                            </div>
+                            <div class="field inline">
+                                <div class="ui labeled input mini">
+                                    <div class="ui label">Score Factor</div>
+                                    <input
+                                            type="text"
+                                            name="feature_score_factor[{{$featureType->id}}]"
+                                            placeholder="1"
+                                            maxlength="1"
+                                            size="1"
+                                            @if ($item->homeFeatures->contains($featureType))
+                                            value="{{$item->homeFeatures->find($featureType->id)->pivot->score_factor}}"
+                                            @endif
+                                    >
+                                </div>
+                            </div>
+                            <div class="field">&nbsp;</div>
                         </div>
                     @endforeach
                 </div>
@@ -141,14 +214,32 @@
                 <label for="mobility_issues">Mobility Issues Applicable</label>
                 <div style="display: block;">
                     @foreach (\Custodia\MobilityIssueType::all() as $mobilityIssueType)
-                        <div class="ui checkbox" style="display: block;">
-                            <input
-                                    type="checkbox"
-                                    name="mobility_issues[]"
-                                    value="{{$mobilityIssueType->id}}"
-                                    @if ($item->mobilityIssues->contains($mobilityIssueType)) checked="checked" @endif
-                            >
-                            <label>{{$mobilityIssueType->name}}</label>
+                        <div class="equal width fields">
+                            <div class="ui checkbox field" style="display: block;">
+                                <input
+                                        type="checkbox"
+                                        name="mobility_issues[]"
+                                        value="{{$mobilityIssueType->id}}"
+                                        @if ($item->mobilityIssues->contains($mobilityIssueType)) checked="checked" @endif
+                                >
+                                <label>{{$mobilityIssueType->name}}</label>
+                            </div>
+                            <div class="field inline">
+                                <div class="ui labeled input mini">
+                                    <div class="ui label">Score Factor</div>
+                                    <input
+                                            type="text"
+                                            name="mobility_issue_score_factor[{{$mobilityIssueType->id}}]"
+                                            placeholder="1"
+                                            maxlength="1"
+                                            size="1"
+                                            @if ($item->mobilityIssues->contains($mobilityIssueType))
+                                            value="{{$item->mobilityIssues->find($mobilityIssueType->id)->pivot->score_factor}}"
+                                            @endif
+                                    >
+                                </div>
+                            </div>
+                            <div class="field">&nbsp;</div>
                         </div>
                     @endforeach
                 </div>

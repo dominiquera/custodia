@@ -88,6 +88,12 @@ class UserService
         return $this->intervalAlgorithm($results, $user, $weatherTriggerService);
     }
 
+    public function getMaintenanceItemScoreFactors(User $user, int $maintenance_item_id) {
+        $query = $this->getUserItemScoreFactorsJoinQuery($user, $maintenance_item_id);
+        $results = DB::select($query);
+        return array_shift($results);
+    }
+
     private function getUserItemsJoinQuery(User $user, $only_triggers = false)
     {
         $month = date('F');
@@ -144,6 +150,72 @@ class UserService
         return $query;
     }
 
+    private function getUserItemScoreFactorsJoinQuery(User $user, int $maintenance_item_id)
+    {
+        if ($user->userProfile->home_type_id == 8) {
+            $query = "
+              select distinct(ITEMS.id),
+                     1 as home_type_score_factor as home_type_score_factor,
+                     ITEM_OUTDOOR_SPACE.score_factor as outdoor_space_score_factor,
+                     ITEM_DRIVEWAY_TYPE.score_factor as driveway_score_factor,
+                     ITEM_HOME_FEATURE.score_factor as feature_score_factor,
+                     ITEM_MOBILITY_ISSUE_TYPE.score_factor as mobility_issue_score_factor
+              from maintenance_items ITEMS
+              
+              join months on ITEMS.id = months.maintenance_item_id
+              join intervals on months.interval_id = intervals.id
+
+              join user_profiles PROFILE on PROFILE.id = {$user->userProfile->id}
+
+              join outdoor_space_type_user_profile USER_OUTDOOR_SPACE on PROFILE.id = USER_OUTDOOR_SPACE.user_profile_id
+              join maintenance_item_outdoor_space_type ITEM_OUTDOOR_SPACE on ITEMS.id = ITEM_OUTDOOR_SPACE.maintenance_item_id and ITEM_OUTDOOR_SPACE.outdoor_space_type_id = USER_OUTDOOR_SPACE.outdoor_space_type_id
+              join driveway_type_user_profile USER_DRIVEWAY_TYPE on PROFILE.id = USER_DRIVEWAY_TYPE.user_profile_id
+              join driveway_type_maintenance_item ITEM_DRIVEWAY_TYPE on ITEMS.id = ITEM_DRIVEWAY_TYPE.maintenance_item_id and ITEM_DRIVEWAY_TYPE.driveway_type_id = USER_DRIVEWAY_TYPE.driveway_type_id
+              join mobility_issue_type_user_profile USER_MOBILITY_ISSUE_TYPE on PROFILE.id = USER_MOBILITY_ISSUE_TYPE.user_profile_id
+              join maintenance_item_mobility_issue_type ITEM_MOBILITY_ISSUE_TYPE on ITEMS.id = ITEM_MOBILITY_ISSUE_TYPE.maintenance_item_id and ITEM_MOBILITY_ISSUE_TYPE.mobility_issue_type_id = USER_MOBILITY_ISSUE_TYPE.mobility_issue_type_id
+              join home_feature_user_profile USER_HOME_FEATURE on PROFILE.id = USER_HOME_FEATURE.user_profile_id
+              join home_feature_maintenance_item ITEM_HOME_FEATURE on ITEMS.id = ITEM_HOME_FEATURE.maintenance_item_id and ITEM_HOME_FEATURE.home_feature_id = USER_HOME_FEATURE.home_feature_id
+              left outer join maintenance_item_done_user ITEMS_DONE_USER on ITEMS_DONE_USER.maintenance_item_id = ITEMS.id and ITEMS_DONE_USER.user_id = PROFILE.user_id
+              left outer join maintenance_item_ignored_user ITEMS_IGNORED_USER on ITEMS_IGNORED_USER.maintenance_item_id = ITEMS.id and ITEMS_IGNORED_USER.user_id = PROFILE.user_id
+              WHERE
+              ITEMS.id = {$maintenance_item_id}
+              UNION SELECT {$maintenance_item_id},1,1,1,1,1
+          ";
+        } else {
+            $query = "
+              select distinct(ITEMS.id),
+                     ITEM_HOME_TYPE.score_factor as home_type_score_factor,
+                     ITEM_OUTDOOR_SPACE.score_factor as outdoor_space_score_factor,
+                     ITEM_DRIVEWAY_TYPE.score_factor as driveway_score_factor,
+                     ITEM_HOME_FEATURE.score_factor as feature_score_factor,
+                     ITEM_MOBILITY_ISSUE_TYPE.score_factor as mobility_issue_score_factor
+              from maintenance_items ITEMS
+              
+              join months on ITEMS.id = months.maintenance_item_id
+              join intervals on months.interval_id = intervals.id
+              
+              join user_profiles PROFILE on PROFILE.id = {$user->userProfile->id}
+              
+              join home_type_maintenance_item ITEM_HOME_TYPE on ITEMS.id = ITEM_HOME_TYPE.maintenance_item_id
+              join outdoor_space_type_user_profile USER_OUTDOOR_SPACE on PROFILE.id = USER_OUTDOOR_SPACE.user_profile_id
+              join maintenance_item_outdoor_space_type ITEM_OUTDOOR_SPACE on ITEMS.id = ITEM_OUTDOOR_SPACE.maintenance_item_id and ITEM_OUTDOOR_SPACE.outdoor_space_type_id = USER_OUTDOOR_SPACE.outdoor_space_type_id
+              join driveway_type_user_profile USER_DRIVEWAY_TYPE on PROFILE.id = USER_DRIVEWAY_TYPE.user_profile_id
+              join driveway_type_maintenance_item ITEM_DRIVEWAY_TYPE on ITEMS.id = ITEM_DRIVEWAY_TYPE.maintenance_item_id and ITEM_DRIVEWAY_TYPE.driveway_type_id = USER_DRIVEWAY_TYPE.driveway_type_id
+              join mobility_issue_type_user_profile USER_MOBILITY_ISSUE_TYPE on PROFILE.id = USER_MOBILITY_ISSUE_TYPE.user_profile_id
+              join maintenance_item_mobility_issue_type ITEM_MOBILITY_ISSUE_TYPE on ITEMS.id = ITEM_MOBILITY_ISSUE_TYPE.maintenance_item_id and ITEM_MOBILITY_ISSUE_TYPE.mobility_issue_type_id = USER_MOBILITY_ISSUE_TYPE.mobility_issue_type_id
+              join home_feature_user_profile USER_HOME_FEATURE on PROFILE.id = USER_HOME_FEATURE.user_profile_id
+              join home_feature_maintenance_item ITEM_HOME_FEATURE on ITEMS.id = ITEM_HOME_FEATURE.maintenance_item_id and ITEM_HOME_FEATURE.home_feature_id = USER_HOME_FEATURE.home_feature_id
+              left outer join maintenance_item_done_user ITEMS_DONE_USER on ITEMS_DONE_USER.maintenance_item_id = ITEMS.id and ITEMS_DONE_USER.user_id = PROFILE.user_id
+              left outer join maintenance_item_ignored_user ITEMS_IGNORED_USER on ITEMS_IGNORED_USER.maintenance_item_id = ITEMS.id and ITEMS_IGNORED_USER.user_id = PROFILE.user_id
+              where 
+              ITEMS.id = {$maintenance_item_id}
+              UNION SELECT {$maintenance_item_id},1,1,1,1,1
+          ";
+        }
+
+        return $query;
+    }
+
     public function intervalAlgorithm($results, User $user, WeatherTriggerService $weatherTriggerService, $limit = 0)
     {
         $ret = collect();
@@ -167,6 +239,8 @@ class UserService
             $m_ar = MaintenanceItem::with(["months" => function ($query) use ($str){
                 $query->where('month', $str);
             }])->find($result->id)->toArray();
+
+            $scoreFactors = $this->getMaintenanceItemScoreFactors($user, (int)$result->id);
 
             foreach ($m['months'] as $k => $month) {
                 if ($month['month'] == $str) {
@@ -194,6 +268,14 @@ class UserService
                         $m_ar['months']['image'] = $month->monthsDescription[0]->img_name;
                     }
                     $m_ar['months']['interval'] = $month->interval->name;
+
+                    // user_item_score_factor = item_importance_score_factor x f1 x f2 x ...
+                    $m_ar['points'] = (int)$m_ar['points']
+                                    * $scoreFactors->home_type_score_factor
+                                    * $scoreFactors->outdoor_space_score_factor
+                                    * $scoreFactors->driveway_score_factor
+                                    * $scoreFactors->feature_score_factor
+                                    * $scoreFactors->mobility_issue_score_factor;
                 }
             }
             if($m_ar['months']['interval'] == 'Monthly'){
