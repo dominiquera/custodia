@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Custodia\DrivewayType;
 use Custodia\HomeFeature;
 use Custodia\HomeType;
+use Custodia\Http\Requests\UpdatePasswordRequest;
 use Custodia\Http\Requests\User\CreateUserRequest;
 use Custodia\Http\Requests\User\StoreUserRequest;
 use Custodia\Interval;
@@ -37,6 +38,7 @@ class UserController extends Controller
     public function users()
     {
         $users = User::orderBy('id', 'desc')->paginate(10);
+
         return view('admin.users.users', ['users' => $users]);
     }
 
@@ -610,5 +612,96 @@ class UserController extends Controller
         } else {
             return response()->json('Error', 400);
         }
+    }
+
+    public function intervalAlgorithm($results, $user)
+    {
+        $ret = collect();
+        $day = date('d');
+        $week = intval ($day / 7);
+        $biWeek = intval ($day / 14);
+
+        foreach ($results as $result) {
+            $done = DB::table('maintenance_item_done_user')->where('maintenance_item_id', $result->id)->where('user_id', $user->id)->whereMonth('created_at', date('m'))->orderBy('created_at', 'desc')->first();
+            $now = Carbon::now();
+            $difference = -1;
+            if(!is_null($done)){
+                $difference = $now->diff($done->created_at)->days;
+            }
+            $str = date('F');
+
+            $m = MaintenanceItem::with(["months" => function ($query) use ($str){
+                $query->where('month', $str);
+            }])->find($result->id);
+
+            $m_ar = MaintenanceItem::with(["months" => function ($query) use ($str){
+                $query->where('month', $str);
+            }])->find($result->id)->toArray();
+
+            foreach ($m['months'] as $k => $month) {
+                if ($month['month'] == $str) {
+                    if($month->interval->name == 'Weekly') {
+                        if($week > 3){
+                            $m_ar['months']['description'] = $month->monthsDescription[3]->description;
+                            $m_ar['months']['image'] = $month->monthsDescription[3]->img_name;
+                        } else{
+                            $m_ar['months']['description'] = $month->monthsDescription[$week]->description;
+                            $m_ar['months']['image'] = $month->monthsDescription[$week]->img_name;
+                        }
+                    }elseif($month->interval->name == 'Biweekly') {
+                        if($week > 1){
+                            $m_ar['months']['description'] = $month->monthsDescription[1]->description;
+                            $m_ar['months']['image'] = $month->monthsDescription[1]->img_name;
+                        } else {
+                            $m_ar['months']['description'] = $month->monthsDescription[$biWeek]->description;
+                            $m_ar['months']['image'] = $month->monthsDescription[$biWeek]->img_name;
+                        }
+                    } elseif($month->interval->name == 'Monthly') {
+                        $m_ar['months']['description'] = $month->monthsDescription[0]->description;
+                        $m_ar['months']['image'] = $month->monthsDescription[0]->img_name;
+                    }
+                    $m_ar['months']['interval'] = $month->interval->name;
+                }
+            }
+            if($m_ar['months']['interval'] == 'Monthly'){
+                if(is_null($done)){
+                    $ret->push($m_ar);
+                }
+            }elseif($m_ar['months']['interval'] == 'Biweekly'){
+                if(is_null($done) || ($difference != -1 && $difference > 14)){
+                    $ret->push($m_ar);
+                }
+            }elseif($m_ar['months']['interval'] == 'Weekly'){
+                if(is_null($done) || ($difference != -1 && $difference > 7)){
+                    $ret->push($m_ar);
+                }
+            }else{
+                $ret->push($m_ar);
+            }
+        }
+
+        return $ret;
+    }
+
+    /**
+     * @param User $user
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function changePassword(User $user)
+    {
+        return view('admin.users.change_password', compact('user'));
+    }
+
+    /**
+     * @param UpdatePasswordRequest $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function updatePassword(UpdatePasswordRequest $request)
+    {
+        $user = User::find($request->id);
+        $user->password = Hash::make($request['password']);
+        $user->save();
+
+        return redirect()->route('manage-users');
     }
 }
