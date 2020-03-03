@@ -37,6 +37,7 @@ Route::post('/v1/auth', 'Admin\UserController@apiAuthenticateUser');
 
 Route::post('/v1/users/{user}/score', 'Admin\UserController@apiSetUserScore');
 Route::get('/v1/users/{user}/score', 'Admin\UserController@apiGetUserScore');
+Route::get('/v1/users/{user}/score/max', 'Admin\UserController@apiGetUserPotentialScore');
 
 #TODO remove /v1/users/{user}/firebase_token route after a few more client updates; was missnamed
 Route::post('/v1/users/{user}/firebase_token', 'Admin\UserController@apiUpdateUserToken');

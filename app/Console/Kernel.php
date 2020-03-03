@@ -26,7 +26,11 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command(WeeklyScoringCommand::class)->weekly();
+        // scoring is now handled dynamically
+        // TODO re-introduce as weekly notification for upcoming tasks (how to get points this week + summary of last wk)
+        // $schedule->command(WeeklyScoringCommand::class)->weekly();
+
+        // update hourly weather forecasts for customer locations
         $schedule->command(WeatherUpdate::class)->hourly();
     }
 

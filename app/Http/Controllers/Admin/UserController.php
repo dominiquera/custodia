@@ -239,12 +239,23 @@ class UserController extends Controller
             }
 
         }
-
     }
 
-    public function apiGetUserScore(User $user)
+    public function apiGetUserScore(User $user, UserService $userService)
     {
-        return response()->json(['score' => $user->userProfile->score], 200);
+        $score = $userService->getScoreByUser($user);
+        return response()->json(['score' => $score], 200);
+    }
+
+    public function apiGetUserPotentialScore(User $user, UserService $userService)
+    {
+        $potential = $userService->getPotentialScoreByUser($user);
+        return response()->json([ 'score' => $potential ], 200);
+    }
+
+    public function apiGetUserTopScore(User $user)
+    {
+        return response()->json([ 'score' => $user->userProfile->score ], 200);
     }
 
     public function apiSetUserScore(User $user, Request $request)
