@@ -88,6 +88,13 @@ class UserService
         return $this->intervalAlgorithm($results, $user, $weatherTriggerService);
     }
 
+    public function getAllMaintenanceItemsTodayByUser(User $user, WeatherTriggerService $weatherTriggerService)
+    {
+        $query = $this->getUserItemsJoinQuery($user);
+        $results = DB::select($query);
+        return $this->intervalAlgorithm($results, $user, $weatherTriggerService);
+    }
+
     public function getMaintenanceItemScoreFactors(User $user, int $maintenance_item_id) {
         $query = $this->getUserItemScoreFactorsJoinQuery($user, $maintenance_item_id);
         $results = DB::select($query);
