@@ -35,6 +35,8 @@ Route::middleware('can:accessAdminpanel')->group(function() {
     Route::get('/admin/users/destroy/{user}', 'Admin\UserController@deleteUser');
     Route::post('/admin/users/update', 'Admin\UserController@updateUser');
     Route::post('/admin/users/create', 'Admin\UserController@createUser');
+    Route::get('/admin/users/change-password/{user}', 'Admin\UserController@changePassword');
+    Route::post('/admin/users/update-password', 'Admin\UserController@updatePassword');
 
     Route::get('/admin/maintenance_items', 'Admin\MaintenanceItemController@maintenanceItems')->name('manage-items');
     Route::get('/admin/maintenance_items/new', 'Admin\MaintenanceItemController@newMaintenanceItem');
