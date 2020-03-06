@@ -88,10 +88,67 @@ class UserService
         return $this->intervalAlgorithm($results, $user, $weatherTriggerService);
     }
 
+    public function getAllMaintenanceItemsTodayByUser(User $user, WeatherTriggerService $weatherTriggerService)
+    {
+        $query = $this->getUserItemsJoinQuery($user);
+        $results = DB::select($query);
+        return $this->intervalAlgorithm($results, $user, $weatherTriggerService);
+    }
+
     public function getMaintenanceItemScoreFactors(User $user, int $maintenance_item_id) {
         $query = $this->getUserItemScoreFactorsJoinQuery($user, $maintenance_item_id);
         $results = DB::select($query);
         return array_shift($results);
+    }
+
+    public function getPotentialScoreByUser(User $user) {
+        $current_month = date('F');
+        $last_month = date('F', strtotime('last month'));
+
+        $current_month_potential = $this->getScoreByUserAndMonth($user, $current_month, true);
+        $last_month_potential = 0; // $this->getScoreByUserAndMonth($user, $last_month, true);
+
+        return $current_month_potential + $last_month_potential;
+    }
+
+    public function getScoreByUser(User $user) : int {
+        $current_month = date('F');
+        $last_month = date('F', strtotime('last month'));
+
+        $current_month_score = $this->getScoreByUserAndMonth($user, $current_month);
+        $last_month_score = 0; // $this->getScoreByUserAndMonth($user, $last_month);
+
+        return $current_month_score + $last_month_score;
+    }
+
+    public function getScoreByUserAndMonth(User $user, string $month = null, $potential = false) {
+        if ($month === null)
+            $month = date('F');
+
+        $score = 0;
+
+        $query = $this->getAllUserItemScoreFactorsJoinQuery($user);
+        $query .= " WHERE months.month = \"{$month}\"";
+
+        $results = DB::select($query);
+
+        foreach ($results as $result) {
+            $value = $result->importance_score_factor *
+                $result->home_type_score_factor *
+                $result->outdoor_space_score_factor *
+                $result->driveway_score_factor *
+                $result->feature_score_factor *
+                $result->mobility_issue_score_factor;
+
+            if ($potential || $result->done)
+                $score += $value;
+        }
+
+        return $score;
+    }
+
+    public function getTopScoreByUser(User $user) : int {
+        return $user->userProfile->score;
     }
 
     private function getUserItemsJoinQuery(User $user, $only_triggers = false)
@@ -150,16 +207,20 @@ class UserService
         return $query;
     }
 
-    private function getUserItemScoreFactorsJoinQuery(User $user, int $maintenance_item_id)
-    {
+    private function getAllUserItemScoreFactorsJoinQuery(User $user) {
+        // TODO also incorporate month+year (from _done/_ignored tables) into these queries
         if ($user->userProfile->home_type_id == 8) {
             $query = "
               select distinct(ITEMS.id),
+                     ITEMS.points as importance_score_factor,
                      1 as home_type_score_factor as home_type_score_factor,
                      ITEM_OUTDOOR_SPACE.score_factor as outdoor_space_score_factor,
                      ITEM_DRIVEWAY_TYPE.score_factor as driveway_score_factor,
                      ITEM_HOME_FEATURE.score_factor as feature_score_factor,
-                     ITEM_MOBILITY_ISSUE_TYPE.score_factor as mobility_issue_score_factor
+                     ITEM_MOBILITY_ISSUE_TYPE.score_factor as mobility_issue_score_factor,
+                     IF(ITEMS_DONE_USER.id IS NULL, 0, 1) as done,
+                     IF(ITEMS_IGNORED_USER.id IS NULL, 0, 1) as ignored 
+                     
               from maintenance_items ITEMS
               
               join months on ITEMS.id = months.maintenance_item_id
@@ -176,19 +237,20 @@ class UserService
               join home_feature_user_profile USER_HOME_FEATURE on PROFILE.id = USER_HOME_FEATURE.user_profile_id
               join home_feature_maintenance_item ITEM_HOME_FEATURE on ITEMS.id = ITEM_HOME_FEATURE.maintenance_item_id and ITEM_HOME_FEATURE.home_feature_id = USER_HOME_FEATURE.home_feature_id
               left outer join maintenance_item_done_user ITEMS_DONE_USER on ITEMS_DONE_USER.maintenance_item_id = ITEMS.id and ITEMS_DONE_USER.user_id = PROFILE.user_id
-              left outer join maintenance_item_ignored_user ITEMS_IGNORED_USER on ITEMS_IGNORED_USER.maintenance_item_id = ITEMS.id and ITEMS_IGNORED_USER.user_id = PROFILE.user_id
-              WHERE
-              ITEMS.id = {$maintenance_item_id}
-              UNION SELECT {$maintenance_item_id},1,1,1,1,1
+              left outer join maintenance_item_ignored_user ITEMS_IGNORED_USER on ITEMS_IGNORED_USER.maintenance_item_id = ITEMS.id and ITEMS_IGNORED_USER.user_id = PROFILE.user_id             
           ";
         } else {
             $query = "
               select distinct(ITEMS.id),
+                     ITEMS.points as importance_score_factor,
                      ITEM_HOME_TYPE.score_factor as home_type_score_factor,
                      ITEM_OUTDOOR_SPACE.score_factor as outdoor_space_score_factor,
                      ITEM_DRIVEWAY_TYPE.score_factor as driveway_score_factor,
                      ITEM_HOME_FEATURE.score_factor as feature_score_factor,
-                     ITEM_MOBILITY_ISSUE_TYPE.score_factor as mobility_issue_score_factor
+                     ITEM_MOBILITY_ISSUE_TYPE.score_factor as mobility_issue_score_factor,
+                     IF(ITEMS_DONE_USER.id IS NULL, 0, 1) as done,
+                     IF(ITEMS_IGNORED_USER.id IS NULL, 0, 1) as ignored 
+
               from maintenance_items ITEMS
               
               join months on ITEMS.id = months.maintenance_item_id
@@ -207,11 +269,21 @@ class UserService
               join home_feature_maintenance_item ITEM_HOME_FEATURE on ITEMS.id = ITEM_HOME_FEATURE.maintenance_item_id and ITEM_HOME_FEATURE.home_feature_id = USER_HOME_FEATURE.home_feature_id
               left outer join maintenance_item_done_user ITEMS_DONE_USER on ITEMS_DONE_USER.maintenance_item_id = ITEMS.id and ITEMS_DONE_USER.user_id = PROFILE.user_id
               left outer join maintenance_item_ignored_user ITEMS_IGNORED_USER on ITEMS_IGNORED_USER.maintenance_item_id = ITEMS.id and ITEMS_IGNORED_USER.user_id = PROFILE.user_id
-              where 
-              ITEMS.id = {$maintenance_item_id}
-              UNION SELECT {$maintenance_item_id},1,1,1,1,1
           ";
         }
+
+        return $query;
+
+    }
+
+    private function getUserItemScoreFactorsJoinQuery(User $user, int $maintenance_item_id)
+    {
+        $query = $this->getAllUserItemScoreFactorsJoinQuery($user);
+
+        $query .= " WHERE
+              ITEMS.id = {$maintenance_item_id}
+              UNION SELECT {$maintenance_item_id},0,0,0,0,0,0,0,0
+          ";
 
         return $query;
     }
@@ -270,7 +342,7 @@ class UserService
                     $m_ar['months']['interval'] = $month->interval->name;
 
                     // user_item_score_factor = item_importance_score_factor x f1 x f2 x ...
-                    $m_ar['points'] = (int)$m_ar['points']
+                    $m_ar['points'] = $scoreFactors->importance_score_factor
                                     * $scoreFactors->home_type_score_factor
                                     * $scoreFactors->outdoor_space_score_factor
                                     * $scoreFactors->driveway_score_factor
